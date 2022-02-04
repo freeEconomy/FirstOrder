@@ -1,0 +1,316 @@
+﻿@using System.Collections;
+@using System.Configuration;
+@using System.Data;
+@using System.Text;
+@using System.Xml;
+@using FirstOrder.Data;
+@{
+    var headerTitle = "스타일 선택";
+
+    Page.Title = headerTitle;
+    PageData["title"] = headerTitle;
+
+    Layout = "~/Mobile/LayOut/_Popup.cshtml";
+
+    var loginID = MemberData.GetLoginSID("LoginID");
+
+    var product = "";
+    var tbuc = "";
+    var mode = "";
+
+    try
+    {
+        product = Request["product"].ToString().Trim();
+    }
+    catch { }
+    try
+    {
+        tbuc = Request["tbuc"].ToString().Trim();
+    }
+    catch { }
+    try
+    {
+        mode = Request["mode"].ToString().Trim();
+    }
+    catch { }
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#btnSearch").click(function () {
+            BindOrderList('1');
+        });
+
+        $("#txtStyleNox").keydown(function(key) {
+            if (key.keyCode == 13) {
+                BindOrderList('1');
+            }
+        });
+
+        $("#txtStyleNox").val('@product');
+
+        BindOrderList('1');
+
+        $("#txtStyleNox").focus();
+    });
+
+    //추가 검색결과 클릭
+    $(document).on('click', '#listMore', function () {
+        var nextPage = eval($(this).attr('data-parm-page')) + 1;
+        BindOrderList(nextPage);
+    });
+
+    //스크롤시 추가 검색결과 가져오기
+    $(document).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            var nextPage = eval($('#hidNowPage').val()) + 1;
+            var totalPage = eval($('#hidTotalPage').val());
+
+            if (nextPage <= totalPage) {
+                BindOrderList(nextPage);
+            }
+        }
+    });
+
+    function BindOrderList(page) {
+
+        var paramStyleNox = $('#txtStyleNox').val();
+
+        var paramPage = page;
+        var paramPageSize = '20';
+
+        if (eval(paramPage) == 1) {
+            $('#tbResult').html('');
+        }
+
+        $.ajax({ //검색결과 바인딩
+            type: "POST",
+            url: "/Handler/WebService_common.asmx/GetAsOrderList",
+            data: "{'paramStyleNox':'" + paramStyleNox + "','paramPage':'" + paramPage + "','paramPageSize':'" + paramPageSize + "'}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            beforeSend: function () {
+                $.mobile.loading('show');
+            },
+            error: function () {
+                $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+            },
+            success: function (msg) {
+                var items = [];
+                var html = '';
+                var dataStat = $.parseJSON(msg.d);
+                var totCnt = dataStat.totalcount;
+                var totPage = dataStat.totalpage;
+                var data = dataStat.BljuData;
+
+                $('#hidNowPage').val(paramPage);
+                $('#hidTotalPage').val(totPage);
+                $('#hidTotalCount').val(totCnt);
+
+                if (totCnt > 0) {
+                    $.each(data, function (key, val) {
+                        items.push('<tr>');
+                        items.push('<td>');
+                        items.push('<table class="reportTable">');
+                        items.push('<tr>');
+                        items.push('<th bgcolor="#E7E7E7" class="reportTh">스타일번호</th>');
+                        items.push('<th class="reportTd">');
+                        items.push('' + val.BljuStyleNox + '');
+                        items.push('<a href="#" class="selectButton btn-mobile btn-info" data-role="button" data-mini="true" onclick="SetProduct(\'' + val.BljuStyleNox + '\',\'' + val.BljuDate + '\',\'' + val.BljuTimes + '\',\'' + val.BljuMainBuyer + '\',\'' + val.BljuSample + '\',\'' + val.sizeName1 + '\',\'' + val.sizeName2 + '\',\'' + val.sizeName3 + '\',\'' + val.sizeName4 + '\',\'' + val.sizeName5 + '\',\'' + val.sizeName6 + '\',\'' + val.sizeName7 + '\',\'' + val.sizeName8 + '\',\'' + val.sizeName9 + '\',\'' + val.sizeName10 + '\',\'' + val.sizeName11 + '\',\'' + val.sizeName12 + '\',\'' + val.sizeName13 + '\',\'' + val.sizeName14 + '\',\'' + val.sizeName15 + '\',\'' + val.sizeName16 + '\',\'' + val.sizeName17 + '\',\'' + val.BljuQty01 + '\',\'' + val.BljuQty02 + '\',\'' + val.BljuQty03 + '\',\'' + val.BljuQty04 + '\',\'' + val.BljuQty05 + '\',\'' + val.BljuQty06 + '\',\'' + val.BljuQty07 + '\',\'' + val.BljuQty08 + '\',\'' + val.BljuQty09 + '\',\'' + val.BljuQty10 + '\',\'' + val.BljuQty11 + '\',\'' + val.BljuQty12 + '\',\'' + val.BljuQty13 + '\',\'' + val.BljuQty14 + '\',\'' + val.BljuQty15 + '\',\'' + val.BljuQty16 + '\',\'' + val.BljuQty17 + '\',\'' + val.BljuQtyTotal + '\');">선택</a>');
+                        items.push('</th>');
+                        items.push('</tr>');
+                        items.push('<tr><td class="reportTd">발주의뢰일자</td><td class="reportTd">' + val.BljuDate + ' ' + val.BljuTimes + '</td></tr>');
+                        if (val.sizeName1 != "" && val.BljuQty01 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName1 + '</td><td class="reportTd">' + val.BljuQty01 + '</td></tr>');
+                        if (val.sizeName2 != "" && val.BljuQty02 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName2 + '</td><td class="reportTd">' + val.BljuQty02 + '</td></tr>');
+                        if (val.sizeName3 != "" && val.BljuQty03 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName3 + '</td><td class="reportTd">' + val.BljuQty03 + '</td></tr>');
+                        if (val.sizeName4 != "" && val.BljuQty04 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName4 + '</td><td class="reportTd">' + val.BljuQty04 + '</td></tr>');
+                        if (val.sizeName5 != "" && val.BljuQty05 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName5 + '</td><td class="reportTd">' + val.BljuQty05 + '</td></tr>');
+                        if (val.sizeName6 != "" && val.BljuQty06 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName6 + '</td><td class="reportTd">' + val.BljuQty06 + '</td></tr>');
+                        if (val.sizeName7 != "" && val.BljuQty07 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName7 + '</td><td class="reportTd">' + val.BljuQty07 + '</td></tr>');
+                        if (val.sizeName8 != "" && val.BljuQty08 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName8 + '</td><td class="reportTd">' + val.BljuQty08 + '</td></tr>');
+                        if (val.sizeName9 != "" && val.BljuQty09 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName9 + '</td><td class="reportTd">' + val.BljuQty09 + '</td></tr>');
+                        if (val.sizeName10 != "" && val.BljuQty10 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName10 + '</td><td class="reportTd">' + val.BljuQty10 + '</td></tr>');
+                        if (val.sizeName11 != "" && val.BljuQty11 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName11 + '</td><td class="reportTd">' + val.BljuQty11 + '</td></tr>');
+                        if (val.sizeName12 != "" && val.BljuQty12 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName12 + '</td><td class="reportTd">' + val.BljuQty12 + '</td></tr>');
+                        if (val.sizeName13 != "" && val.BljuQty13 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName13 + '</td><td class="reportTd">' + val.BljuQty13 + '</td></tr>');
+                        if (val.sizeName14 != "" && val.BljuQty14 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName14 + '</td><td class="reportTd">' + val.BljuQty14 + '</td></tr>');
+                        if (val.sizeName15 != "" && val.BljuQty15 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName15 + '</td><td class="reportTd">' + val.BljuQty15 + '</td></tr>');
+                        if (val.sizeName16 != "" && val.BljuQty16 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName16 + '</td><td class="reportTd">' + val.BljuQty16 + '</td></tr>');
+                        if (val.sizeName17 != "" && val.BljuQty17 != "")
+                            items.push('<tr><td class="reportTd">' + val.sizeName17 + '</td><td class="reportTd">' + val.BljuQty17 + '</td></tr>');
+                        items.push('<tr><td class="reportTd">TOTAL</td><td class="reportTd">' + val.BljuQtyTotal + '</td></tr>');
+                        items.push('<tr><td class="reportTd">공급가액</td><td class="reportTd">' + val.JustAmount + '</td></tr>');
+                        items.push('<tr><td class="reportTd">부가세</td><td class="reportTd">' + val.VatAmount + '</td></tr>');
+                        items.push('<tr><td class="reportTd">합계금액</td><td class="reportTd">' + val.HapAmount + '</td></tr>');
+                        items.push('<tr><td class="reportTd">기타사항</td><td class="reportTd">' + val.Etc + '</td></tr>');
+                        items.push('</table>');
+                        items.push('</td>');
+                        items.push('</tr>');
+                    });
+                } else {
+                    items.push('<tr>');
+                    items.push('<td>');
+                    items.push('<table class="reportTable">');
+                    items.push('<tr><td style="text-align:center;" colspan="2" class="reportTd">등록된 자료가 존재하지 않습니다.</td></tr>');
+                    items.push('</table>');
+                    items.push('</td>');
+                    items.push('</tr>');
+                }
+
+                $('#listMore').remove();
+
+                if (eval(paramPage) < eval(totPage)) {
+                    items.push('<tr><td style="text-align:center;" id="listMore" data-parm-page="' + paramPage + '" data-inset="false" >결과더보기</td></tr>');
+                }
+
+                html = items.join('');
+                $('#tbResult').append($(html));
+                $('#tbResult').trigger('create');
+                $("#collarSearch").trigger("collapse");
+
+                $.mobile.loading("hide");
+            }
+        });
+    }
+
+    // 스타일 정보 넘기기
+    function SetProduct(StyleNox, BljuDate, BljuTimes, BljuMainBuyer, BljuSample, sizeName1, sizeName2, sizeName3, sizeName4, sizeName5, sizeName6, sizeName7, sizeName8, sizeName9, sizeName10, sizeName11, sizeName12, sizeName13, sizeName14, sizeName15, sizeName16, sizeName17, BljuQty01, BljuQty02, BljuQty03, BljuQty04, BljuQty05, BljuQty06, BljuQty07, BljuQty08, BljuQty09, BljuQty10, BljuQty11, BljuQty12, BljuQty13, BljuQty14, BljuQty15, BljuQty16, BljuQty17, BljuQtyTotal) {
+        
+        var mode = '@mode';
+
+        $('#txtBljuDate', opener.document).val(BljuDate + ' ' + BljuTimes);
+        $('#txtBljuStyle', opener.document).val(StyleNox);
+        $('#hidBljuDate', opener.document).val(BljuDate);
+        $('#hidBljuTimes', opener.document).val(BljuTimes);
+        $('#hidBljuMainBuyer', opener.document).val(BljuMainBuyer);
+        $('#hidBljuSample', opener.document).val(BljuSample);
+
+        $('#as-div', opener.document).show();
+
+        if (mode == "edit") {
+            $('.labelTBuc', opener.document).attr('disabled', true);
+            $('#cboTBuc', opener.document).attr('readonly', 'readonly');
+            $('#txtProduct', opener.document).attr('readonly', 'readonly');
+
+            $('#txtSize1', opener.document).text(sizeName1);
+            $('#txtSize2', opener.document).text(sizeName2);
+            $('#txtSize3', opener.document).text(sizeName3);
+            $('#txtSize4', opener.document).text(sizeName4);
+            $('#txtSize5', opener.document).text(sizeName5);
+            $('#txtSize6', opener.document).text(sizeName6);
+            $('#txtSize7', opener.document).text(sizeName7);
+            $('#txtSize8', opener.document).text(sizeName8);
+            $('#txtSize9', opener.document).text(sizeName9);
+            $('#txtSize10', opener.document).text(sizeName10);
+            $('#txtSize11', opener.document).text(sizeName11);
+            $('#txtSize12', opener.document).text(sizeName12);
+            $('#txtSize13', opener.document).text(sizeName13);
+            $('#txtSize14', opener.document).text(sizeName14);
+            $('#txtSize15', opener.document).text(sizeName15);
+            $('#txtSize16', opener.document).text(sizeName16);
+            $('#txtSize17', opener.document).text(sizeName17);
+
+            $('#Blju_QtyTotal', opener.document).val(BljuQtyTotal);
+            $('#Blju_Qty01', opener.document).val(BljuQty01);
+            $('#Blju_Qty02', opener.document).val(BljuQty02);
+            $('#Blju_Qty03', opener.document).val(BljuQty03);
+            $('#Blju_Qty04', opener.document).val(BljuQty04);
+            $('#Blju_Qty05', opener.document).val(BljuQty05);
+            $('#Blju_Qty06', opener.document).val(BljuQty06);
+            $('#Blju_Qty07', opener.document).val(BljuQty07);
+            $('#Blju_Qty08', opener.document).val(BljuQty08);
+            $('#Blju_Qty09', opener.document).val(BljuQty09);
+            $('#Blju_Qty10', opener.document).val(BljuQty10);
+            $('#Blju_Qty11', opener.document).val(BljuQty11);
+            $('#Blju_Qty12', opener.document).val(BljuQty12);
+            $('#Blju_Qty13', opener.document).val(BljuQty13);
+            $('#Blju_Qty14', opener.document).val(BljuQty14);
+            $('#Blju_Qty15', opener.document).val(BljuQty15);
+            $('#Blju_Qty16', opener.document).val(BljuQty16);
+            $('#Blju_Qty17', opener.document).val(BljuQty17);
+
+            $('#BnpmD_Qty01_0', opener.document).attr('disabled', (BljuQty01 == 0));
+            $('#BnpmD_Qty02_0', opener.document).attr('disabled', (BljuQty02 == 0));
+            $('#BnpmD_Qty03_0', opener.document).attr('disabled', (BljuQty03 == 0));
+            $('#BnpmD_Qty04_0', opener.document).attr('disabled', (BljuQty04 == 0));
+            $('#BnpmD_Qty05_0', opener.document).attr('disabled', (BljuQty05 == 0));
+            $('#BnpmD_Qty06_0', opener.document).attr('disabled', (BljuQty06 == 0));
+            $('#BnpmD_Qty07_0', opener.document).attr('disabled', (BljuQty07 == 0));
+            $('#BnpmD_Qty08_0', opener.document).attr('disabled', (BljuQty08 == 0));
+            $('#BnpmD_Qty09_0', opener.document).attr('disabled', (BljuQty09 == 0));
+            $('#BnpmD_Qty10_0', opener.document).attr('disabled', (BljuQty10 == 0));
+            $('#BnpmD_Qty11_0', opener.document).attr('disabled', (BljuQty11 == 0));
+            $('#BnpmD_Qty12_0', opener.document).attr('disabled', (BljuQty12 == 0));
+            $('#BnpmD_Qty13_0', opener.document).attr('disabled', (BljuQty13 == 0));
+            $('#BnpmD_Qty14_0', opener.document).attr('disabled', (BljuQty14 == 0));
+            $('#BnpmD_Qty15_0', opener.document).attr('disabled', (BljuQty15 == 0));
+            $('#BnpmD_Qty16_0', opener.document).attr('disabled', (BljuQty16 == 0));
+            $('#BnpmD_Qty17_0', opener.document).attr('disabled', (BljuQty17 == 0));
+        }
+
+        self.close();
+    }
+
+</script>
+
+<div id="pageSearch" data-role="page" data-theme="c" class="mobile-main">
+    
+    <input type="hidden" id="hidNowPage" name="hidNowPage" />
+    <input type="hidden" id="hidTotalPage" name="hidTotalPage" />
+    <input type="hidden" id="hidTotalCount" name="hidTotalCount" />
+
+    <div data-role="content">
+
+        <section id="main" style="padding:5px">
+            
+            <div style="float:right;">
+                <input type="button" id="btnClose" value="창 닫기" data-role="button" onclick="self.close();" />
+            </div>
+            <div style="clear:both;"></div>
+
+            <div id="collarSearch" data-collapsed="false" data-role="collapsible" data-collapsed-icon="search" data-expanded-icon="search">
+                <h4>스타일 이름</h4>
+                <ul data-role="listview">
+                    <li data-role="fieldcontain">
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <input type="text" id="txtStyleNox" name="txtStyleNox" data-mini="true" data-clear-btn="true" placeholder="스타일번호 혹은 제품명을 입력" class="inputProduct" />
+                            </div>
+                            <div class="ui-block-b" style="margin-top: .4rem;">
+                                <input type="button" id="btnSearch" value="검색" data-role="button" />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="divResult">                
+                <div id="lvResult">
+                </div>
+
+                <table id="tbResult" border="0" cellspacing="0" cellpadding="0"></table>
+
+            </div>
+
+        </section>
+
+    </div>
+    
+</div>

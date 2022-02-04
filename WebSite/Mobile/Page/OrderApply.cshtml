@@ -1,0 +1,951 @@
+﻿@using System.Collections;
+@using System.Configuration;
+@using System.Data;
+@using System.Text;
+@using System.Xml;
+@using FirstOrder.Data;
+@using FirstOrder.Util;
+@{
+    var headerTitle = "발주신청";
+
+    Page.Title = headerTitle;
+    PageData["title"] = headerTitle;
+
+    Layout = "~/Mobile/LayOut/_Main.cshtml";
+
+    StDataCommon stData = new StDataCommon();
+
+    string preVal = "";
+
+    try
+    {
+        preVal = HttpContext.Current.Session["PreVal"].ToString();
+    }
+    catch
+    {
+        preVal = "tbl";
+    }
+
+    var sizeNum = MemberData.GetLoginSID("tblSizeNum");
+
+    string stopMsg = OrderData_common.GetStopCheck(preVal).Replace("'", "`");
+
+    var loginID = MemberData.GetLoginSID("LoginID");
+
+    StCommon st = new StCommon(preVal);
+    st.Kind = "1";
+    st.GetSizeInfo(preVal);
+
+    string[] SizeArray = { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+    SizeArray[1] = String.Concat(st.SizeName1, "(", st.SizeNum1, ")");
+    SizeArray[2] = String.Concat(st.SizeName2, "(", st.SizeNum2, ")");
+    SizeArray[3] = String.Concat(st.SizeName3, "(", st.SizeNum3, ")");
+    SizeArray[4] = String.Concat(st.SizeName4, "(", st.SizeNum4, ")");
+    SizeArray[5] = String.Concat(st.SizeName5, "(", st.SizeNum5, ")");
+    SizeArray[6] = String.Concat(st.SizeName6, "(", st.SizeNum6, ")");
+    SizeArray[7] = String.Concat(st.SizeName7, "(", st.SizeNum7, ")");
+    SizeArray[8] = String.Concat(st.SizeName8, "(", st.SizeNum8, ")");
+    SizeArray[9] = String.Concat(st.SizeName9, "(", st.SizeNum9, ")");
+    SizeArray[10] = String.Concat(st.SizeName10, "(", st.SizeNum10, ")");
+    SizeArray[11] = String.Concat(st.SizeName11, "(", st.SizeNum11, ")");
+    SizeArray[12] = String.Concat(st.SizeName12, "(", st.SizeNum12, ")");
+    SizeArray[13] = st.SizeName13;
+    SizeArray[14] = st.SizeName14;
+    SizeArray[15] = st.SizeName15;
+    SizeArray[16] = st.SizeName16;
+    SizeArray[17] = st.SizeName17;
+
+    var date = "";
+    var times = "";
+    var mainbuyer = "";
+    var sample = "";
+    var line = "";
+
+    var mode = "";
+
+    try
+    {
+        date = Request["date"].ToString().Trim();
+        times = Request["times"].ToString().Trim();
+        mainbuyer = Request["mainbuyer"].ToString().Trim();
+        sample = Request["sample"].ToString().Trim();
+    }
+    catch { }
+    try
+    {
+        line = Request["line"].ToString().Trim();
+    }
+    catch { }
+
+    try
+    {
+        mode = Request["mode"].ToString().Trim();
+    }
+    catch { }
+
+    string kurecode = MemberData.GetLoginSID("KureCode");
+    mainbuyer = (mainbuyer == "") ? kurecode : mainbuyer;
+    sample = (sample == "") ? "0" : sample;
+
+    string whereQry = "";
+    whereQry = StCommon.MakeSearchQry("bjhd_date", date, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("bjhd_times", times, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("bjhd_mainBuyer", mainbuyer, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("bjhd_sample", sample, "S", whereQry);
+
+    string qry = " select (select kure_sangho from gblKURE where kure_code = a.Bjhd_MainBuyer) as Bjhd_MainBuyerNm,(select Bjhd2_SongJangNox from " + preVal + "BJHD2 where isnull(Bjhd2_Date,'') = isnull(a.Bjhd_Date,'') and isnull(Bjhd2_Times,'') = isnull(a.Bjhd_Times,'') and isnull(Bjhd2_MainBuyer,'') = isnull(a.Bjhd_MainBuyer,'') and isnull(Bjhd2_Sample,'') = isnull(a.Bjhd_Sample,'')) as Bjhd2_SongJangNox,* from " + preVal + "BJHD a where u>0 " + whereQry + " ";
+
+    DataSet ds = stData.GetDataSet(qry);
+
+    var bjhd_remark = "";
+    var bjhd_mainBuyerNm = "";
+    var bjhd_netAmount = "";
+    var bjhd_vatAmount = "";
+    var bjhd_hapAmount = "";
+
+    int existCnt = ds.Tables[0].Rows.Count;
+
+    if (ds.Tables[0].Rows.Count > 0)
+    {
+        DataRow dr = ds.Tables[0].Rows[0];
+
+        date = dr["bjhd_date"].ToString().Trim();
+        times = dr["bjhd_times"].ToString().Trim();
+        sample = dr["bjhd_sample"].ToString().Trim();
+
+        bjhd_remark = dr["bjhd_remark"].ToString().Trim();
+
+        bjhd_mainBuyerNm = dr["bjhd_mainBuyerNm"].ToString().Trim();
+        bjhd_netAmount = dr["bjhd_netAmount"].ToString().Trim();
+        bjhd_vatAmount = dr["bjhd_vatAmount"].ToString().Trim();
+        bjhd_hapAmount = dr["bjhd_hapAmount"].ToString().Trim();
+    }
+
+    string kurename = MemberData.GetLoginSID("KureName");
+    bjhd_mainBuyerNm = (bjhd_mainBuyerNm == "") ? kurename : bjhd_mainBuyerNm;
+
+    int maxSize = 17;
+    if (preVal == "tbl")
+    {
+        if (sizeNum == "10")
+        {
+            maxSize = 10;
+        }
+        else
+        {
+            maxSize = 12;
+        }
+    }
+
+    string whereQry2 = "";
+    whereQry2 = StCommon.MakeSearchQry("blju_date", date, "S", whereQry2);
+    whereQry2 = StCommon.MakeSearchQry("blju_times", times, "S", whereQry2);
+    whereQry2 = StCommon.MakeSearchQry("blju_mainBuyer", mainbuyer, "S", whereQry2);
+    whereQry2 = StCommon.MakeSearchQry("blju_sample", sample, "S", whereQry2);
+    whereQry2 += " and blju_line = '" + line + "' ";
+
+    qry = " SELECT isnull((select isnull(Dnga_MainName,'') + ', ' + isnull(Dnga_SubName,'') + ', ' + isnull(Dnga_SpecColor,'') from " + preVal + "DNGA where Dnga_StyleNox=a.Blju_StyleNox),'') as Blju_StyleName,isnull((select Dnga_JustPrice from " + preVal + "DNGA where Dnga_StyleNox=a.Blju_StyleNox),0) as Blju_JustPrice,* FROM " + preVal + "BLJU a where 1=1 " + whereQry2 + " ORDER BY Blju_Line desc ";
+    DataSet dsList = stData.GetDataSet(qry);
+
+    string[] JegoArray = { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+    string[] QtyArray = { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+    string blju_style_name = "";
+    string blju_stylenox = "";
+    string blju_style_msg = "";
+    string blju_justprice = "";
+
+    if (dsList.Tables[0].Rows.Count > 0)
+    {
+        DataRow dr2 = dsList.Tables[0].Rows[0];
+
+        blju_style_name = dr2["Blju_StyleName"].ToString();
+        blju_stylenox = dr2["Blju_StyleNox"].ToString();
+        blju_justprice = ds.Tables[0].Rows[0]["Blju_JustPrice"].ToString();
+        JegoArray = StCommon.JegoSet(preVal, date, times, mainbuyer, dr2["Blju_Line"].ToString(), dr2["Blju_StyleNox"].ToString(), mode); // 보기에서는 mode 빈값
+
+        for (int k = 1; k <= (maxSize + 1); k++)
+        {
+            var num = (k < 10) ? "0" + k.ToString() : k.ToString();
+            if (k == (maxSize + 1))
+            {
+                QtyArray[k] = StCommon.GetAmountFormat(dr2["Blju_QtyTotal"]);
+            }
+            else
+            {
+                QtyArray[k] = StCommon.GetAmountFormat(dr2["Blju_Qty" + num]);
+            }
+        }
+
+        string IsDuple = "";
+        double BoxQty = 0;
+
+        qry = " select * from " + preVal + "BLJU where Blju_Date = '" + dr2["blju_date"].ToString() + "' and Blju_Times = '" + dr2["blju_times"].ToString() + "' and Blju_MainBuyer = '" + dr2["blju_mainbuyer"].ToString() + "' and Blju_StyleNox = '" + dr2["Blju_StyleNox"].ToString() + "' ";
+        DataSet dsC = stData.GetDataSet(qry);
+
+        if (dsC.Tables[0].Rows.Count > 0)
+        {
+            IsDuple = dsC.Tables[0].Rows[0]["Blju_Line"].ToString();
+        }
+
+        qry = " select isnull(Dnga_BoxQty,0) as Dnga_BoxQty,isnull(Dnga_JustPrice,0) as Dnga_JustPrice,isnull(Dnga_LowPrice,0) as Dnga_LowPrice from " + preVal + "DNGA where Dnga_StyleNox = '" + dr2["Blju_StyleNox"].ToString() + "' ";
+        ds = stData.GetDataSet(qry);
+
+        if (ds.Tables[0].Rows.Count > 0)
+        {
+            BoxQty = Convert.ToDouble(ds.Tables[0].Rows[0]["Dnga_BoxQty"]);
+        }
+
+        if (BoxQty == 0)
+        {
+            blju_style_msg = "BOX적용 수량이 없습니다.";
+        }
+        else
+        {
+            // ((박수수량 * j) - (박수수량 * l) / (박수수량 * j)) * 100
+            double justPrice = Convert.ToDouble(ds.Tables[0].Rows[0]["Dnga_JustPrice"]);
+            double lowPrice = Convert.ToDouble(ds.Tables[0].Rows[0]["Dnga_LowPrice"]);
+
+            // (j - l / l) * 100
+            double dcPercent = Math.Round(((justPrice - lowPrice) / lowPrice) * 100, 1);
+
+            blju_style_msg = "BOX수량: " + BoxQty + " PCS (" + dcPercent + " % 할인됩니다.)";
+        }
+    }
+
+    var AbsoluteUri = Request.Url.AbsoluteUri;
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        
+        var stopMsg = '@stopMsg';
+
+        if (stopMsg != "") {
+            alert(stopMsg);
+            location.href = "OrderList.cshtml";
+        }
+
+        $(".saveButton").click(function () {
+            $('#txtProduct').val()
+            if ($('#txtProduct').val() == "") {
+                showMessageScroll('txtProduct', '발주스타일을 선택해 주세요.');
+                $('#txtProduct').focus();
+                return false;
+            }
+
+            if ($('#txtOrderTotal').val() == "") {
+                showMessageScroll('txtOrderTotal', '주문량을 입력해 주세요.');
+                $('#txtOrderTotal').focus();
+                return false;
+            }
+
+            var paramMode = "@mode";
+
+            var paramDate = '@date';
+            var paramTimes = '@times';
+            var paramKure = '@mainbuyer';
+            var paramSample = '@sample';
+
+            var paramLine = "";
+
+            if (paramMode == "mod")
+            {
+                paramLine = "@line";
+            }
+
+            var paramProduct = $('#txtProduct').val();
+
+            var paramEtc = $('#txtEtc').val();
+
+            var paramOrder1 = $('#txtOrder1').val();
+            var paramOrder2 = $('#txtOrder2').val();
+            var paramOrder3 = $('#txtOrder3').val();
+            var paramOrder4 = $('#txtOrder4').val();
+            var paramOrder5 = $('#txtOrder5').val();
+            var paramOrder6 = $('#txtOrder6').val();
+            var paramOrder7 = $('#txtOrder7').val();
+            var paramOrder8 = $('#txtOrder8').val();
+            var paramOrder9 = $('#txtOrder9').val();
+            var paramOrder10 = $('#txtOrder10').val();
+            var paramOrder11 = $('#txtOrder11').val();
+            var paramOrder12 = $('#txtOrder12').val();
+            var paramOrder13 = $('#txtOrder13').val();
+            var paramOrder14 = $('#txtOrder14').val();
+            var paramOrder15 = $('#txtOrder15').val();
+            var paramOrder16 = $('#txtOrder16').val();
+            var paramOrder17 = $('#txtOrder17').val();
+
+            if (typeof (paramOrder11) == 'undefined') {
+                paramOrder11 = "";
+            }
+            if (typeof (paramOrder12) == 'undefined') {
+                paramOrder12 = "";
+            }
+            if (typeof (paramOrder13) == 'undefined') {
+                paramOrder13 = "";
+            }
+            if (typeof (paramOrder14) == 'undefined') {
+                paramOrder14 = "";
+            }
+            if (typeof (paramOrder15) == 'undefined') {
+                paramOrder15 = "";
+            }
+            if (typeof (paramOrder16) == 'undefined') {
+                paramOrder16 = "";
+            }
+            if (typeof (paramOrder17) == 'undefined') {
+                paramOrder17 = "";
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Handler/WebService_common.asmx/OrderApply",
+                data: "{'paramMode':'" + paramMode + "','paramDate':'" + paramDate + "','paramTimes':'" + paramTimes + "','paramKure':'" + paramKure + "','paramSample':'" + paramSample + "','paramLine':'" + paramLine + "','paramProduct':'" + paramProduct + "','paramEtc':'" + paramEtc + "','paramOrder1':'" + paramOrder1 + "','paramOrder2':'" + paramOrder2 + "','paramOrder3':'" + paramOrder3 + "','paramOrder4':'" + paramOrder4 + "','paramOrder5':'" + paramOrder5 + "','paramOrder6':'" + paramOrder6 + "','paramOrder7':'" + paramOrder7 + "','paramOrder8':'" + paramOrder8 + "','paramOrder9':'" + paramOrder9 + "','paramOrder10':'" + paramOrder10 + "','paramOrder11':'" + paramOrder11 + "','paramOrder12':'" + paramOrder12 + "','paramOrder13':'" + paramOrder13 + "','paramOrder14':'" + paramOrder14 + "','paramOrder15':'" + paramOrder15 + "','paramOrder16':'" + paramOrder16 + "','paramOrder17':'" + paramOrder17 + "'}",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                beforeSend: function () {
+                    //$.mobile.loading('show');
+                },
+                error: function () {
+                    $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+                },
+                success: function (msg) {
+                    var dataStat = $.parseJSON(msg.d);
+                    var totCnt = dataStat.totalcount;
+                    var message = dataStat.msg;
+                    if (message != "") {
+                        alert(message);
+                    } else {
+                        $('#frmAction').attr('action', 'OrderDetail.cshtml?date=' + paramDate + '&times=' + paramTimes + '&mainbuyer=' + paramKure + '&sample=' + paramSample).submit();
+                    }
+                }
+            });
+        });
+
+        $("#txtProduct").keydown(function (key) {
+            if (key.keyCode == 13) {
+                SearchStyle('1');
+            }
+        });
+
+        $("#btnStyleSearch").click(function () {
+            SearchStyle('1');
+        });
+        
+        $(document).on('click', '#btnModifyPic', function () {
+            if ($('#filePic').val() == '') {
+                alert('사진을 선택해 주세요');
+                return false;
+            }
+            $("#hidPicId").val($("#txtProduct").val());
+            $("#hidPageUrl").val('@AbsoluteUri');
+
+            $('#frmPicture').attr('action', 'PictureExecute.cshtml').submit();
+        });
+
+        $(document).on('click', '#btnClose', function () {
+            $('#popupPic').popup('close');
+        });
+
+        var chkMode = '@mode';
+        var loginID = '@loginID';
+        if (chkMode == "mod" && loginID == "ZX-999") {
+            $('.btnPicEdit').show();
+        }
+        else {
+            $('.btnPicEdit').hide();
+        }
+
+        viewPicBtn();
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+
+
+        //$('.btnPicEdit').hide();
+    });
+
+    function onDeviceReady() {
+        viewPicAppBtn();
+    }
+
+    function viewPicAppBtn() {
+        $('#btnPicApp').show();
+        $('#btnPic').hide();
+    }
+
+    function viewPicBtn() {
+        $('#btnPicApp').hide();
+        $('#btnPic').show();
+    }
+
+    function SearchStyle(page) {
+
+        var paramDate = '@date';
+        var paramTimes = '@times';
+        var paramKure = '@mainbuyer';
+        var paramSample = '@sample';
+        var paramLine = '@line';
+
+        var paramStyleNox = $('#txtProduct').val();
+
+        var paramPage = page;
+        var paramPageSize = '20';
+
+        $.ajax({ //검색결과 바인딩
+            type: "POST",
+            url: "/Handler/WebService_common.asmx/GetStyleList",
+            data: "{'paramDate':'" + paramDate + "','paramTimes':'" + paramTimes + "','paramKure':'" + paramKure + "','paramSample':'" + paramSample + "','paramStyleNox':'" + paramStyleNox + "','paramPage':'" + paramPage + "','paramPageSize':'" + paramPageSize + "'}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            beforeSend: function () {
+                $.mobile.loading('show');
+            },
+            error: function () {
+                $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+            },
+            success: function (msg) {
+                var items = [];
+                var html = '';
+                var dataStat = $.parseJSON(msg.d);
+                var totCnt = dataStat.totalcount;
+                var totPage = dataStat.totalpage;
+                var data = dataStat.StyleInfo;
+
+                if (totCnt == 1) {
+                    $.each(data, function (key, val) {
+                        SetProduct(val.StyleNox, val.MainName, val.SubName, val.SpecColor, val.JegoQty01, val.JegoQty02, val.JegoQty03, val.JegoQty04, val.JegoQty05, val.JegoQty06, val.JegoQty07, val.JegoQty08, val.JegoQty09, val.JegoQty10, val.JegoQty11, val.JegoQty12, val.JegoQty13, val.JegoQty14, val.JegoQty15, val.JegoQty16, val.JegoQty17, val.JegoQtyTotal, val.IsDuple, val.Msg, val.JustPrice, val.Width, val.Height, val.sizeName1, val.sizeName2, val.sizeName3, val.sizeName4, val.sizeName5, val.sizeName6, val.sizeName7, val.sizeName8, val.sizeName9, val.sizeName10, val.sizeName11, val.sizeName12, val.sizeName13, val.sizeName14, val.sizeName15, val.sizeName16, val.sizeName17, val.Kind);
+                    });
+                } else if (totCnt > 1) {
+                    OpenStyle(paramDate, paramTimes, paramKure, paramSample, paramLine)
+                }
+                $.mobile.loading("hide");
+            }
+        });
+    }
+
+    // 스타일 정보 넘기기
+    function SetProduct(StyleNox, MainName, SubName, SpecColor, JegoQty01, JegoQty02, JegoQty03, JegoQty04, JegoQty05, JegoQty06, JegoQty07, JegoQty08, JegoQty09, JegoQty10, JegoQty11, JegoQty12, JegoQty13, JegoQty14, JegoQty15, JegoQty16, JegoQty17, JegoTotal, IsDuple, Msg, JustPrice, imgWidth, imgHeight, sizeName1, sizeName2, sizeName3, sizeName4, sizeName5, sizeName6, sizeName7, sizeName8, sizeName9, sizeName10, sizeName11, sizeName12, sizeName13, sizeName14, sizeName15, sizeName16, sizeName17, Kind) {
+
+        $('.StylePic').html('');
+        $('.btnPicEdit').hide();
+
+        if (IsDuple != "") {
+            alert(IsDuple + "번 라인에 해당스타일이 이미 등록되어 있습니다!");
+        }
+        else {
+            $('#txtJego1').val(JegoQty01);
+            $('#txtJego2').val(JegoQty02);
+            $('#txtJego3').val(JegoQty03);
+            $('#txtJego4').val(JegoQty04);
+            $('#txtJego5').val(JegoQty05);
+            $('#txtJego6').val(JegoQty06);
+            $('#txtJego7').val(JegoQty07);
+            $('#txtJego8').val(JegoQty08);
+            $('#txtJego9').val(JegoQty09);
+            $('#txtJego10').val(JegoQty10);
+            $('#txtJego11').val(JegoQty11);
+            $('#txtJego12').val(JegoQty12);
+            $('#txtJego13').val(JegoQty13);
+            $('#txtJego14').val(JegoQty14);
+            $('#txtJego15').val(JegoQty15);
+            $('#txtJego16').val(JegoQty16);
+            $('#txtJego17').val(JegoQty17);
+            $('#txtJegoTotal').val(JegoTotal);
+
+            $('#txtOrder1').val('');
+            $('#txtOrder2').val('');
+            $('#txtOrder3').val('');
+            $('#txtOrder4').val('');
+            $('#txtOrder5').val('');
+            $('#txtOrder6').val('');
+            $('#txtOrder7').val('');
+            $('#txtOrder8').val('');
+            $('#txtOrder9').val('');
+            $('#txtOrder10').val('');
+            $('#txtOrder11').val('');
+            $('#txtOrder12').val('');
+            $('#txtOrder13').val('');
+            $('#txtOrder14').val('');
+            $('#txtOrder15').val('');
+            $('#txtOrder16').val('');
+            $('#txtOrder17').val('');
+            $('#txtOrderTotal').val('');
+
+            $('#txtOrder1').attr('disabled', true);
+            $('#txtOrder2').attr('disabled', true);
+            $('#txtOrder3').attr('disabled', true);
+            $('#txtOrder4').attr('disabled', true);
+            $('#txtOrder5').attr('disabled', true);
+            $('#txtOrder6').attr('disabled', true);
+            $('#txtOrder7').attr('disabled', true);
+            $('#txtOrder8').attr('disabled', true);
+            $('#txtOrder9').attr('disabled', true);
+            $('#txtOrder10').attr('disabled', true);
+            $('#txtOrder11').attr('disabled', true);
+            $('#txtOrder12').attr('disabled', true);
+            $('#txtOrder13').attr('disabled', true);
+            $('#txtOrder14').attr('disabled', true);
+            $('#txtOrder15').attr('disabled', true);
+            $('#txtOrder16').attr('disabled', true);
+            $('#txtOrder17').attr('disabled', true);
+
+            if (setCommaHis_Del(JegoQty01) > 0)
+                $('#txtOrder1').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty02) > 0)
+                $('#txtOrder2').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty03) > 0)
+                $('#txtOrder3').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty04) > 0)
+                $('#txtOrder4').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty05) > 0)
+                $('#txtOrder5').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty06) > 0)
+                $('#txtOrder6').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty07) > 0)
+                $('#txtOrder7').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty08) > 0)
+                $('#txtOrder8').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty09) > 0)
+                $('#txtOrder9').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty10) > 0)
+                $('#txtOrder10').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty11) > 0)
+                $('#txtOrder11').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty12) > 0)
+                $('#txtOrder12').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty13) > 0)
+                $('#txtOrder13').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty14) > 0)
+                $('#txtOrder14').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty15) > 0)
+                $('#txtOrder15').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty16) > 0)
+                $('#txtOrder16').attr('disabled', false);
+            if (setCommaHis_Del(JegoQty17) > 0)
+                $('#txtOrder17').attr('disabled', false);
+
+            $('#txtProduct').val(StyleNox);
+            $('#txtProductDetail').val(MainName + ", " + SubName + ", " + SpecColor);
+
+            $('#txtMsg').val(Msg);
+
+            $('#txtJustPrice').val(JustPrice);
+
+            $('.sizeName1').html(sizeName1);
+            $('.sizeName2').html(sizeName2);
+            $('.sizeName3').html(sizeName3);
+            $('.sizeName4').html(sizeName4);
+            $('.sizeName5').html(sizeName5);
+            $('.sizeName6').html(sizeName6);
+            $('.sizeName7').html(sizeName7);
+            $('.sizeName8').html(sizeName8);
+            $('.sizeName9').html(sizeName9);
+            $('.sizeName10').html(sizeName10);
+            $('.sizeName11').html(sizeName11);
+            $('.sizeName12').html(sizeName12);
+            $('.sizeName13').html(sizeName13);
+            $('.sizeName14').html(sizeName14);
+            $('.sizeName15').html(sizeName15);
+            $('.sizeName16').html(sizeName16);
+            $('.sizeName17').html(sizeName17);
+
+            $('.StylePic').html('<img src="/Handler/DisplayImage.ashx?code=' + StyleNox + '" width="100%" />');
+            
+            var loginID = '@loginID';
+            if (loginID == "ZX-999") {
+                $('.btnPicEdit').show();
+            }
+        }
+    }
+
+    function OpenStyle(date, times, mainbuyer, sample, line) {
+        var product = $('#txtProduct').val();
+        window.open("/Mobile/Common/StyleSelect.cshtml?date=" + date + "&times=" + times + "&mainbuyer=" + mainbuyer + "&sample=" + sample + "&product=" + product, "StyleSelect", "width=640,height=700,scrollbars=yes,resizable=yes");
+    }
+
+    function CalQty() {
+        var jego1 = setCommaHis_Del($('#txtJego1').val());
+        var jego2 = setCommaHis_Del($('#txtJego2').val());
+        var jego3 = setCommaHis_Del($('#txtJego3').val());
+        var jego4 = setCommaHis_Del($('#txtJego4').val());
+        var jego5 = setCommaHis_Del($('#txtJego5').val());
+        var jego6 = setCommaHis_Del($('#txtJego6').val());
+        var jego7 = setCommaHis_Del($('#txtJego7').val());
+        var jego8 = setCommaHis_Del($('#txtJego8').val());
+        var jego9 = setCommaHis_Del($('#txtJego9').val());
+        var jego10 = setCommaHis_Del($('#txtJego10').val());
+        var jego11 = setCommaHis_Del($('#txtJego11').val());
+        var jego12 = setCommaHis_Del($('#txtJego12').val());
+        var jego13 = setCommaHis_Del($('#txtJego13').val());
+        var jego14 = setCommaHis_Del($('#txtJego14').val());
+        var jego15 = setCommaHis_Del($('#txtJego15').val());
+        var jego16 = setCommaHis_Del($('#txtJego16').val());
+        var jego17 = setCommaHis_Del($('#txtJego17').val());
+
+        jego1 = GetEmptyNumber(jego1);
+        jego2 = GetEmptyNumber(jego2);
+        jego3 = GetEmptyNumber(jego3);
+        jego4 = GetEmptyNumber(jego4);
+        jego5 = GetEmptyNumber(jego5);
+        jego6 = GetEmptyNumber(jego6);
+        jego7 = GetEmptyNumber(jego7);
+        jego8 = GetEmptyNumber(jego8);
+        jego9 = GetEmptyNumber(jego9);
+        jego10 = GetEmptyNumber(jego10);
+        jego11 = GetEmptyNumber(jego11);
+        jego12 = GetEmptyNumber(jego12);
+        jego13 = GetEmptyNumber(jego13);
+        jego14 = GetEmptyNumber(jego14);
+        jego15 = GetEmptyNumber(jego15);
+        jego16 = GetEmptyNumber(jego16);
+        jego17 = GetEmptyNumber(jego17);
+
+        var order1 = setCommaHis_Del($('#txtOrder1').val());
+        var order2 = setCommaHis_Del($('#txtOrder2').val());
+        var order3 = setCommaHis_Del($('#txtOrder3').val());
+        var order4 = setCommaHis_Del($('#txtOrder4').val());
+        var order5 = setCommaHis_Del($('#txtOrder5').val());
+        var order6 = setCommaHis_Del($('#txtOrder6').val());
+        var order7 = setCommaHis_Del($('#txtOrder7').val());
+        var order8 = setCommaHis_Del($('#txtOrder8').val());
+        var order9 = setCommaHis_Del($('#txtOrder9').val());
+        var order10 = setCommaHis_Del($('#txtOrder10').val());
+        var order11 = setCommaHis_Del($('#txtOrder11').val());
+        var order12 = setCommaHis_Del($('#txtOrder12').val());
+        var order13 = setCommaHis_Del($('#txtOrder13').val());
+        var order14 = setCommaHis_Del($('#txtOrder14').val());
+        var order15 = setCommaHis_Del($('#txtOrder15').val());
+        var order16 = setCommaHis_Del($('#txtOrder16').val());
+        var order17 = setCommaHis_Del($('#txtOrder17').val());
+
+        order1 = GetEmptyNumber(order1);
+        order2 = GetEmptyNumber(order2);
+        order3 = GetEmptyNumber(order3);
+        order4 = GetEmptyNumber(order4);
+        order5 = GetEmptyNumber(order5);
+        order6 = GetEmptyNumber(order6);
+        order7 = GetEmptyNumber(order7);
+        order8 = GetEmptyNumber(order8);
+        order9 = GetEmptyNumber(order9);
+        order10 = GetEmptyNumber(order10);
+        order11 = GetEmptyNumber(order11);
+        order12 = GetEmptyNumber(order12);
+        order13 = GetEmptyNumber(order13);
+        order14 = GetEmptyNumber(order14);
+        order15 = GetEmptyNumber(order15);
+        order16 = GetEmptyNumber(order16);
+        order17 = GetEmptyNumber(order17);
+
+        // 재고 체크
+        if (jego1 < order1) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder1', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder1').val('0');
+            $('#txtOrder1').focus();
+            order1 = $('#txtOrder1').val();
+        }
+        if (jego2 < order2) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder2', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder2').val('0');
+            $('#txtOrder2').focus();
+            order2 = $('#txtOrder2').val();
+        }
+        if (jego3 < order3) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder3', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder3').val('0');
+            $('#txtOrder3').focus();
+            order3 = $('#txtOrder3').val();
+        }
+        if (jego4 < order4) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder4', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder4').val('0');
+            $('#txtOrder4').focus();
+            order4 = $('#txtOrder4').val();
+        }
+        if (jego5 < order5) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder5', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder5').val('0');
+            $('#txtOrder5').focus();
+            order5 = $('#txtOrder5').val();
+        }
+        if (jego6 < order6) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder6', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder6').val('0');
+            $('#txtOrder6').focus();
+            order6 = $('#txtOrder6').val();
+        }
+        if (jego7 < order7) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder7', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder7').val('0');
+            $('#txtOrder7').focus();
+            order7 = $('#txtOrder7').val();
+        }
+        if (jego8 < order8) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder8', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder8').val('0');
+            $('#txtOrder8').focus();
+            order8 = $('#txtOrder8').val();
+        }
+        if (jego9 < order9) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder9', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder9').val('0');
+            $('#txtOrder9').focus();
+            order9 = $('#txtOrder9').val();
+        }
+        if (jego10 < order10) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder10', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder10').val('0');
+            $('#txtOrder10>').focus();
+            order10 = $('#txtOrder10').val();
+        }
+        if (jego11 < order11) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder11', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder11').val('0');
+            $('#txtOrder11').focus();
+            order11 = $('#txtOrder11').val();
+        }
+        if (jego12 < order12) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder12', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder12').val('0');
+            $('#txtOrder12').focus();
+            order12 = $('#txtOrder12').val();
+        }
+        if (jego13 < order13) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder13', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder13').val('0');
+            $('#txtOrder13').focus();
+            order3 = $('#txtOrder13').val();
+        }
+        if (jego14 < order14) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder14', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder14').val('0');
+            $('#txtOrder14').focus();
+            order14 = $('#txtOrder14').val();
+        }
+        if (jego15 < order15) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder15', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder15').val('0');
+            $('#txtOrder15').focus();
+            order15 = $('#txtOrder15').val();
+        }
+        if (jego16 < order16) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder16', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder16').val('0');
+            $('#txtOrder16').focus();
+            order16 = $('#txtOrder16').val();
+        }
+        if (jego17 < order17) {
+            //alert('주문량이 재고 수량보다 많습니다.');
+            showMessageScroll('txtOrder17', '주문량이 재고 수량보다 많습니다.');
+            $('#txtOrder17').val('0');
+            $('#txtOrder17').focus();
+            order17 = $('#txtOrder17').val();
+        }
+
+        var orderT = eval(order1) + eval(order2) + eval(order3) + eval(order4) + eval(order5) + eval(order6) + eval(order7) + eval(order8) + eval(order9) + eval(order10) + eval(order11) + eval(order12) + eval(order13) + eval(order14) + eval(order15) + eval(order16) + eval(order17);
+
+        orderT = GetEmptyNumber(orderT);
+
+        $('#txtOrderTotal').val(setCommaHisVal(orderT));
+    }
+
+    function CheckProduct(obj) {
+        if ($('#txtProduct').val() == "") {
+            showMessageScroll('txtProduct', '발주스타일을 선택해 주세요.');
+
+            if (navigator.appName == "Opera") {
+                e.preventDefault();
+                return false;
+            }
+
+            if (window.event)
+                window.event.returnValue = false;
+            else {
+                e.preventDefault();
+            }
+        }
+    }
+
+</script>
+
+<div id="pageView" data-role="page" data-theme="c" class="mobile-main">
+    
+    <div data-role="header" data-position="fixed" data-theme="b">
+        @RenderPage("~/Mobile/Include/HeadNav.cshtml")
+    </div>
+    <div data-role="content">
+
+        <section id="main" class="wrapper style2">
+
+            <table class="reportTable">
+                <tr>
+                    <th class="reportTh" style="min-width: 60px;">발주의뢰일자</th>
+                    <td class="reportTd">@date @times</td>
+                </tr>
+                <tr>
+                    <th class="reportTh">발주업체</th>
+                    <td class="reportTd">@bjhd_mainBuyerNm</td>
+                </tr>
+                <tr>
+                    <th class="reportTh">기타사항</th>
+                    <td class="reportTd">
+                        <input type="text" id="txtEtc" name="txtEtc" data-mini="true" value="@bjhd_remark" />
+                    </td>
+                </tr>
+            </table>
+            
+            <div class="StylePic"></div>
+
+            <div class="btnPicEdit">
+                <a href="#popupPicApp" id="btnPicApp" class="btn-mobile btn-blue" data-rel="popup" data-position-to="window" data-role="button" data-mini="true">사진수정</a>
+                <a href="#popupPic" id="btnPic" class="btn-mobile btn-blue" data-rel="popup" data-position-to="window" data-role="button" data-mini="true">사진수정</a>
+            </div>
+
+            <table class="reportTable nomargin" style="margin-top:10px">
+                @{
+                    var disabledValue = (mode == "mod") ? "disabled='true'" : "";
+                }
+                <tr>
+                    <th class="reportTh" style="width: 120px;">
+                        @if (mode == "mod")
+                        {
+                            <text>발주스타일</text>
+                        }
+                        else
+                        {
+                            <input type="button" id="btnStyle" name="btnStyle" data-role="button" data-mini="true" class="btn-mobile btn-info" value="발주스타일" onclick="OpenStyle('@date','@times','@mainbuyer','@sample','@line');" />
+                        }
+                    </th>
+                    <td class="reportTd">
+                        <input type="text" id="txtProduct" name="txtProduct" data-mini="true" value="@blju_stylenox" class="inputProduct" @disabledValue />
+                    </td>
+                    @if (mode == "mod")
+                    {
+                    }
+                    else
+                    {
+                        <th class="reportTh" style="width: 70px;">
+                            <input type="button" id="btnStyleSearch" name="btnStyleSearch" data-role="button" data-mini="true" class="btn-mobile btn-info" value="검색" />
+                        </th>
+                    }
+                </tr>
+                <tr>
+                    <td class="reportTd"
+                        @if (mode == "mod") { <text> colspan="2" </text>  } else { <text> colspan="3" </text>  }>
+                        <div style="height:35px;">
+                            <input type="text" id="txtProductDetail" name="txtProductDetail" value="@blju_style_name" data-mini="true" @disabledValue />
+                        </div>
+                        <div style="height:35px;">
+                            <input type="text" id="txtMsg" name="txtMsg" data-mini="true" value="@blju_style_msg" @disabledValue />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table class="reportTable nomargin">
+                <tr>
+                    <th class="reportTh">낱장단가</th>
+                    <td class="reportTd">
+                        <input type="text" id="txtJustPrice" name="txtJustPrice" data-mini="true" class="align-right" value="@StCommon.NumberFormat(StCommon.ToDouble(blju_justprice, 0))" disabled />
+                    </td>
+                </tr>
+            </table>
+            <table class="reportTable nomargin">
+                <tr>
+                    <th class="reportTh">사이즈명</th>
+                    <th class="reportTh">본사재고</th>
+                    <th class="reportTh">주문량</th>
+                </tr>
+                @for (int k = 1; k <= (maxSize + 1); k++)
+                {
+                    var sizeName = (k == (maxSize + 1)) ? "Total" : SizeArray[k];
+                    var num = (k == (maxSize + 1)) ? "Total" : k.ToString();
+                    var disabledValue2 = (k == (maxSize + 1)) ? "disabled='true'" : "";
+                    <tr>
+                        <td class="reportTd"><div class="@String.Concat("sizeName", num)">@sizeName</div></td>
+                        <td class="reportTd">
+                            <input type="text" id="@String.Concat("txtJego", num)" name="@String.Concat("txtJego", num)" data-mini="true" class="align-right" value="@JegoArray[k]" disabled />
+                        </td>
+                        <td class="reportTd">
+                            <input type="text" id="@String.Concat("txtOrder", num)" name="@String.Concat("txtOrder", num)" data-mini="true" class="align-right" value="@QtyArray[k]" onkeydown="return fnNumberOnly(event);" onkeypress="return CheckProduct(event);" OnKeyUp="CalQty(); setCommaHis(this);" OnFocus="SetInputSelect(this);" @disabledValue2 />
+                        </td>
+                    </tr>
+                }
+            </table>
+
+            <table class="reportTable nomargin">
+                <tr>
+                    <th class="reportTh">공급가액</th>
+                    <td class="reportTd" style="text-align:right; padding-right:10px;">@StCommon.NumberFormat(StCommon.ToDouble(bjhd_netAmount, 0))</td>
+                </tr>
+                <tr>
+                    <th class="reportTh">부가세</th>
+                    <td class="reportTd" style="text-align:right; padding-right:10px;">@StCommon.NumberFormat(StCommon.ToDouble(bjhd_vatAmount, 0))</td>
+                </tr>
+                <tr>
+                    <th class="reportTh">합계금액</th>
+                    <td class="reportTd" style="text-align:right; padding-right:10px;">@StCommon.NumberFormat(StCommon.ToDouble(bjhd_hapAmount, 0))</td>
+                </tr>
+            </table>
+
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <a href="#" class="saveButton" data-role="button" data-theme="b">저장</a>
+                </div>
+                <div class="ui-block-b">
+                    <a href="OrderDetail.cshtml?date=@date&times=@times&mainbuyer=@mainbuyer&sample=@sample" data-ajax="false" class="listButton" data-role="button" data-icon="bars" data-theme="b">리스트</a>
+                </div>
+            </div>
+
+        </section>
+
+        <div id="popupPic" data-role="popup" class="ui-corner-all">
+            <form id="frmPicture" name="frmPicture" method="post" enctype="multipart/form-data" action="" data-ajax="false">
+                <div style="padding:10px 20px;">
+                    <input type="hidden" id="hidPicId" name="hidPicId" />
+                    <input type="hidden" id="hidPageUrl" name="hidPageUrl" />
+                    <label for="filePic">사진선택</label>
+                    <input type="file" data-clear-btn="true" name="filePic" id="filePic" value="" />
+                    <fieldset class="ui-grid-a">
+                        <div class="ui-block-a" style="text-align:center;"><input type="button" data-role="button" id="btnClose" name="btnClose" value="취소" data-inline="true" data-icon="back" /></div>
+                        <div class="ui-block-b" style="text-align:center;"><input type="button" data-role="button" id="btnModifyPic" name="btnModifyPic" value="수정" data-inline="true" data-icon="check" /></div>
+                    </fieldset>
+
+                </div>
+            </form>
+        </div>
+
+        <div id="popupPicApp" data-role="popup">
+            <ul id="popupPicAppDetail" data-role="listview" data-inset="true" style="min-width:210px;">
+                <li data-role="divider">사진수정</li>
+                <li><a href="#" id="btnCamera" name="btnCamera" onclick="getPhotoCamera($('#hidPicId').val());">카메라</a></li>
+                <li><a href="#" id="btnAlbum" name="btnAlbum" onclick="getPhotoAlbum(Camera.PictureSourceType.SAVEDPHOTOALBUM,$('#hidPicId').val());">앨범</a></li>
+                <!--<li><a href="#" id="btnAlbum" name="btnAlbum" onclick="getPhotoAlbum(Camera.PictureSourceType.PHOTOLIBRARY,$('#hidPicId').val());">앨범</a></li>-->
+                <li><a href="#popupPic" data-rel="popup" data-position-to="window" id="btnFile" onclick="$.mobile.changePage('#popupPic');">파일</a></li>
+                <li data-role="divider" data-icon="back"><a href="#" onclick="$('#popupPicApp').popup('close');">취소</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <div data-role="footer" data-theme="b">
+        @RenderPage("~/Mobile/Include/FootNav.cshtml")
+    </div>
+</div>
+
+<form id="frmAction" name="frmAction" method="post" data-ajax="false"></form>
+    

@@ -1,0 +1,110 @@
+﻿@using FirstOrder.Data;
+@using FirstOrder.Util;
+
+@{ 
+    if (!StCommon.IsMobileAgent(Request.UserAgent))
+    {
+        //Response.Redirect("~/Default.aspx", true);
+    }
+
+    if (!MemberData.IsLogin())
+    {
+        Response.Redirect("/Mobile/Login/Login.aspx", true);
+    }
+    
+    string preVal = "";
+
+    try
+    {
+        preVal = HttpContext.Current.Session["PreVal"].ToString();
+    }
+    catch
+    {
+        preVal = "tbl";
+    }
+}
+
+<style>
+#header {
+    background: none;
+}
+@if (preVal == "tbl")
+{
+<text>
+    .ui-header {
+        background-color: #820e00;
+    }
+    #titleBar .toggle:before {
+        background-color: #cc6666;
+    }
+    .bg-info {
+        background-color: #cc6666;
+    }
+</text>
+}
+else
+{
+<text>
+    .ui-header {
+        background-color: #00257b;
+    }
+    #titleBar .toggle:before {
+        background-color: #3F51B5;
+    }
+    .bg-info {
+        background-color: #3F51B5;
+    }
+</text>
+}
+</style>
+
+<section id="header" class="wrapper">
+
+    <!-- Logo -->
+    <div id="logo">
+        <h1><a href="index.html">@PageData["title"]</a></h1>
+    </div>
+
+    <div class="rightNav">
+        <nav>
+            <a href="#menu" class="icon-circle2 bg-info">
+                <i class="fas fa-user text-white"></i>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Nav -->
+    <nav id="nav">
+        <ul>
+            <li class="current"><a href="/Mobile">Home</a></li>
+            <li><a href="~/Mobile/Page/Notice.cshtml">공지사항</a></li>
+            <li>
+                <a href="~/Mobile/Page/OrderDetail.cshtml?mode=add">발주의뢰</a>
+                <ul>
+                    <li><a href="~/Mobile/Page/OrderDetail.cshtml?mode=add">발주의뢰</a></li>
+                    <li><a href="~/Mobile/Page/OrderList.cshtml">발주의뢰 현황조회</a></li>
+                </ul>
+            </li>
+            @if (MemberData.GetLoginSID("DevID") == "ZQ" || MemberData.GetLoginSID("DevID") == "ZQAS")
+            {
+            <li>
+                <a href="~/Mobile/Page/AsRequest.cshtml">As접수</a>
+                <ul>
+                    <li><a href="~/Mobile/Page/AsRequest.cshtml">As접수</a></li>
+                    <li><a href="~/Mobile/Page/AsRequestList.cshtml">As접수 현황조회</a></li>
+                </ul>
+            </li>
+            }
+            <li><a href="~/Mobile/Page/JegoList.cshtml">대리점재고조회</a></li>
+            <li><a href="~/Mobile/Page/MarkJegoList.cshtml">본사재고조회</a></li>
+        </ul>
+    </nav>
+
+</section>
+
+<div id="menu">
+    <ul class="links">
+        <li><a href="~/Mobile/Login/PwdChange.cshtml">암호변경</a></li>
+        <li><a href="~/Mobile/Login/Logout.cshtml">로그아웃</a></li>
+    </ul>
+</div>

@@ -1,0 +1,55 @@
+﻿@using System.Data;
+@using FirstOrder.Util;
+@{ 
+    StDataCommon stData = new StDataCommon();
+
+    string preVal = "";
+
+    try
+    {
+        preVal = HttpContext.Current.Session["PreVal"].ToString();
+    }
+    catch
+    {
+        preVal = "tbl";
+    }
+
+    string memo = "";
+    string qry = " select top 1 * from " + preVal + "NOTICE where convert(nvarchar(10),getDate(),120) between noticeday and noticeday2 ORDER BY NoticeDay DESC, u DESC ";
+    DataSet ds = stData.GetDataSet(qry);
+    if (ds.Tables[0].Rows.Count > 0)
+    {
+        memo = StCommon.RemoveHtmlTags(ds.Tables[0].Rows[0]["memo"].ToString());
+    }
+}
+
+<script type="text/javascript">
+    function MoveNotice() {
+        $('#frmNotice').attr('action', '/Mobile/Page/Notice.cshtml').submit();
+    }
+</script>
+
+<div class="systemNotice" style="display: inline-block;">
+    <div style="position:absolute;top:75px;left:0;width:100%;background:#05333a;color:#fff;overflow:hidden;border-bottom:1px solid #ccc;height:41px" onclick="MoveNotice();">
+        <div id="moveText" style="font-family: 굴림; position: relative; left: 100px; white-space: nowrap; padding: 10px;">
+            @memo
+        </div>
+        <script>
+            try {
+                var moveText = document.getElementById('moveText');
+
+                setInterval(function () {
+                    var px = Number(moveText.style.left.replace('px', ''));
+
+                    if (px < -(moveText.scrollWidth))
+                        moveText.style.left = document.body.offsetWidth + 'px';
+                    else
+                        moveText.style.left = (px - 1) + 'px';
+                }, 20);
+            }
+            catch (e) { }
+</script>
+    </div>
+</div>
+
+<form id="frmNotice" name="frmNotice" method="post" data-ajax="false"></form>

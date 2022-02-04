@@ -1,0 +1,1390 @@
+﻿@using System.Collections;
+@using System.Configuration;
+@using System.Data;
+@using System.Text;
+@using System.Xml;
+@using FirstOrder.Util;
+@using FirstOrder.Data;
+@{
+    var headerTitle = "AS접수 조회";
+
+    Page.Title = headerTitle;
+    PageData["title"] = headerTitle;
+
+    Layout = "~/Mobile/LayOut/_Main.cshtml";
+
+    StDataCommon stData = new StDataCommon();
+
+    string preVal = "";
+
+    try
+    {
+        preVal = HttpContext.Current.Session["PreVal"].ToString();
+    }
+    catch
+    {
+        preVal = "tbl";
+    }
+
+    var sizeNum = MemberData.GetLoginSID("tblSizeNum");
+
+    var ioTable = preVal + "BNPMX";
+
+    StCommon st = new StCommon(preVal);
+    st.Kind = "1";
+    st.GetSizeInfo(preVal);
+
+    string[] SizeArray = { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+    SizeArray[1] = String.Concat(st.SizeName1, "(", st.SizeNum1, ")");
+    SizeArray[2] = String.Concat(st.SizeName2, "(", st.SizeNum2, ")");
+    SizeArray[3] = String.Concat(st.SizeName3, "(", st.SizeNum3, ")");
+    SizeArray[4] = String.Concat(st.SizeName4, "(", st.SizeNum4, ")");
+    SizeArray[5] = String.Concat(st.SizeName5, "(", st.SizeNum5, ")");
+    SizeArray[6] = String.Concat(st.SizeName6, "(", st.SizeNum6, ")");
+    SizeArray[7] = String.Concat(st.SizeName7, "(", st.SizeNum7, ")");
+    SizeArray[8] = String.Concat(st.SizeName8, "(", st.SizeNum8, ")");
+    SizeArray[9] = String.Concat(st.SizeName9, "(", st.SizeNum9, ")");
+    SizeArray[10] = String.Concat(st.SizeName10, "(", st.SizeNum10, ")");
+    SizeArray[11] = String.Concat(st.SizeName11, "(", st.SizeNum11, ")");
+    SizeArray[12] = String.Concat(st.SizeName12, "(", st.SizeNum12, ")");
+    SizeArray[13] = st.SizeName13;
+    SizeArray[14] = st.SizeName14;
+    SizeArray[15] = st.SizeName15;
+    SizeArray[16] = st.SizeName16;
+    SizeArray[17] = st.SizeName17;
+
+    var hideSize11 = "";
+    var hideSize12 = "";
+    var hideSize13 = "";
+    var hideSize14 = "";
+    var hideSize15 = "";
+    var hideSize16 = "";
+    var hideSize17 = "";
+    if (preVal == "tbl")
+    {
+        if (sizeNum == "10")
+        {
+            hideSize11 = "style=\"display:none\"";
+            hideSize12 = "style=\"display:none\"";
+        }
+        hideSize13 = "style=\"display:none\"";
+        hideSize14 = "style=\"display:none\"";
+        hideSize15 = "style=\"display:none\"";
+        hideSize16 = "style=\"display:none\"";
+        hideSize17 = "style=\"display:none\"";
+    }
+
+    var date = "";
+    var times = "";
+    var mainbuyer = "";
+    var sample = "";
+    var product = "";
+    var mode = "";
+    try
+    {
+        date = Request["date"].ToString().Trim();
+    }
+    catch { }
+    try
+    {
+        times = Request["times"].ToString().Trim();
+        mainbuyer = Request["mainbuyer"].ToString().Trim();
+        sample = Request["sample"].ToString().Trim();
+    }
+    catch { }
+
+    var hidBljuDate = StCommon.ReplaceSQ(Request.Form["hidBljuDate"]);
+    var hidBljuTimes = StCommon.ReplaceSQ(Request.Form["hidBljuTimes"]);
+    var hidBljuMainBuyer = StCommon.ReplaceSQ(Request.Form["hidBljuMainBuyer"]);
+    var hidBljuSample = StCommon.ReplaceSQ(Request.Form["hidBljuSample"]);
+
+    try
+    {
+        product = Request["product"].ToString().Trim().ToUpper();
+    }
+    catch { }
+    try
+    {
+        mode = Request["mode"].ToString().Trim();
+    }
+    catch { }
+
+    var fixVal = "";
+    if (mode == "view")
+    {
+        fixVal = "fixed-side";
+    }
+
+    var addView = "";
+    var modifyView = "";
+    var deleteView = "";
+
+    string kurename = MemberData.GetLoginSID("KureName");
+    string kurecode = MemberData.GetLoginSID("KureCode");
+    mainbuyer = (mainbuyer == "") ? kurecode : mainbuyer;
+    sample = (sample == "") ? "0" : sample;
+
+    if (mode == "add")
+    {
+        headerTitle = "AS접수";
+    }
+
+    string qry = "";
+    DataSet ds = null;
+    string whereQry = "";
+
+    whereQry = "";
+    whereQry = StCommon.MakeSearchQry("BnpmH_date", date, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("BnpmH_times", times, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("BnpmH_mainBuyer", mainbuyer, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("BnpmH_sample", sample, "S", whereQry);
+
+    qry = " select (select top 1 BnpmD_StyleNox from " + preVal + "BNPMD where BnpmD_Date=a.BnpmH_Date and BnpmD_Times=a.BnpmH_Times and BnpmD_MainBuyer=a.BnpmH_MainBuyer and BnpmD_Sample=a.BnpmH_Sample) as BnpmH_StyleNox,* from " + preVal + "BNPMH a where u>0 " + whereQry + " ";
+
+    ds = stData.GetDataSet(qry);
+
+    var BnpmH_Bonsa_Check = "";
+
+    var BnpmH_date = date;
+    var BnpmH_times = times;
+    var BnpmH_mainBuyer = "";
+    var BnpmH_sample = "";
+    var BnpmH_MainBuyerNm = kurename;
+    var BnpmH_CreateDate = "";
+    var BnpmH_ModifyDate = "";
+    var BnpmH_StyleNox = product;
+
+    var BnpmH_etc = "";
+
+    var BnpmH_blju_date = "";
+    var BnpmH_blju_times = "";
+    var BnpmH_blju_mainBuyer = "";
+    var BnpmH_blju_sample = "";
+
+    var BnpmH_tbucmarktop = "";
+
+    if (ds.Tables[0].Rows.Count > 0)
+    {
+        DataRow dr = ds.Tables[0].Rows[0];
+
+        BnpmH_date = dr["BnpmH_date"].ToString().Trim();
+        BnpmH_times = dr["BnpmH_times"].ToString().Trim();
+        BnpmH_mainBuyer = dr["BnpmH_mainBuyer"].ToString().Trim();
+        BnpmH_sample = dr["BnpmH_sample"].ToString().Trim();
+
+        BnpmH_StyleNox = dr["BnpmH_StyleNox"].ToString().Trim();
+        BnpmH_StyleNox = (BnpmH_StyleNox != "") ? BnpmH_StyleNox : product;
+
+        BnpmH_Bonsa_Check = dr["BnpmH_Bonsa_Check"].ToString();
+
+        if (BnpmH_Bonsa_Check == "0" || BnpmH_Bonsa_Check == "1")
+        {
+            if (dr["BnpmH_CreateSawon"].ToString() == MemberData.GetLoginSID("LoginID")) // 로그인한 사용자가 발주한 내역만 수정/삭제 가능
+            {
+                addView = "1";
+                modifyView = "1";
+                deleteView = "1";
+            }
+        }
+
+        BnpmH_CreateDate = dr["BnpmH_CreateDate"].ToString();
+        BnpmH_ModifyDate = dr["BnpmH_ModifyDate"].ToString();
+
+        BnpmH_etc = dr["BnpmH_Remark"].ToString();
+
+        BnpmH_blju_date = dr["BnpmH_Bjhd_Date"].ToString().Trim();
+        BnpmH_blju_times = dr["BnpmH_Bjhd_Times"].ToString().Trim();
+        BnpmH_blju_mainBuyer = dr["BnpmH_Bjhd_MainBuyer"].ToString().Trim();
+        BnpmH_blju_sample = dr["BnpmH_Bjhd_Sample"].ToString().Trim();
+
+        BnpmH_tbucmarktop = dr["BnpmH_TbucMarkTop"].ToString().Trim();
+    }
+    else
+    {
+        addView = "1";
+    }
+
+    whereQry = "";
+
+    if (preVal == "tbl")
+    {
+        whereQry = " and substring(Common_Code,1,1) = 'M' ";
+    }
+    else if (preVal == "abl")
+    {
+        whereQry = " and substring(Common_Code,1,1) = 'T' ";
+    }
+
+    qry = " select (case when Common_Remark1='대분류' then '' else Common_Code end) as code, (case when Common_Remark1='대분류' then '--' + Common_CodeName + '--' else Common_Remark1 end) as name from gblCOMMON where Common_Key = 'T0319' and Common_Code not in('TA0') " + whereQry + " order by Common_Code ";
+    ds = stData.GetDataSet(qry);
+    StringBuilder sb = new StringBuilder();
+    sb.Append(" <option value=\"\">==사유 선택==</option>");
+    for (int k = 0; k < ds.Tables[0].Rows.Count; k++)
+    {
+        DataRow dr = ds.Tables[0].Rows[k];
+        sb.Append(" <option value=\"" + dr["code"] + "\">" + dr["name"] + "</option>");
+    }
+    var bnpmSelect = Html.Raw(sb.ToString());
+
+    // 발주내역
+    sb = new StringBuilder();
+    sb.AppendLine(" select * ");
+    sb.AppendLine(" from " + preVal + "BLJU a where blju_Date = '" + BnpmH_blju_date + "' and blju_Times = '" + BnpmH_blju_times + "' and blju_MainBuyer = '" + BnpmH_blju_mainBuyer + "' and blju_Sample = '" + BnpmH_blju_sample + "' and blju_styleNox = '" + BnpmH_StyleNox + "' ");
+    sb.AppendLine(" order by blju_date desc, blju_times desc ");
+    DataSet dsD = stData.GetDataSet(sb.ToString());
+
+    double qtyBlju01 = 0;
+    double qtyBlju02 = 0;
+    double qtyBlju03 = 0;
+    double qtyBlju04 = 0;
+    double qtyBlju05 = 0;
+    double qtyBlju06 = 0;
+    double qtyBlju07 = 0;
+    double qtyBlju08 = 0;
+    double qtyBlju09 = 0;
+    double qtyBlju10 = 0;
+    double qtyBlju11 = 0;
+    double qtyBlju12 = 0;
+    double qtyBlju13 = 0;
+    double qtyBlju14 = 0;
+    double qtyBlju15 = 0;
+    double qtyBlju16 = 0;
+    double qtyBlju17 = 0;
+    double qtyBljuTotal = 0;
+    if (dsD.Tables[0].Rows.Count > 0)
+    {
+        DataRow dr2 = dsD.Tables[0].Rows[0];
+        qtyBlju01 = StCommon.ToDouble(dr2["Blju_Qty01"].ToString(), 0);
+        qtyBlju02 = StCommon.ToDouble(dr2["Blju_Qty02"].ToString(), 0);
+        qtyBlju03 = StCommon.ToDouble(dr2["Blju_Qty03"].ToString(), 0);
+        qtyBlju04 = StCommon.ToDouble(dr2["Blju_Qty04"].ToString(), 0);
+        qtyBlju05 = StCommon.ToDouble(dr2["Blju_Qty05"].ToString(), 0);
+        qtyBlju06 = StCommon.ToDouble(dr2["Blju_Qty06"].ToString(), 0);
+        qtyBlju07 = StCommon.ToDouble(dr2["Blju_Qty07"].ToString(), 0);
+        qtyBlju08 = StCommon.ToDouble(dr2["Blju_Qty08"].ToString(), 0);
+        qtyBlju09 = StCommon.ToDouble(dr2["Blju_Qty09"].ToString(), 0);
+        qtyBlju10 = StCommon.ToDouble(dr2["Blju_Qty10"].ToString(), 0);
+        qtyBlju11 = StCommon.ToDouble(dr2["Blju_Qty11"].ToString(), 0);
+        qtyBlju12 = StCommon.ToDouble(dr2["Blju_Qty12"].ToString(), 0);
+        qtyBlju13 = StCommon.ToDouble(dr2["Blju_Qty13"].ToString(), 0);
+        qtyBlju14 = StCommon.ToDouble(dr2["Blju_Qty14"].ToString(), 0);
+        qtyBlju15 = StCommon.ToDouble(dr2["Blju_Qty15"].ToString(), 0);
+        qtyBlju16 = StCommon.ToDouble(dr2["Blju_Qty16"].ToString(), 0);
+        qtyBlju17 = StCommon.ToDouble(dr2["Blju_Qty17"].ToString(), 0);
+        qtyBljuTotal = StCommon.ToDouble(dr2["Blju_QtyTotal"].ToString(), 0);
+    }
+
+    var enabled1 = (qtyBlju01 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled2 = (qtyBlju02 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled3 = (qtyBlju03 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled4 = (qtyBlju04 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled5 = (qtyBlju05 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled6 = (qtyBlju06 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled7 = (qtyBlju07 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled8 = (qtyBlju08 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled9 = (qtyBlju09 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled10 = (qtyBlju10 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled11 = (qtyBlju11 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled12 = (qtyBlju12 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled13 = (qtyBlju13 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled14 = (qtyBlju14 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled15 = (qtyBlju15 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled16 = (qtyBlju16 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+    var enabled17 = (qtyBlju17 == 0 && BnpmH_tbucmarktop != "T") ? "disabled=\"disabled\"" : "";
+
+    // 총계
+    string whereQry2 = "";
+    whereQry2 = StCommon.MakeSearchQry("BnpmD_date", date, "S", whereQry2);
+    whereQry2 = StCommon.MakeSearchQry("BnpmD_times", times, "S", whereQry2);
+    whereQry2 = StCommon.MakeSearchQry("BnpmD_mainBuyer", mainbuyer, "S", whereQry2);
+    whereQry2 = StCommon.MakeSearchQry("BnpmD_sample", sample, "S", whereQry2);
+
+    qry = " SELECT isnull((select isnull(Dnga_SubName,'') + ', ' + isnull(Dnga_SpecColor,'') from " + preVal + "DNGA where Dnga_StyleNox=a.BnpmD_StyleNox),'') as BnpmD_StyleName,* FROM " + preVal + "BNPMD a where 1=1 " + whereQry2 + " ORDER BY BnpmD_StyleNoxLine asc ";
+    DataSet dsList = stData.GetDataSet(qry);
+
+    double qty01Total = 0;
+    double qty02Total = 0;
+    double qty03Total = 0;
+    double qty04Total = 0;
+    double qty05Total = 0;
+    double qty06Total = 0;
+    double qty07Total = 0;
+    double qty08Total = 0;
+    double qty09Total = 0;
+    double qty10Total = 0;
+    double qty11Total = 0;
+    double qty12Total = 0;
+    double qty13Total = 0;
+    double qty14Total = 0;
+    double qty15Total = 0;
+    double qty16Total = 0;
+    double qty17Total = 0;
+    double qtyAllTotal = 0;
+    for (int i = 0; i < dsList.Tables[0].Rows.Count; i++)
+    {
+        DataRow dr2 = dsList.Tables[0].Rows[i];
+        qty01Total += StCommon.ToDouble(dr2["BnpmD_Qty01"].ToString(), 0);
+        qty02Total += StCommon.ToDouble(dr2["BnpmD_Qty02"].ToString(), 0);
+        qty03Total += StCommon.ToDouble(dr2["BnpmD_Qty03"].ToString(), 0);
+        qty04Total += StCommon.ToDouble(dr2["BnpmD_Qty04"].ToString(), 0);
+        qty05Total += StCommon.ToDouble(dr2["BnpmD_Qty05"].ToString(), 0);
+        qty06Total += StCommon.ToDouble(dr2["BnpmD_Qty06"].ToString(), 0);
+        qty07Total += StCommon.ToDouble(dr2["BnpmD_Qty07"].ToString(), 0);
+        qty08Total += StCommon.ToDouble(dr2["BnpmD_Qty08"].ToString(), 0);
+        qty09Total += StCommon.ToDouble(dr2["BnpmD_Qty09"].ToString(), 0);
+        qty10Total += StCommon.ToDouble(dr2["BnpmD_Qty10"].ToString(), 0);
+        qty11Total += StCommon.ToDouble(dr2["BnpmD_Qty11"].ToString(), 0);
+        qty12Total += StCommon.ToDouble(dr2["BnpmD_Qty12"].ToString(), 0);
+        qty13Total += StCommon.ToDouble(dr2["BnpmD_Qty13"].ToString(), 0);
+        qty14Total += StCommon.ToDouble(dr2["BnpmD_Qty14"].ToString(), 0);
+        qty15Total += StCommon.ToDouble(dr2["BnpmD_Qty15"].ToString(), 0);
+        qty16Total += StCommon.ToDouble(dr2["BnpmD_Qty16"].ToString(), 0);
+        qty17Total += StCommon.ToDouble(dr2["BnpmD_Qty17"].ToString(), 0);
+    }
+
+    qtyAllTotal = qty01Total + qty02Total + qty03Total + qty04Total + qty05Total + qty06Total + qty07Total + qty08Total + qty09Total + qty10Total + qty11Total + qty12Total + qty13Total + qty14Total + qty15Total + qty16Total + qty17Total;
+
+    int asCount = dsList.Tables[0].Rows.Count;
+}
+
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var mode = '@mode';
+
+        if (mode == "view") {
+            $(".scroll-table").clone(true).appendTo('#table-scroll').addClass('clone');
+        }
+
+        $('#Upload').change(function () {
+            UploadFiles();
+        });
+
+        $(document).on('click', '.addButton', function () {
+
+            var date = '@date';
+            var times = '@times';
+            var mainbuyer = '@mainbuyer';
+            var sample = '@sample';
+
+            location.href = 'OrderApply.cshtml?date=' + encodeURI(date) + '&times=' + encodeURI(times) + '&mainbuyer=' + encodeURI(mainbuyer) + '&sample=' + sample;
+        });
+
+        $(document).on('click', '.modifyButton', function () {
+
+            var date = '@date';
+            var times = '@times';
+            var mainbuyer = '@mainbuyer';
+            var sample = '@sample';
+
+            var line = $(this).data('line');
+
+            location.href = 'OrderApply.cshtml?mode=mod&date=' + encodeURI(date) + '&times=' + encodeURI(times) + '&mainbuyer=' + encodeURI(mainbuyer) + '&sample=' + sample + '&line=' + line;
+        });
+
+        $(document).on('click', '.deleteButton', function () {
+            if (confirm("AS접수를 삭제합니다. 정말로 삭제하시겠습니까?")) {
+
+                var date = '@date';
+                var times = '@times';
+                var mainbuyer = '@mainbuyer';
+                var sample = '@sample';
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Handler/WebService_common.asmx/AsDelete",
+                    data: "{'paramDate':'" + date + "','paramTimes':'" + times + "','paramKure':'" + mainbuyer + "','paramSample':'" + sample + "'}",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    beforeSend: function () {
+                        //$.mobile.loading('show');
+                    },
+                    error: function () {
+                        $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+                    },
+                    success: function (msg) {
+                        var dataStat = $.parseJSON(msg.d);
+                        var totCnt = dataStat.totalcount;
+                        var message = dataStat.msg;
+                        if (message != "") {
+                            alert(message);
+                        } else {
+                            $('#frmAction').attr('action', 'AsRequestList.cshtml').submit();
+                        }
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '.editDetail', function () {
+
+            var date = '@date';
+            var times = '@times';
+            var mainbuyer = '@mainbuyer';
+            var sample = '@sample';
+
+            location.href = 'AsRequestDetail.cshtml?mode=edit&date=' + encodeURI(date) + '&times=' + encodeURI(times) + '&mainbuyer=' + encodeURI(mainbuyer) + '&sample=' + sample;
+        });
+
+        $("#txtProduct").keydown(function(key) {
+            if (key.keyCode == 13) {
+                OpenStyle();
+            }
+        });
+
+        FileList();
+
+        var asCount = @asCount;
+        if (mode != 'view' && asCount == 0)
+        {
+            insRow();
+        }
+
+        if (mode != "view"){
+            $("select[name^=BnpmD_BnpmCode_]").each(function (i) {
+                var temp = $(this).attr('name');
+                var num = temp.replace('BnpmD_BnpmCode_', '');
+                $(this).val($("#hid_BnpmCode_" + num).val());
+                try {
+                    $(this).selectmenu('refresh');
+                } catch (e) { }
+            });
+        }
+    });
+
+    function OpenStyle() {
+        var product = $('#txtProduct').val();
+        var tbuc = "";
+        if ($("input:checkbox[id='cboTBuc']").is(":checked") == true) {
+            tbuc = "1";
+        }
+
+        if (tbuc == "") {
+            window.open("/Mobile/Common/OrderSelect.cshtml?mode=edit&product=" + product + "&tbuc=" + tbuc, "OrderSelect", "width=640,height=700,scrollbars=yes,resizable=yes");
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/Handler/WebService_common.asmx/TbucCheck",
+                data: "{'paramProduct':'" + product + "'}",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                beforeSend: function () {
+                    //$.mobile.loading('show');
+                },
+                error: function () {
+                    $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+                },
+                success: function (msg) {
+                    var dataStat = $.parseJSON(msg.d);
+                    var totCnt = dataStat.totalcount;
+                    var message = dataStat.msg;
+                    if (message != "") {
+                        // tbuc 안보이게, 비활성화모드
+                        $('.labelTBuc').attr('disabled', true);
+                        $('#cboTBuc').attr('readonly', 'readonly');
+                        $('#txtProduct').attr('readonly', 'readonly');
+                        $('#as-div').show();
+                        alert(message + "로 선택되었습니다.");
+                    } else {
+                        alert(product + "는 없는 스타일입니다. 다시 입력해주세요.");
+                        $('#txtProduct').focus();
+                        $('#txtProduct').select();
+                    }
+                }
+            });
+        }
+    }
+
+    function UploadFiles() {
+        var fname = "";
+        var fileUpload = $('#Upload').get(0);
+        var files = fileUpload.files;
+
+        var data = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            data.append(files[i].name, files[i]);
+        }
+
+        var paramDate = '@date';
+        var paramTimes = '@times';
+        var paramMainbuyer = '@mainbuyer';
+        var paramSample = '@sample';
+        var ioTable = '@ioTable';
+
+        $.ajax({
+            url: "/Handler/FileUploadHandler.ashx?date=" + paramDate + "&times=" + paramTimes + "&mainbuyer=" + paramMainbuyer + "&sample=" + paramSample + "&ioTable=" + ioTable,
+            type: "POST",
+            data: data,
+            async: false,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                fname = result;
+
+                // 파일 리스트 변경
+                FileList();
+            },
+            error: function (err, o, e) {
+                //alert(err.status + ":" + o + ":" + e + ":" + err.responseText);
+            }
+        });
+
+        return fname;
+    }
+
+    function FileList() {
+
+        var paramDate = '@date';
+        var paramTimes = '@times';
+        var paramMainbuyer = '@mainbuyer';
+        var paramSample = '@sample';
+        var mode = '@mode';
+
+        $(".imgs_wrap").html('');
+
+        $.ajax({ //검색결과 바인딩
+            type: "POST",
+            url: "/Handler/WebService_common.asmx/GetAsFileList",
+            data: "{'paramDate':'" + paramDate + "','paramTimes':'" + paramTimes + "','paramMainbuyer':'" + paramMainbuyer + "','paramSample':'" + paramSample + "'}",
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+
+                var items = [];
+                var html = '';
+                var data = $.parseJSON(msg.d);
+                var totCnt = data.length;
+
+                if (totCnt > 0) {
+                    $.each(data, function (key, val) {
+                        items.push('<div class=\"img-list\">');
+                        items.push('    <div class=\"img-view\">');
+                        items.push('        <img src=\"/Upload/AS/' + val.bnpmImageFile + '\" class=\"img-data\" />');
+                        items.push('    </div>');
+                        if (mode == "edit" || mode == "add") {
+                            items.push('    <div class=\"img-cancel\">');
+                            items.push('        <img src=\"/img/imgDelete.gif\" title=\"삭제\" onclick=\"DeleteFile(\'' + val.bnpmFileLine + '\');\" />');
+                            items.push('    </div>');
+                        }
+                        items.push('</div>');
+                    });
+                }
+
+                if (totCnt > 0) {
+                    html = items.join('');
+                    $(".imgs_wrap").append($(html));
+                }
+
+                $("#hidFileCount").val(totCnt);
+            }
+        });
+    }
+
+    function DeleteFile(line) {
+
+        var data = new FormData();
+        var paramDate = '@date';
+        var paramTimes = '@times';
+        var paramMainbuyer = '@mainbuyer';
+        var paramSample = '@sample';
+        var ioTable = '@ioTable';
+
+        $.ajax({
+            url: "/Handler/FileUploadHandler.ashx?date=" + paramDate + "&times=" + paramTimes + "&mainbuyer=" + paramMainbuyer + "&sample=" + paramSample + "&line=" + line + "&delChk=1&ioTable=" + ioTable,
+            type: "POST",
+            data: data,
+            async: false,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                // 파일 리스트 변경
+                FileList();
+            },
+            error: function (err, o, e) {
+                //alert(err.status + ":" + o + ":" + e + ":" + err.responseText);
+            }
+        });
+    }
+
+    function insRow() {
+        var rowNum = $('#hidTotal').val();
+        var bnpmSelect = '@bnpmSelect';
+
+        var enabled1 = '@enabled1';
+        var enabled2 = '@enabled2';
+        var enabled3 = '@enabled3';
+        var enabled4 = '@enabled4';
+        var enabled5 = '@enabled5';
+        var enabled6 = '@enabled6';
+        var enabled7 = '@enabled7';
+        var enabled8 = '@enabled8';
+        var enabled9 = '@enabled9';
+        var enabled10 = '@enabled10';
+        var enabled11 = '@enabled11';
+        var enabled12 = '@enabled12';
+        var enabled13 = '@enabled13';
+        var enabled14 = '@enabled14';
+        var enabled15 = '@enabled15';
+        var enabled16 = '@enabled16';
+        var enabled17 = '@enabled17';
+
+        var items = [];
+        var html = '';
+        items.push('<tr class="defaultDataTR asRow" id="asRow_' + rowNum + '">');
+        items.push('    <td class="@fixVal plusminus">');
+        items.push('        <input type="hidden" name="rowNum" value="' + rowNum + '" />');
+        items.push('        <a style="cursor:pointer" onclick="insRow();"><i class="fa fa-plus" aria-hidden="true"></i></a> ');
+        items.push('        &nbsp;&nbsp;<a style="cursor:pointer" onclick="delRow(' + rowNum + ');"><i class="fa fa-minus" aria-hidden="true"></i></a> ');
+        items.push('    </td>');
+        items.push('    <td class="@fixVal reason">');
+        items.push('        <select name="BnpmD_BnpmCode_' + rowNum + '" class="BnpmCode">');
+        items.push('        ' + bnpmSelect + '');
+        items.push('        </select>');
+        items.push('    </td>');
+        items.push('    <td class="minWidth"><input type="text" id="BnpmD_QtyTotal_' + rowNum + '" name="BnpmD_QtyTotal_' + rowNum + '" class="tdMoney2" value="" disabled="disabled" /></td>');
+        items.push('    <td class="minWidth"><input type="text" id="BnpmD_Qty01_' + rowNum + '" name="BnpmD_Qty01_' + rowNum + '" class="tdMoney2 size_01" value="" onkeyup="CalQty(\'01\',' + rowNum + ');" onfocus="CalQty(\'01\',' + rowNum + ');" ' + enabled1 + ' /></td>');
+        items.push('    <td class="minWidth"><input type="text" id="BnpmD_Qty02_' + rowNum + '" name="BnpmD_Qty02_' + rowNum + '" class="tdMoney2 size_02" value="" onkeyup="CalQty(\'02\',' + rowNum + ');" onfocus="CalQty(\'02\',' + rowNum + ');" ' + enabled2 + ' /></td>');
+        items.push('    <td class="minWidth"><input type="text" id="BnpmD_Qty03_' + rowNum + '" name="BnpmD_Qty03_' + rowNum + '" class="tdMoney2 size_03" value="" onkeyup="CalQty(\'03\',' + rowNum + ');" onfocus="CalQty(\'03\',' + rowNum + ');" ' + enabled3 + ' /></td>');
+        items.push('    <td class="minWidth"><input type="text" id="BnpmD_Qty04_' + rowNum + '" name="BnpmD_Qty04_' + rowNum + '" class="tdMoney2 size_04" value="" onkeyup="CalQty(\'04\',' + rowNum + ');" onfocus="CalQty(\'04\',' + rowNum + ');" ' + enabled4 + ' /></td>');
+        items.push('    <td class="minWidth"><input type="text" id="BnpmD_Qty05_' + rowNum + '" name="BnpmD_Qty05_' + rowNum + '" class="tdMoney2 size_05" value="" onkeyup="CalQty(\'05\',' + rowNum + ');" onfocus="CalQty(\'05\',' + rowNum + ');" ' + enabled5 + ' /></td>');
+        items.push('    <td class="minWidth"><input type="text" id="BnpmD_Qty06_' + rowNum + '" name="BnpmD_Qty06_' + rowNum + '" class="tdMoney2 size_06" value="" onkeyup="CalQty(\'06\',' + rowNum + ');" onfocus="CalQty(\'06\',' + rowNum + ');" ' + enabled6 + ' /></td>');
+        items.push('    <td class="minWidth"><input type="text" id="BnpmD_Qty07_' + rowNum + '" name="BnpmD_Qty07_' + rowNum + '" class="tdMoney2 size_07" value="" onkeyup="CalQty(\'07\',' + rowNum + ');" onfocus="CalQty(\'07\',' + rowNum + ');" ' + enabled7 + ' /></td>');
+        items.push('    <td class="minWidth"><input type="text" id="BnpmD_Qty08_' + rowNum + '" name="BnpmD_Qty08_' + rowNum + '" class="tdMoney2 size_08" value="" onkeyup="CalQty(\'08\',' + rowNum + ');" onfocus="CalQty(\'08\',' + rowNum + ');" ' + enabled8 + ' /></td>');
+        items.push('    <td class="minWidth"><input type="text" id="BnpmD_Qty09_' + rowNum + '" name="BnpmD_Qty09_' + rowNum + '" class="tdMoney2 size_09" value="" onkeyup="CalQty(\'09\',' + rowNum + ');" onfocus="CalQty(\'09\',' + rowNum + ');" ' + enabled9 + ' /></td>');
+        items.push('    <td class="minWidth"><input type="text" id="BnpmD_Qty10_' + rowNum + '" name="BnpmD_Qty10_' + rowNum + '" class="tdMoney2 size_10" value="" onkeyup="CalQty(\'10\',' + rowNum + ');" onfocus="CalQty(\'10\',' + rowNum + ');" ' + enabled10 + ' /></td>');
+        items.push('    <td class="minWidth sizeHideTd sizeHideDiv"><input type="text" id="BnpmD_Qty11_' + rowNum + '" name="BnpmD_Qty11_' + rowNum + '" class="tdMoney2 size_11" value="" onkeyup="CalQty(\'11\',' + rowNum + ');" onfocus="CalQty(\'11\',' + rowNum + ');" ' + enabled11 + ' /></td>');
+        items.push('    <td class="minWidth sizeHideTd sizeHideDiv"><input type="text" id="BnpmD_Qty12_' + rowNum + '" name="BnpmD_Qty12_' + rowNum + '" class="tdMoney2 size_12" value="" onkeyup="CalQty(\'12\',' + rowNum + ');" onfocus="CalQty(\'12\',' + rowNum + ');" ' + enabled12 + ' /></td>');
+        items.push('    <td class="minWidth sizeHideTd"><input type="text" id="BnpmD_Qty13_' + rowNum + '" name="BnpmD_Qty13_' + rowNum + '" class="tdMoney2 size_13" value="" onkeyup="CalQty(\'13\',' + rowNum + ');" onfocus="CalQty(\'13\',' + rowNum + ');" ' + enabled13 + ' /></td>');
+        items.push('    <td class="minWidth sizeHideTd"><input type="text" id="BnpmD_Qty14_' + rowNum + '" name="BnpmD_Qty14_' + rowNum + '" class="tdMoney2 size_14" value="" onkeyup="CalQty(\'14\',' + rowNum + ');" onfocus="CalQty(\'14\',' + rowNum + ');" ' + enabled14 + ' /></td>');
+        items.push('    <td class="minWidth sizeHideTd"><input type="text" id="BnpmD_Qty15_' + rowNum + '" name="BnpmD_Qty15_' + rowNum + '" class="tdMoney2 size_15" value="" onkeyup="CalQty(\'15\',' + rowNum + ');" onfocus="CalQty(\'15\',' + rowNum + ');" ' + enabled15 + ' /></td>');
+        items.push('    <td class="minWidth sizeHideTd"><input type="text" id="BnpmD_Qty16_' + rowNum + '" name="BnpmD_Qty16_' + rowNum + '" class="tdMoney2 size_16" value="" onkeyup="CalQty(\'16\',' + rowNum + ');" onfocus="CalQty(\'16\',' + rowNum + ');" ' + enabled16 + ' /></td>');
+        items.push('    <td class="minWidth sizeHideTd"><input type="text" id="BnpmD_Qty17_' + rowNum + '" name="BnpmD_Qty17_' + rowNum + '" class="tdMoney2 size_17" value="" onkeyup="CalQty(\'17\',' + rowNum + ');" onfocus="CalQty(\'17\',' + rowNum + ');" ' + enabled17 + ' /></td>');
+        items.push('    <td><input type="text" id="BnpmD_UsedRemark_' + rowNum + '" name="BnpmD_UsedRemark_' + rowNum + '" style="width: 17rem;" maxlength="30" value="" /></td>');
+        items.push('    <td><input type="text" id="BnpmD_ReasonRemark_' + rowNum + '" name="BnpmD_ReasonRemark_' + rowNum + '" style="width: 25rem;" maxlength="30" value="" /></td>');
+        items.push('</tr>');
+
+        html = items.join('');
+
+        $('#insTable').append($(html));
+
+        rowNum++;
+
+        $('#hidTotal').val(rowNum);
+    }
+
+    function delRow(row) {
+        if ($('.asRow').length > 1) {
+            $('#asRow_' + row).remove();
+        }
+        else {
+            alert("1개의 행은 남아 있어야 합니다!");
+        }
+    }
+
+    function GetEmptyNumber(val) {
+        if (isNaN(val) || val == '') {
+            val = 0;
+        }
+        return parseFloat(val);
+    }
+
+    function CalQty(num, rowNum) {
+
+        var isCheck = "";
+        var idVal = 'cboTBuc';
+        if ($("input:checkbox[id='" + idVal + "']").is(":checked") == true) {
+            isCheck = "1";
+        }
+
+        var BnpmH_tbucmarktop = '@BnpmH_tbucmarktop';
+        if (BnpmH_tbucmarktop == "T")
+            isCheck = "1";
+
+        var bnpmCode = $("#BnpmD_Code_" + rowNum).val();
+        if (bnpmCode == "") {
+            showMessageToolTip('BnpmD_Code_' + rowNum, '불량사유를 선택해주셔야 합니다.');
+            $('#BnpmD_Qty' + num + '_' + rowNum).val('0');
+            $('#BnpmD_Qty' + num + '_' + rowNum).focus();
+        }
+
+        var order1 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty01").val()));
+        var order2 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty02").val()));
+        var order3 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty03").val()));
+        var order4 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty04").val()));
+        var order5 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty05").val()));
+        var order6 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty06").val()));
+        var order7 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty07").val()));
+        var order8 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty08").val()));
+        var order9 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty09").val()));
+        var order10 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty10").val()));
+        var order11 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty11").val()));
+        var order12 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty12").val()));
+        var order13 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty13").val()));
+        var order14 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty14").val()));
+        var order15 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty15").val()));
+        var order16 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty16").val()));
+        var order17 = GetEmptyNumber(setCommaHis_Del($("#Blju_Qty17").val()));
+
+        var req1 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty01_" + rowNum).val()));
+        var req2 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty02_" + rowNum).val()));
+        var req3 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty03_" + rowNum).val()));
+        var req4 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty04_" + rowNum).val()));
+        var req5 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty05_" + rowNum).val()));
+        var req6 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty06_" + rowNum).val()));
+        var req7 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty07_" + rowNum).val()));
+        var req8 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty08_" + rowNum).val()));
+        var req9 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty09_" + rowNum).val()));
+        var req10 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty10_" + rowNum).val()));
+        var req11 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty11_" + rowNum).val()));
+        var req12 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty12_" + rowNum).val()));
+        var req13 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty13_" + rowNum).val()));
+        var req14 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty14_" + rowNum).val()));
+        var req15 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty15_" + rowNum).val()));
+        var req16 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty16_" + rowNum).val()));
+        var req17 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty17_" + rowNum).val()));
+
+        // 세로 계산1
+        var sumVal = 0;
+        $(".size_" + num).each(function () {
+            sumVal += eval(GetEmptyNumber($(this).val()));
+        });
+        $("input[id*=Size_Total" + num + "]").each(function () {
+            $(this).val(sumVal);
+        });
+
+        var reqT1 = GetEmptyNumber(setCommaHis_Del($("#Size_Total01").val()));
+        var reqT2 = GetEmptyNumber(setCommaHis_Del($("#Size_Total02").val()));
+        var reqT3 = GetEmptyNumber(setCommaHis_Del($("#Size_Total03").val()));
+        var reqT4 = GetEmptyNumber(setCommaHis_Del($("#Size_Total04").val()));
+        var reqT5 = GetEmptyNumber(setCommaHis_Del($("#Size_Total05").val()));
+        var reqT6 = GetEmptyNumber(setCommaHis_Del($("#Size_Total06").val()));
+        var reqT7 = GetEmptyNumber(setCommaHis_Del($("#Size_Total07").val()));
+        var reqT8 = GetEmptyNumber(setCommaHis_Del($("#Size_Total08").val()));
+        var reqT9 = GetEmptyNumber(setCommaHis_Del($("#Size_Total09").val()));
+        var reqT10 = GetEmptyNumber(setCommaHis_Del($("#Size_Total10").val()));
+        var reqT11 = GetEmptyNumber(setCommaHis_Del($("#Size_Total11").val()));
+        var reqT12 = GetEmptyNumber(setCommaHis_Del($("#Size_Total12").val()));
+        var reqT13 = GetEmptyNumber(setCommaHis_Del($("#Size_Total13").val()));
+        var reqT14 = GetEmptyNumber(setCommaHis_Del($("#Size_Total14").val()));
+        var reqT15 = GetEmptyNumber(setCommaHis_Del($("#Size_Total15").val()));
+        var reqT16 = GetEmptyNumber(setCommaHis_Del($("#Size_Total16").val()));
+        var reqT17 = GetEmptyNumber(setCommaHis_Del($("#Size_Total17").val()));
+
+        // 수량 체크 (T-BUK는 패스 필요)
+        if (isCheck == "") {
+            var checkCount = false;
+            if (order1 < reqT1) {
+                checkCount = true;
+            }
+            if (order2 < reqT2) {
+                checkCount = true;
+            }
+            if (order3 < reqT3) {
+                checkCount = true;
+            }
+            if (order4 < reqT4) {
+                checkCount = true;
+            }
+            if (order5 < reqT5) {
+                checkCount = true;
+            }
+            if (order6 < reqT6) {
+                checkCount = true;
+            }
+            if (order7 < reqT7) {
+                checkCount = true;
+            }
+            if (order8 < reqT8) {
+                checkCount = true;
+            }
+            if (order9 < reqT9) {
+                checkCount = true;
+            }
+            if (order10 < reqT10) {
+                checkCount = true;
+            }
+            if (order11 < reqT11) {
+                checkCount = true;
+            }
+            if (order12 < reqT12) {
+                checkCount = true;
+            }
+            if (order13 < reqT13) {
+                checkCount = true;
+            }
+            if (order14 < reqT14) {
+                checkCount = true;
+            }
+            if (order15 < reqT15) {
+                checkCount = true;
+            }
+            if (order16 < reqT16) {
+                checkCount = true;
+            }
+            if (order17 < reqT17) {
+                checkCount = true;
+            }
+
+            if (checkCount) {
+                showMessageToolTip('BnpmD_Qty' + num + '_' + rowNum, '발주 수량보다 클 수 없습니다.');
+                $('#BnpmD_Qty' + num + '_' + rowNum).val('0');
+                $('#BnpmD_Qty' + num + '_' + rowNum).focus();
+            }
+        }
+
+
+        // 세로 계산1-2
+        var sumVal = 0;
+        $(".size_" + num).each(function () {
+            sumVal += eval(GetEmptyNumber($(this).val()));
+        });
+        $("input[id*=Size_Total" + num + "]").each(function () {
+            $(this).val(sumVal);
+        });
+
+        // 세로 계산2
+        var sumVal = 0;
+        $(".size_" + num).each(function () {
+            sumVal += eval(GetEmptyNumber($(this).val()));
+        });
+        $("#Size_Total" + num).val(sumVal);
+
+
+        // 가로 계산2
+        var req1 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty01_" + rowNum).val()));
+        var req2 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty02_" + rowNum).val()));
+        var req3 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty03_" + rowNum).val()));
+        var req4 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty04_" + rowNum).val()));
+        var req5 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty05_" + rowNum).val()));
+        var req6 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty06_" + rowNum).val()));
+        var req7 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty07_" + rowNum).val()));
+        var req8 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty08_" + rowNum).val()));
+        var req9 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty09_" + rowNum).val()));
+        var req10 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty10_" + rowNum).val()));
+        var req11 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty11_" + rowNum).val()));
+        var req12 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty12_" + rowNum).val()));
+        var req13 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty13_" + rowNum).val()));
+        var req14 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty14_" + rowNum).val()));
+        var req15 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty15_" + rowNum).val()));
+        var req16 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty16_" + rowNum).val()));
+        var req17 = GetEmptyNumber(setCommaHis_Del($("#BnpmD_Qty17_" + rowNum).val()));
+        var reqT = eval(req1) + eval(req2) + eval(req3) + eval(req4) + eval(req5) + eval(req6) + eval(req7) + eval(req8) + eval(req9) + eval(req10) + eval(req11) + eval(req12) + eval(req13) + eval(req14) + eval(req15) + eval(req16) + eval(req17);
+
+        reqT = GetEmptyNumber(reqT);
+
+        $("#BnpmD_QtyTotal_" + rowNum).val(setCommaHisVal(reqT));
+
+        var sumTotal = 0;
+
+        $("input[id^=BnpmD_QtyTotal_]").each(function () {
+            sumTotal += eval(GetEmptyNumber($(this).val()));
+        });
+        $("#Size_TotalSum").val(sumTotal);
+    }
+
+    function CheckAS(chk) {
+
+        var duple = true;
+        var preCode = "";
+        $("select[name^=BnpmD_BnpmCode_]").each(function (i) {
+
+            var thisCode = $(this).val();
+
+            if (thisCode == "") {
+                alert("불량사유를 모두 선택하셔야 합니다.");
+                $(this).focus();
+                duple = false;
+                return false;
+            }
+
+            var k = 0;
+            $("select[name^=BnpmD_BnpmCode_]").each(function (i) {
+                if (thisCode == $(this).val()) {
+                    k = k + 1;
+                }
+            });
+
+            if (k > 1) {
+                alert("동일한 불량사유가 2개 이상 선택되었습니다.");
+                $(this).focus();
+                duple = false;
+                return false;
+            }
+        });
+
+        if (duple) {
+            var check = GetEmptyNumber($("#Size_TotalSum").val());
+            var buttonId = "";
+            if (chk == 0) {
+                buttonId = 'btnSave';
+            }
+            else if (chk == 1) {
+                buttonId = 'btnComplete';
+
+                var filecount = $("#hidFileCount").val();
+                if (filecount == 0) {
+                    //showMessageToolTip(buttonId, '파일을 첨부하셔야 합니다.');
+                    alert("파일을 첨부하셔야 합니다.");
+                    return false;
+                }
+            }
+
+            if (check == 0) {
+                //showMessageToolTip(buttonId, '접수 요청한 수량이 없습니다.');
+                alert("접수 요청한 수량이 없습니다.");
+                return false;
+            }
+
+            $("#hidBonsaCheck").val(chk);
+        }
+        else {
+            return false;
+        }
+
+        if (chk == 1) {
+            if (confirm("최종 전송하시겠습니까?")) {
+                $('#frmAction').attr('action', 'AsRequestExecute.cshtml').submit();
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            $('#frmAction').attr('action', 'AsRequestExecute.cshtml').submit();
+        }
+    }
+
+</script>
+<style>
+    
+    .imgs_wrap {
+        background: #fff;
+        padding: .5rem 0 0 0;
+    }
+
+    .imgs_wrap img {
+        float: left;
+    }
+
+    .imgs_wrap .img-data {
+        width: 100%;
+        margin-right: -2rem;
+        margin-bottom: 1rem;
+    }
+
+    .img-cancel img {
+        box-shadow: -3px 3px 3px 0px #000;
+        width: 2rem;
+    }
+
+    .labelTBuc {
+        border-width: 0px !important;
+        background-color: #fff !important;
+        border-radius: .3125em !important;
+    }
+
+    .ui-checkbox {
+        margin: 0em 0;
+    }
+
+    .textBox .ui-input-text {
+        border-width: 0px !important;
+        background-color: #fff !important;
+        margin: 0em 0;
+        -webkit-box-shadow: none;
+    }
+    
+    .plusminus {
+        width: 7rem
+    }
+
+    .reason {
+        width: 14rem
+    }
+
+    .tdMoney2 {
+        width: 4rem;
+        text-align: right !important;
+    }
+
+    .ui-input-text {
+        margin: 0;
+        line-height: 1rem;
+    }
+
+    .ui-input-text input {
+        padding: 0.2em;
+        min-height: 1.5rem;
+    }
+
+    .minWidth > input {
+        border-radius: .3em;
+        padding: 0.2em;
+    }
+
+</style>
+
+@if (preVal == "tbl")
+{
+<style>
+    .sizeHideTd {
+        display: none;
+    }
+</style>
+    if (sizeNum == "12") {
+<style>
+    .sizeHideDiv {
+        display: table-cell;
+    }
+</style>
+    }
+}
+
+<div id="pageView" data-role="page" data-theme="c" class="mobile-main">
+    
+    <form id="frmAction" name="frmAction" method="post" data-ajax="false">
+
+        <input id="hidTotal" type="hidden" value="0" />
+        <input id="hidFileCount" type="hidden" value="0" />
+        <input id="hidBonsaCheck" name="hidBonsaCheck" type="hidden" value="0" />
+        
+        <input type="hidden" id="hidAsDate" name="hidAsDate" value="@date" />
+        <input type="hidden" id="hidAsTimes" name="hidAsTimes" value="@times" />
+        <input type="hidden" id="hidAsMainBuyer" name="hidAsMainBuyer" value="@mainbuyer" />
+        <input type="hidden" id="hidAsSample" name="hidAsSample" value="@sample" />
+
+        <input type="hidden" id="hidBljuDate" name="hidBljuDate" value="@hidBljuDate" />
+        <input type="hidden" id="hidBljuTimes" name="hidBljuTimes" value="@hidBljuTimes" />
+        <input type="hidden" id="hidBljuMainBuyer" name="hidBljuMainBuyer" value="@hidBljuMainBuyer" />
+        <input type="hidden" id="hidBljuSample" name="hidBljuSample" value="@hidBljuSample" />
+
+        <div data-role="header" data-position="fixed" data-theme="b">
+            @RenderPage("~/Mobile/Include/HeadNav.cshtml")
+        </div>
+        <div data-role="content">
+
+            <section id="main" class="wrapper style2">
+
+                @if (deleteView == "1")
+                {
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <a href="AsRequestList.cshtml" data-ajax="false" class="listButton" data-role="button" data-icon="bars" data-theme="a">리스트</a>
+                        </div>
+                        <div class="ui-block-b">
+                            <a href="#" class="deleteButton" data-role="button" data-icon="delete" data-theme="a">삭제</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <a href="AsRequestList.cshtml" data-ajax="false" class="listButton" data-role="button" data-icon="bars" data-theme="a">리스트</a>
+                    </div>
+                }
+
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+
+                    </div>
+                    <div class="ui-block-b">
+                        @if (BnpmH_Bonsa_Check == "1")
+                        {
+                        <!--<a href="#" class="modifyConfirmButton" data-role="button" data-icon="edit" data-theme="b">수정</a>-->
+                        }
+                    </div>
+                </div>
+
+                <table class="reportTable">
+                    <tr>
+                        <th class="reportTh" style="min-width: 60px;">AS접수일자</th>
+                        <td class="reportTd">@BnpmH_date @BnpmH_times</td>
+                    </tr>
+                    <tr>
+                        <th class="reportTh">접수업체</th>
+                        <td class="reportTd">@BnpmH_MainBuyerNm</td>
+                    </tr>
+                    <tr>
+                        <th class="reportTh">최초등록일자</th>
+                        <td class="reportTd">@BnpmH_CreateDate</td>
+                    </tr>
+                    <tr>
+                        <th class="reportTh">최종수정일자</th>
+                        <td class="reportTd">@BnpmH_ModifyDate</td>
+                    </tr>
+                    <tr>
+                        <th class="reportTh" style="min-width: 60px;">발주의뢰일자</th>
+                        <td class="reportTd textBox">
+                            @BnpmH_blju_date @BnpmH_blju_times
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="reportTh">스타일</th>
+                        <td class="reportTd" style="text-align:right; padding-right:10px;">
+                            
+                            @if (BnpmH_StyleNox == "" && mode != "view")
+                            {
+                                if (preVal == "tbl")
+                                {
+                                <input type="checkbox" id="cboTBuc" name="cboTBuc" @if (BnpmH_tbucmarktop == "T") { <text>checked</text> } /><label for="cboTBuc" class="labelTBuc">T-BUC 여부</label>
+                                }
+                                <input type="text" id="txtProduct" name="txtProduct" value="@BnpmH_StyleNox" class="inputProduct" placeholder="스타일 입력후 엔터를 치세요." />
+                            }
+                            else
+                            {
+                                var cboTBuc = "";
+                                if (BnpmH_tbucmarktop == "T")
+                                {
+                                    cboTBuc = "T";
+                                }
+                                if (preVal == "tbl")
+                                {
+                                <input type="checkbox" id="cboTBuc2" name="cboTBuc2" disabled="disabled" @if (BnpmH_tbucmarktop == "T") { <text>checked</text> } /><label for="cboTBuc2" class="labelTBuc">T-BUC 여부</label>
+                                }
+                                <input type="hidden" id="cboTBuc" name="cboTBuc" value="@cboTBuc" />
+                                <input type="text" id="txtProduct" name="txtProduct" value="@BnpmH_StyleNox" class="inputProduct" readonly="readonly" />
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="reportTh">기타사항</th>
+                        <td class="reportTd" style="text-align:right; padding-right:10px;">
+                            @if (mode == "view")
+                            {
+                                @BnpmH_etc
+                            }
+                            else
+                            {
+                                <input type="text" id="txtEtc" name="txtEtc" value="@BnpmH_etc" maxlength="100" />
+                            }
+                        </td>
+                    </tr>
+                </table>
+                
+                @{ 
+                    var asDivView = "";
+                    if (BnpmH_StyleNox == "")
+                    {
+                        asDivView = "style=\"display:none\"";
+                    }
+                }
+                <div id="as-div" @Html.Raw(asDivView)>
+                    <div id="table-scroll" class="table-scroll">
+                        <div class="table-wrap">
+                            <table class="scroll-table" id="insTable">
+                                <thead>
+                                    <tr>
+                                        @if (mode != "view")
+                                        {
+                                            <th class="@fixVal plusminus" scope="col"></th>
+                                        }
+                                        <th class="@fixVal reason" scope="col">불량사유</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col" class="textBox"><div id="txtSize1" name="txtSize1">@SizeArray[1]</div></th>
+                                        <th scope="col" class="textBox"><div id="txtSize2" name="txtSize2">@SizeArray[2]</div></th>
+                                        <th scope="col" class="textBox"><div id="txtSize3" name="txtSize3">@SizeArray[3]</div></th>
+                                        <th scope="col" class="textBox"><div id="txtSize4" name="txtSize4">@SizeArray[4]</div></th>
+                                        <th scope="col" class="textBox"><div id="txtSize5" name="txtSize5">@SizeArray[5]</div></th>
+                                        <th scope="col" class="textBox"><div id="txtSize6" name="txtSize6">@SizeArray[6]</div></th>
+                                        <th scope="col" class="textBox"><div id="txtSize7" name="txtSize7">@SizeArray[7]</div></th>
+                                        <th scope="col" class="textBox"><div id="txtSize8" name="txtSize8">@SizeArray[8]</div></th>
+                                        <th scope="col" class="textBox"><div id="txtSize9" name="txtSize9">@SizeArray[9]</div></th>
+                                        <th scope="col" class="textBox"><div id="txtSize10" name="txtSize10">@SizeArray[10]</div></th>
+                                        <th scope="col" class="textBox" @Html.Raw(hideSize11)><div id="txtSize11" name="txtSize11">@SizeArray[11]</div></th>
+                                        <th scope="col" class="textBox" @Html.Raw(hideSize12)><div id="txtSize12" name="txtSize12">@SizeArray[12]</div></th>
+                                        <th scope="col" class="textBox" @Html.Raw(hideSize13)><div id="txtSize13" name="txtSize13">@SizeArray[13]</div></th>
+                                        <th scope="col" class="textBox" @Html.Raw(hideSize14)><div id="txtSize14" name="txtSize14">@SizeArray[14]</div></th>
+                                        <th scope="col" class="textBox" @Html.Raw(hideSize15)><div id="txtSize15" name="txtSize15">@SizeArray[15]</div></th>
+                                        <th scope="col" class="textBox" @Html.Raw(hideSize16)><div id="txtSize16" name="txtSize16">@SizeArray[16]</div></th>
+                                        <th scope="col" class="textBox" @Html.Raw(hideSize17)><div id="txtSize17" name="txtSize17">@SizeArray[17]</div></th>
+                                        <th scope="col">사용장소</th>
+                                        <th scope="col">사유</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (BnpmH_tbucmarktop != "T")
+                                    {
+                                    <tr>
+                                        @if (mode != "view")
+                                        {
+                                            <td class="@fixVal plusminus text-center"></td>
+                                        }
+                                        <td class="@fixVal reason text-center">발주내역</td>
+                                        <td class="minWidth"><input type="text" id="Blju_QtyTotal" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBljuTotal)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Blju_Qty01" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju01)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Blju_Qty02" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju02)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Blju_Qty03" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju03)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Blju_Qty04" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju04)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Blju_Qty05" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju05)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Blju_Qty06" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju06)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Blju_Qty07" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju07)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Blju_Qty08" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju08)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Blju_Qty09" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju09)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Blju_Qty10" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju10)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd sizeHideDiv"><input type="text" id="Blju_Qty11" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju11)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd sizeHideDiv"><input type="text" id="Blju_Qty12" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju12)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd"><input type="text" id="Blju_Qty13" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju13)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd"><input type="text" id="Blju_Qty14" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju14)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd"><input type="text" id="Blju_Qty15" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju15)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd"><input type="text" id="Blju_Qty16" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju16)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd"><input type="text" id="Blju_Qty17" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyBlju17)" disabled="disabled" /></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    }
+                                    <tr>
+                                        @if (mode != "view")
+                                        {
+                                            <td class="@fixVal plusminus text-center"></td>
+                                        }
+                                        <td class="@fixVal reason text-center">총계</td>
+                                        <td class="minWidth"><input type="text" id="Size_TotalSum" class="tdMoney2" value="@StCommon.GetAmountFormat(qtyAllTotal)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Size_Total01" class="tdMoney2" value="@StCommon.GetAmountFormat(qty01Total)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Size_Total02" class="tdMoney2" value="@StCommon.GetAmountFormat(qty02Total)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Size_Total03" class="tdMoney2" value="@StCommon.GetAmountFormat(qty03Total)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Size_Total04" class="tdMoney2" value="@StCommon.GetAmountFormat(qty04Total)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Size_Total05" class="tdMoney2" value="@StCommon.GetAmountFormat(qty05Total)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Size_Total06" class="tdMoney2" value="@StCommon.GetAmountFormat(qty06Total)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Size_Total07" class="tdMoney2" value="@StCommon.GetAmountFormat(qty07Total)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Size_Total08" class="tdMoney2" value="@StCommon.GetAmountFormat(qty08Total)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Size_Total09" class="tdMoney2" value="@StCommon.GetAmountFormat(qty09Total)" disabled="disabled" /></td>
+                                        <td class="minWidth"><input type="text" id="Size_Total10" class="tdMoney2" value="@StCommon.GetAmountFormat(qty10Total)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd sizeHideDiv"><input type="text" id="Size_Total11" class="tdMoney2" value="@StCommon.GetAmountFormat(qty11Total)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd sizeHideDiv"><input type="text" id="Size_Total12" class="tdMoney2" value="@StCommon.GetAmountFormat(qty12Total)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd"><input type="text" id="Size_Total13" class="tdMoney2" value="@StCommon.GetAmountFormat(qty13Total)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd"><input type="text" id="Size_Total14" class="tdMoney2" value="@StCommon.GetAmountFormat(qty14Total)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd"><input type="text" id="Size_Total15" class="tdMoney2" value="@StCommon.GetAmountFormat(qty15Total)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd"><input type="text" id="Size_Total16" class="tdMoney2" value="@StCommon.GetAmountFormat(qty16Total)" disabled="disabled" /></td>
+                                        <td class="minWidth sizeHideTd"><input type="text" id="Size_Total17" class="tdMoney2" value="@StCommon.GetAmountFormat(qty17Total)" disabled="disabled" /></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    @{
+                                        string whereQryCode = "";
+
+                                        if (preVal == "tbl")
+                                        {
+                                            whereQryCode = " and substring(Common_Code,1,1) = 'M' ";
+                                        }
+                                        else if (preVal == "abl")
+                                        {
+                                            whereQryCode = " and substring(Common_Code,1,1) = 'T' ";
+                                        }
+
+                                        if (dsList.Tables[0].Rows.Count > 0)
+                                        {
+                                            for (int i = 0; i < dsList.Tables[0].Rows.Count; i++)
+                                            {
+                                                DataRow dr2 = dsList.Tables[0].Rows[i];
+                                                var rowNum = i;
+
+                                                string qryC = " select Common_Remark1 as name from gblCOMMON where Common_Key = 'T0319' and Common_Code not in('TA0') " + whereQryCode + " and Common_Code = '" + dr2["BnpmD_BnpmCode"] + "' ";
+                                                DataSet dsC = stData.GetDataSet(qryC);
+                                                var codeName = "";
+                                                if (dsC.Tables[0].Rows.Count > 0)
+                                                {
+                                                    codeName = dsC.Tables[0].Rows[0]["name"].ToString();
+                                                }
+                                                <tr>
+                                                    @if (mode != "view")
+                                                    {
+                                                        <td class="@fixVal plusminus text-center">
+                                                            <input type="hidden" name="rowNum" value="@rowNum" />
+                                                            <a style="cursor:pointer" onclick="insRow();"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                                            &nbsp;&nbsp;
+                                                            <a style="cursor:pointer" onclick="delRow(1);"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                                                        </td>
+                                                    }
+
+                                                    @if (mode == "view")
+                                                    {
+                                                        <td class="@fixVal reason text-center">@codeName</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="@fixVal reason text-center">
+                                                            <select name="BnpmD_BnpmCode_@rowNum" class="BnpmCode">
+                                                                @bnpmSelect
+                                                            </select>
+                                                            <input type="hidden" id="hid_BnpmCode_@rowNum" value="@dr2["BnpmD_BnpmCode"]" />
+                                                        </td>
+                                                    }
+                                                    <td class="minWidth"><input type="text" id="BnpmD_QtyTotal_@rowNum" name="BnpmD_QtyTotal_@rowNum" class="tdMoney2" value="@dr2["BnpmD_QtyTotal"]" disabled="disabled" /></td>
+                                                    <!--<td class="tdMoney">@StCommon.GetAmountFormat(dr2["BnpmD_Qty01"])</td>-->
+                                                    <td class="minWidth"><input type="text" id="BnpmD_Qty01_@rowNum" name="BnpmD_Qty01_@rowNum" class="tdMoney2 size_01" value="@dr2["BnpmD_Qty01"]" onkeyup="CalQty('01','@rowNum');" @enabled1 /></td>
+                                                    <td class="minWidth"><input type="text" id="BnpmD_Qty02_@rowNum" name="BnpmD_Qty02_@rowNum" class="tdMoney2 size_02" value="@dr2["BnpmD_Qty02"]" onkeyup="CalQty('02','@rowNum');" @enabled2 /></td>
+                                                    <td class="minWidth"><input type="text" id="BnpmD_Qty03_@rowNum" name="BnpmD_Qty03_@rowNum" class="tdMoney2 size_03" value="@dr2["BnpmD_Qty03"]" onkeyup="CalQty('03','@rowNum');" @enabled3 /></td>
+                                                    <td class="minWidth"><input type="text" id="BnpmD_Qty04_@rowNum" name="BnpmD_Qty04_@rowNum" class="tdMoney2 size_04" value="@dr2["BnpmD_Qty04"]" onkeyup="CalQty('04','@rowNum');" @enabled4 /></td>
+                                                    <td class="minWidth"><input type="text" id="BnpmD_Qty05_@rowNum" name="BnpmD_Qty05_@rowNum" class="tdMoney2 size_05" value="@dr2["BnpmD_Qty05"]" onkeyup="CalQty('05','@rowNum');" @enabled5 /></td>
+                                                    <td class="minWidth"><input type="text" id="BnpmD_Qty06_@rowNum" name="BnpmD_Qty06_@rowNum" class="tdMoney2 size_06" value="@dr2["BnpmD_Qty06"]" onkeyup="CalQty('06','@rowNum');" @enabled6 /></td>
+                                                    <td class="minWidth"><input type="text" id="BnpmD_Qty07_@rowNum" name="BnpmD_Qty07_@rowNum" class="tdMoney2 size_07" value="@dr2["BnpmD_Qty07"]" onkeyup="CalQty('07','@rowNum');" @enabled7 /></td>
+                                                    <td class="minWidth"><input type="text" id="BnpmD_Qty08_@rowNum" name="BnpmD_Qty08_@rowNum" class="tdMoney2 size_08" value="@dr2["BnpmD_Qty08"]" onkeyup="CalQty('08','@rowNum');" @enabled8 /></td>
+                                                    <td class="minWidth"><input type="text" id="BnpmD_Qty09_@rowNum" name="BnpmD_Qty09_@rowNum" class="tdMoney2 size_09" value="@dr2["BnpmD_Qty09"]" onkeyup="CalQty('09','@rowNum');" @enabled9 /></td>
+                                                    <td class="minWidth"><input type="text" id="BnpmD_Qty10_@rowNum" name="BnpmD_Qty10_@rowNum" class="tdMoney2 size_10" value="@dr2["BnpmD_Qty10"]" onkeyup="CalQty('10','@rowNum');" @enabled10 /></td>
+                                                    <td class="minWidth sizeHideTd sizeHideDiv"><input type="text" id="BnpmD_Qty11_@rowNum" name="BnpmD_Qty11_@rowNum" class="tdMoney2 size_11" value="@dr2["BnpmD_Qty11"]" onkeyup="CalQty('11','@rowNum');" @enabled11 /></td>
+                                                    <td class="minWidth sizeHideTd sizeHideDiv"><input type="text" id="BnpmD_Qty12_@rowNum" name="BnpmD_Qty12_@rowNum" class="tdMoney2 size_12" value="@dr2["BnpmD_Qty12"]" onkeyup="CalQty('12','@rowNum');" @enabled12 /></td>
+                                                    <td class="minWidth sizeHideTd"><input type="text" id="BnpmD_Qty13_@rowNum" name="BnpmD_Qty13_@rowNum" class="tdMoney2 size_13" value="@dr2["BnpmD_Qty13"]" onkeyup="CalQty('13','@rowNum');" @enabled13 /></td>
+                                                    <td class="minWidth sizeHideTd"><input type="text" id="BnpmD_Qty14_@rowNum" name="BnpmD_Qty14_@rowNum" class="tdMoney2 size_14" value="@dr2["BnpmD_Qty14"]" onkeyup="CalQty('14','@rowNum');" @enabled14 /></td>
+                                                    <td class="minWidth sizeHideTd"><input type="text" id="BnpmD_Qty15_@rowNum" name="BnpmD_Qty15_@rowNum" class="tdMoney2 size_15" value="@dr2["BnpmD_Qty15"]" onkeyup="CalQty('15','@rowNum');" @enabled15 /></td>
+                                                    <td class="minWidth sizeHideTd"><input type="text" id="BnpmD_Qty16_@rowNum" name="BnpmD_Qty16_@rowNum" class="tdMoney2 size_16" value="@dr2["BnpmD_Qty16"]" onkeyup="CalQty('16','@rowNum');" @enabled16 /></td>
+                                                    <td class="minWidth sizeHideTd"><input type="text" id="BnpmD_Qty17_@rowNum" name="BnpmD_Qty17_@rowNum" class="tdMoney2 size_17" value="@dr2["BnpmD_Qty17"]" onkeyup="CalQty('17','@rowNum');" @enabled17 /></td>
+                                                    <td><input type="text" id="BnpmD_UsedRemark_@rowNum" name="BnpmD_UsedRemark_@rowNum" maxlength="30" value="@dr2["BnpmD_UsedRemark"]" /></td>
+                                                    <td><input type="text" id="BnpmD_ReasonRemark_@rowNum" name="BnpmD_ReasonRemark_@rowNum" maxlength="30" value="@dr2["BnpmD_ReasonRemark"]" /></td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <ul id="lvPicture" data-role="listview" data-inset="true">
+                        <li data-role="list-divider">A/S의뢰 사진내역</li>
+                        <li style="padding-left:1em;">
+                            @if (mode == "edit" || mode == "add")
+                            {
+                                <input type="file" multiple="multiple" name="Upload" id="Upload" style="background-color:#BEC8D2;height:25px;width:100%;" />
+                            }
+                            <div class="imgs_wrap"></div>
+                        </li>
+                    </ul>
+
+                    @if (mode == "edit" || mode == "add")
+                    {
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <a href="#" data-ajax="false" class="saveButton" data-role="button" data-theme="b" onclick="CheckAS(0);" id="btnSave">저 장</a>
+                            </div>
+                            <div class="ui-block-b">
+                                <a href="#" data-ajax="false" class="confirmButton" data-role="button" data-theme="b" onclick="CheckAS(1);" id="btnComplete">최종본사전송</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+                @if (mode == "view")
+                {
+                    if (modifyView == "1")
+                    {
+                        <!--<a class="editDetail" data-role="button" data-transition="none" data-theme="b">사진 수정하기</a>-->
+
+                        <a class="editDetail" data-role="button" data-transition="none" data-theme="b">수정하기</a>
+                    }
+                }
+
+            </section>
+
+        </div>
+        <div data-role="footer" data-theme="b">
+            @RenderPage("~/Mobile/Include/FootNav.cshtml")
+        </div>
+
+    </form>
+</div>

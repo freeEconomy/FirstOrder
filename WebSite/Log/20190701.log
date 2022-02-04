@@ -1,0 +1,55 @@
+Log Entry : 
+
+LoginID :: NB 
+KureCode :: NB 
+KureName :: 남빈피복 
+
+2019년 7월 1일 월요일 오후 3:24:17 
+
+System.Data.SqlClient.SqlException (0x80131904): varchar 값 '1,347'을(를) 데이터 형식 int(으)로 변환하지 못했습니다.
+   위치: System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   위치: System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   위치: System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   위치: System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async, Int32 timeout, Boolean asyncWrite)
+   위치: System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   위치: System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   위치: Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteNonQuery(DbCommand command)
+   위치: Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteNonQuery(DbCommand command)
+   위치: FirstOrder.Util.StDataCommon.GetExecuteNonQry(String _qry) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\App_Code\Util\StDataCommon.cs:줄 66
+   위치: Page_JegoUpload_abl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_abl.aspx.cs:줄 244
+ClientConnectionId:a43b6435-b69b-43ac-a706-1fd038056037
+Error Number:245,State:1,Class:16
+---------------------------------------------------------
+
+Log Entry : 
+
+LoginID :: NB 
+KureCode :: NB 
+KureName :: 남빈피복 
+
+2019년 7월 1일 월요일 오후 3:51:06 
+
+System.FormatException: 입력 문자열의 형식이 잘못되었습니다.
+   위치: System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   위치: System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   위치: System.Convert.ToInt32(String value)
+   위치: Page_JegoUpload_abl.GetQtyNumber(Object obj) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_abl.aspx.cs:줄 532
+   위치: Page_JegoUpload_abl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_abl.aspx.cs:줄 234
+---------------------------------------------------------
+
+Log Entry : 
+
+LoginID :: NB 
+KureCode :: NB 
+KureName :: 남빈피복 
+
+2019년 7월 1일 월요일 오후 3:52:38 
+
+System.FormatException: 입력 문자열의 형식이 잘못되었습니다.
+   위치: System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   위치: System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   위치: System.Convert.ToInt32(String value)
+   위치: Page_JegoUpload_abl.GetQtyNumber(Object obj) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_abl.aspx.cs:줄 532
+   위치: Page_JegoUpload_abl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_abl.aspx.cs:줄 234
+---------------------------------------------------------
+

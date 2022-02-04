@@ -1,0 +1,66 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MobilePop.master.cs" Inherits="Master_Common" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+  
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>발주관리 서비스</title>
+
+    <asp:PlaceHolder runat="server">
+
+    <!-- Custom fonts for this template-->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"/>
+
+    <!-- Custom styles for this template-->
+    <link href="/css/common.css" rel="stylesheet"/>
+    <link href="/css/style.css?v=<%=jsCssVer %>" rel="stylesheet"/>
+
+    <link href="/Mobile/assets/css/custom.css?v=<%=jsCssVer %>" rel="stylesheet"/>
+
+    <!-- Bootstrap core JavaScript-->
+    
+    <script type="text/javascript" src="/Mobile/assets/js/jquery-1.11.0.min.js"></script>
+
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/common.js"></script>
+    <script src="/js/common-custom.js?v=<%=jsCssVer %>"></script>
+    
+
+    <link rel="stylesheet" type="text/css" href="/Mobile/assets/css/jquery.mobile-1.4.5.css?v=@jsCssVer" />
+
+    <script type="text/javascript" src="/Mobile/assets/js/jquery.mobile-1.4.5.js?v=@jsCssVer"></script>
+
+    <script src="https://spi.maps.daum.net/imap/map_js_init/postcode.v2.js"></script>
+
+    </asp:PlaceHolder>
+
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="bg-gradient-mobile">
+    <form id="form1" runat="server">
+        
+        <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnableScriptGlobalization="true" EnableScriptLocalization="true" />
+
+        <asp:ContentPlaceHolder ID="cph1" runat="server">
+        </asp:ContentPlaceHolder>
+        
+    </form>    
+</body>
+</html>

@@ -1,0 +1,219 @@
+﻿@using System.Collections;
+@using System.Configuration;
+@using System.Data;
+@using System.Text;
+@using System.Xml;
+@using FirstOrder.Util;
+@using FirstOrder.Data;
+@{
+    var headerTitle = "AS접수 요청";
+
+    Page.Title = headerTitle;
+    PageData["title"] = headerTitle;
+
+    Layout = "~/Mobile/LayOut/_Main.cshtml";
+
+    StDataCommon stData = new StDataCommon();
+
+    string preVal = "";
+
+    try
+    {
+        preVal = HttpContext.Current.Session["PreVal"].ToString();
+    }
+    catch
+    {
+        preVal = "tbl";
+    }
+}
+
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#txtProduct").keydown(function (key) {
+            if (key.keyCode == 13) {
+                OpenStyle();
+            }
+        });
+
+        $("#btnStyleSearch").click(function () {
+            OpenStyle();
+        });
+
+        $(".appplyButton").click(function () {
+            ApplyAsRequest();
+        });
+    });
+
+    function OpenStyle() {
+        var product = $('#txtProduct').val();
+        var tbuc = "";
+        if ($("input:checkbox[id='cboTBuc']").is(":checked") == true) {
+            tbuc = "1";
+        }
+
+        if (tbuc == "") {
+            $('#bljuDiv').show();
+            window.open("/Mobile/Common/OrderSelect.cshtml?product=" + product + "&tbuc=" + tbuc, "OrderSelect", "width=640,height=700,scrollbars=yes,resizable=yes");
+        }
+        else {
+            $('#bljuDiv').hide();
+            $.ajax({
+                type: "POST",
+                url: "/Handler/WebService_common.asmx/TbucCheck",
+                data: "{'paramProduct':'" + product + "'}",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                beforeSend: function () {
+                    //$.mobile.loading('show');
+                },
+                error: function () {
+                    $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+                },
+                success: function (msg) {
+                    var dataStat = $.parseJSON(msg.d);
+                    var totCnt = dataStat.totalcount;
+                    var message = dataStat.msg;
+                    if (message != "") {
+                        alert(message + "로 선택되었습니다.");
+                    } else {
+                        alert(product + "는 없는 스타일입니다. 다시 입력해주세요.");
+                        $('#txtProduct').focus();
+                        $('#txtProduct').select();
+                    }
+                }
+            });
+        }
+    }
+
+    function ApplyAsRequest() {
+        var product = $('#txtProduct').val();
+        var tbuc = "";
+        if ($("input:checkbox[id='cboTBuc']").is(":checked") == true) {
+            tbuc = "1";
+        }
+
+        var date = $('#hidBljuDate').val();
+        var times = $('#hidBljuTimes').val();;
+        var mainbuyer = $('#hidBljuMainBuyer').val();
+        var sample = $('#hidBljuSample').val();
+        
+        if (product == "") {
+            alert("스타일을 선택해주세요!");
+            return false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Handler/WebService_common.asmx/AsRequest",
+            data: "{'paramDate':'" + date + "','paramTimes':'" + times + "','paramMainbuyer':'" + mainbuyer + "','paramSample':'" + sample + "','paramTbuc':'" + tbuc + "'}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            beforeSend: function () {
+                //$.mobile.loading('show');
+            },
+            error: function () {
+                $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+            },
+            success: function (msg) {
+                var dataP = $.parseJSON(msg.d);
+                var totCnt = dataP.totalcount;
+                var message = dataP.msg;
+                if (message != "") {
+                    alert(message);
+                } else {
+                    $('#frmAction').attr('action', 'AsRequestDetail.cshtml?mode=edit&product=' + encodeURI(product) + '&date=' + encodeURI(dataP.date) + '&times=' + encodeURI(dataP.times) + '&mainbuyer=' + encodeURI(dataP.mainbuyer) + '&sample=' + dataP.sample).submit();
+                }
+            }
+        });
+    }
+
+</script>
+<style>
+    
+    .labelTBuc {
+        border-width: 0px !important;
+        background-color: #fff !important;
+    }
+
+    .ui-checkbox {
+        margin: 0em 0;
+    }
+
+    .textBox .ui-input-text {
+        border-width: 0px !important;
+        background-color: #fff !important;
+        margin: 0em 0;
+        -webkit-box-shadow: none;
+    }
+
+</style>
+
+<div id="pageView" data-role="page" data-theme="c" class="mobile-main">
+    
+    <div data-role="header" data-position="fixed" data-theme="b">
+        @RenderPage("~/Mobile/Include/HeadNav.cshtml")
+    </div>
+    <div data-role="content">
+
+        <section id="main" class="wrapper style2">
+            
+            <table class="reportTable">
+                @if (preVal == "tbl")
+                {
+                <tr>
+                    <th class="reportTh" style="width: 120px;">브랜드 선택</th>
+                    <td class="reportTd" colspan="2">
+                        <input type="checkbox" id="cboTBuc" name="cboTBuc" /><label for="cboTBuc" class="labelTBuc">T-BUC 여부</label>
+                    </td>
+                </tr>
+                }
+                <tr>
+                    <th class="reportTh" style="width: 120px;">AS요청스타일</th>
+                    <td class="reportTd">
+                        <input type="text" id="txtProduct" name="txtProduct" class="inputProduct" />
+                    </td>
+                    <th class="reportTh" style="width: 70px;">
+                        <input type="button" id="btnStyleSearch" name="btnStyleSearch" data-role="button" data-mini="true" class="btn-mobile btn-info" value="검색" />
+                    </th>
+                </tr>
+            </table>
+
+            <div id="bljuDiv" style="display:none">
+                <table class="reportTable">
+                    <tr>
+                        <th class="reportTh" style="min-width: 60px;">발주의뢰일자</th>
+                        <td class="reportTd textBox">
+                            <input type="text" id="txtBljuDate" name="txtBljuDate" style="width:100%; background: transparent; border: none;" readonly="readonly">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="reportTh">스타일</th>
+                        <td class="reportTd textBox">
+                            <input type="text" id="txtBljuStyle" name="txtBljuStyle" style="width:100%; background: transparent; border: none;" readonly="readonly">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <a href="#" data-ajax="false" class="appplyButton" data-role="button" data-icon="bars" data-theme="b">AS접수 요청하기</a>
+            </div>
+
+        </section>
+
+    </div>
+    <div data-role="footer" data-theme="b">
+        @RenderPage("~/Mobile/Include/FootNav.cshtml")
+    </div>
+</div>
+
+<form id="frmAction" name="frmAction" method="post" data-ajax="false">
+    <input type="hidden" id="hidBljuDate" name="hidBljuDate" />
+    <input type="hidden" id="hidBljuTimes" name="hidBljuTimes" />
+    <input type="hidden" id="hidBljuMainBuyer" name="hidBljuMainBuyer" />
+    <input type="hidden" id="hidBljuSample" name="hidBljuSample" />
+</form>

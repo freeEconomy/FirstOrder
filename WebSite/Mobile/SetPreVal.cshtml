@@ -1,0 +1,11 @@
+﻿@using FirstOrder.Util;
+@{
+    Session["PreVal"] = StCommon.ReplaceSQ(Request["PreVal"]);
+
+    if (IsPost)
+    {
+
+    }
+
+    Response.Redirect("/Mobile/Page/OrderList.cshtml");
+}

@@ -1,0 +1,128 @@
+﻿@using System.Collections;
+@using System.Data;
+@using System.Text;
+@using System.Xml;
+@{
+    Page.Title = "마크&탑 발주관리";
+    var headerTitle = "마크&탑 발주관리";
+
+    Page.Title = headerTitle;
+    PageData["title"] = headerTitle;
+
+    Layout = "~/Mobile/LayOut/_Main.cshtml";
+}
+
+<script type="text/javascript">
+    
+    $(document).ready(function () {
+        
+    });
+
+</script>
+
+<style>
+    section, article {
+        margin:0px;
+    }
+    #titleBar {
+        display:none;
+    }
+
+    #header {
+        /*background: url(/Mobile/images/banner.jpg) center center !important;
+        background-size: cover !important;*/
+    }
+    .bg-info {
+        /*background-color: rgba(92,95,103,0.5) !important;*/
+    }
+
+    #page-navigation {
+        display:none;
+    }
+
+    .ui-page {
+        position: absolute;
+    }
+</style>
+
+<div id="page1" data-role="page" data-theme="c" class="mobile-main">
+    <div data-role="header" data-theme="b">
+        @RenderPage("~/Mobile/Include/HeadNav.cshtml")
+    </div>
+    
+    <div data-role="content" id="content1">
+        
+        <section id="main">
+            <div>
+                <section id="one" class="tiles">
+                    <article style="background-image: url(&quot;images/pic01.jpg&quot;);">
+                        <span class="image" style="display: none;">
+                            <img src="images/pic01.jpg" alt="">
+                        </span>
+                        <header class="major">
+                            <h3><a class="link">의 류</a></h3>
+                            <p>MARK APPAREL 의류 발주관리</p>
+                        </header>
+                        <a href="/Mobile/SetPreVal.cshtml?PreVal=tbl" class="link primary" data-ajax="false"></a>
+                    </article>
+                    <article style="background-image: url(&quot;images/pic02.jpg&quot;);">
+                        <span class="image" style="display: none;">
+                            <img src="images/pic02.jpg" alt="">
+                        </span>
+                        <header class="major">
+                            <h3><a class="link">안 전 화</a></h3>
+                            <p>TOP CLASS 안전화 발주관리</p>
+                        </header>
+                        <a href="/Mobile/SetPreVal.cshtml?PreVal=abl" class="link primary" data-ajax="false"></a>
+                    </article>
+                    <!--<article style="background-image: url(&quot;images/pic03.jpg&quot;);">
+                        <span class="image" style="display: none;">
+                            <img src="images/pic03.jpg" alt="">
+                        </span>
+                        <header class="major">
+                            <h3><a href="landing.html" class="link">Magna</a></h3>
+                            <p>Lorem etiam nullam</p>
+                        </header>
+                        <a href="landing.html" class="link primary"></a>
+                    </article>
+                    <article style="background-image: url(&quot;images/pic04.jpg&quot;);">
+                        <span class="image" style="display: none;">
+                            <img src="images/pic04.jpg" alt="">
+                        </span>
+                        <header class="major">
+                            <h3><a href="landing.html" class="link">Ipsum</a></h3>
+                            <p>Nisl sed aliquam</p>
+                        </header>
+                        <a href="landing.html" class="link primary"></a>
+                    </article>
+                    <article style="background-image: url(&quot;images/pic05.jpg&quot;);">
+                        <span class="image" style="display: none;">
+                            <img src="images/pic05.jpg" alt="">
+                        </span>
+                        <header class="major">
+                            <h3><a href="landing.html" class="link">Consequat</a></h3>
+                            <p>Ipsum dolor sit amet</p>
+                        </header>
+                        <a href="landing.html" class="link primary"></a>
+                    </article>
+                    <article style="background-image: url(&quot;images/pic06.jpg&quot;);">
+                        <span class="image" style="display: none;">
+                            <img src="images/pic06.jpg" alt="">
+                        </span>
+                        <header class="major">
+                            <h3><a href="landing.html" class="link">Etiam</a></h3>
+                            <p>Feugiat amet tempus</p>
+                        </header>
+                        <a href="landing.html" class="link primary"></a>
+                    </article>-->
+                </section>
+
+            </div>
+        </section>
+
+    </div>
+
+    <div data-role="footer" data-theme="b">
+        @RenderPage("~/Mobile/Include/FootNav.cshtml")
+    </div>
+</div>

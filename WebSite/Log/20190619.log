@@ -1,0 +1,432 @@
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 8:48:01 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 95
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 8:52:10 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 95
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 8:54:15 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 95
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 8:56:22 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 95
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 8:57:06 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 95
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 8:59:02 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_abl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_abl.aspx.cs:줄 111
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 11:29:53 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 95
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 11:46:04 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 96
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 11:46:29 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 96
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 11:48:18 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 96
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 11:48:27 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 96
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 11:49:53 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 96
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 11:50:39 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 96
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 11:51:25 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 96
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 11:53:19 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 96
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 11:53:36 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 96
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오전 11:57:14 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_abl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_abl.aspx.cs:줄 112
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오후 12:34:00 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 107
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오후 12:34:12 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 107
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오후 12:35:00 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_abl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_abl.aspx.cs:줄 112
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오후 1:05:47 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 107
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오후 1:06:12 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 107
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오후 1:06:26 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 107
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오후 1:06:37 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 107
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오후 1:07:13 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 107
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오후 1:07:20 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 107
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 19일 수요일 오후 1:07:27 
+
+System.Data.OleDb.OleDbException (0x80004005): $'은(는) 유효한 이름이 아닙니다. 잘못된 문자나 문장 부호가 들어 있지 않은지 그리고 이름이 너무 길지 않은지를 확인하십시오.
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextErrorHandling(OleDbHResult hr)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandTextForSingleResult(tagDBPARAMS dbParams, Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteCommandText(Object& executeResult)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReaderInternal(CommandBehavior behavior, String method)
+   위치: System.Data.OleDb.OleDbCommand.ExecuteReader(CommandBehavior behavior)
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 107
+---------------------------------------------------------
+

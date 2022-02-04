@@ -1,0 +1,78 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MainPop.master.cs" Inherits="Master_MainPop" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title><%=TitleName %></title>
+
+    <asp:PlaceHolder runat="server">
+
+    <!-- Custom fonts for this template-->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <!-- Custom styles for this template-->
+
+    <link href="/css/common.css" rel="stylesheet" />
+    <link href="/css/style.css?v=<%=jsCssVer %>" rel="stylesheet" />
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+
+    <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.maskedinput.js"></script>
+    
+    <script type="text/javascript" src="/js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/js/jquery-ui-1.10.3/themes/base/jquery-ui.css" />
+
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="/js/common.js"></script>
+    <script src="/js/common-custom.js?v=<%=jsCssVer %>"></script>
+    <!-- Page level plugins -->
+    <script src="/vendor/chart.js/Chart.js"></script>
+    <!-- Page level custom scripts -->
+
+    <script src="https://spi.maps.daum.net/imap/map_js_init/postcode.v2.js"></script>
+    
+    </asp:PlaceHolder>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+        <script type="text/javascript" language="javascript">
+        //<![CDATA[
+            
+        //]]>
+        </script>
+    </asp:ContentPlaceHolder>
+
+</head>
+
+<body id="page-top">
+    <form id="form1" runat="server" defaultbutton="btnNoEnter">
+
+        <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnableScriptGlobalization="true" EnableScriptLocalization="true" />
+        
+        <div style="display:none;">
+            <asp:Button ID="btnNoEnter" runat="server" OnClientClick="return false" />
+        </div>
+
+        <div style="padding:5px 5px 5px 5px;">
+            <asp:ContentPlaceHolder id="cph1" runat="server">
+        
+            </asp:ContentPlaceHolder>
+        </div>
+
+    </form>
+</body>
+
+</html>

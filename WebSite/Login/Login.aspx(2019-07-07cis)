@@ -1,0 +1,269 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master/Common.master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login_Login" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+
+    <script type="text/javascript" language="javascript">
+        //<![CDATA[
+
+        function CheckLogin() {
+
+            if (document.getElementById("<%=this.txtID.ClientID%>").value == "") {
+                showMessageToolTip('<%=this.txtID.ClientID%>', '거래처 ID를 입력해 주세요.');
+                document.getElementById("<%=this.txtID.ClientID%>").focus();
+                return false;
+            }
+
+            if (document.getElementById("<%=this.txtPass.ClientID%>").value == "") {
+                //showMessageToolTip('<%=this.txtPass.ClientID%>', '비밀번호를 입력해 주세요.');
+                //document.getElementById("<%=this.txtPass.ClientID%>").focus();
+                //return false;
+            }
+
+            return true;
+        }
+        
+        function CheckLoginOk() {
+
+            if (document.getElementById("<%=this.txtID.ClientID%>").value == "") {
+                showMessageToolTip('<%=this.txtID.ClientID%>', '거래처 ID를 입력해 주세요.');
+                document.getElementById("<%=this.txtID.ClientID%>").focus();
+                return false;
+            }
+
+            if (document.getElementById("<%=this.txtPass.ClientID%>").value == "") {
+                //showMessageToolTip('<%=this.txtPass.ClientID%>', '비밀번호를 입력해 주세요.');
+                //document.getElementById("<%=this.txtPass.ClientID%>").focus();
+                //return false;
+            }
+
+            <%= Page.GetPostBackEventReference(lnkLogin) %>;
+
+            return false;
+        }
+
+    //]]>
+    </script>
+
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="cph1" runat="Server">
+
+    <div class="container loginCont">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="p-5 form-user">
+
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">발주 관리 서비스</h1>
+                                    </div>
+                                    <div class="form-group">
+                                        <asp:TextBox ID="txtID" runat="server" CssClass="form-control form-control-user inputLoginID" MaxLength="6" placeholder="거래처 ID를 입력해주세요."></asp:TextBox>
+                                    </div>
+                                    <div class="form-group">
+                                        <asp:TextBox ID="txtPass" runat="server" TextMode="Password" CssClass="form-control form-control-user inputLoginPwd" placeholder="비밀번호를 입력해주세요." OnKeyDown="if(event.keyCode == 13){return CheckLoginOk();}"></asp:TextBox>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox small">                                            
+                                            <input type="checkbox" class="custom-control-input" id="cboIDSave" runat="server" />
+                                            <label class="custom-control-label" for="<%=this.cboIDSave.ClientID%>">ID 저장</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <asp:LinkButton runat="server" ID="lnkLogin" CssClass="btn btn-primary btn-user btn-block" Text="Login" OnClick="lnkLogin_Click" OnClientClick="return CheckLogin();" >
+                                    </asp:LinkButton>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-12 copyright copyText text-center">
+                                <span>Copyright &copy;2019 <a href="/Upload/Sample/PCAnyPro_Setup.exe" target="_blank">'MARK APPAREL CO,. LTD'</a> All rights Reserved.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Pass Change Modal-->
+    <div class="modal fade" id="passChangeModal" tabindex="-1" role="dialog" aria-labelledby="passChangeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passChangeModalLabel">암호 변경</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th class="tdtitleW150Left">이 전&nbsp;&nbsp;암 호(O)</th>
+                                    <td>
+                                        <asp:TextBox ID="txtOldPassword" runat="server" CssClass="form-control" Width="200" TextMode="Password"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="tdtitleW150Left">새 암호 입력(N)</th>
+                                    <td>
+                                        <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" Width="200" TextMode="Password"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="tdtitleW150Left">새 암호 확인(F)</th>
+                                    <td>
+                                        <asp:TextBox ID="txtPasswordConfirm" runat="server" CssClass="form-control" Width="200" TextMode="Password"></asp:TextBox>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <asp:Button ID="btnChangePwd" runat="server" Text="확인" Width="50" CssClass="btn btn-primary" OnClientClick="return CheckPassWord();" OnClick="btnChangePwd_Click" />
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pass Create Modal-->
+    <div class="modal fade" id="passCreateModal" tabindex="-1" role="dialog" aria-labelledby="passCreateModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passCreateModalLabel">암호 생성</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th class="tdtitleW150Left">새 암호 입력(N)</th>
+                                    <td>
+                                        <asp:TextBox ID="txtNewPassword" runat="server" CssClass="form-control" Width="200" TextMode="Password"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="tdtitleW150Left">새 암호 확인(F)</th>
+                                    <td>
+                                        <asp:TextBox ID="txtNewPasswordConfirm" runat="server" CssClass="form-control" Width="200" TextMode="Password"></asp:TextBox>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <asp:Button ID="btnCreatePwd" runat="server" Text="확인" Width="50" CssClass="btn btn-primary" OnClientClick="return CheckNewPassWord();" OnClick="btnCreatePwd_Click" />
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" language="javascript">
+        //<![CDATA[
+
+        function ShowChangePassword(user) {
+            alert("사용자 : '" + user + "'님의 암호 사용 기간(60일)이 경과 했습니다!!!\n기존 암호를 변경해야 합니다.");
+            $('#passChangeModal').modal('show');
+        }
+
+        function ShowCreatePassword(user) {
+            alert("사용자 : '" + user + "'님은 처음 사용자입니다!!!\n새로운 암호를 등록해야 합니다.");
+            $('#passCreateModal').modal('show');
+        }
+
+        function CheckPassWord() {
+
+            if (document.getElementById("<%=this.txtOldPassword.ClientID%>").value == "") {
+                showMessageToolTip('<%=this.txtOldPassword.ClientID%>', '이전 암호를 입력해 주세요.');
+                document.getElementById("<%=this.txtOldPassword.ClientID%>").focus();
+                return false;
+            }
+
+            if (document.getElementById("<%=this.txtPassword.ClientID%>").value == "") {
+                showMessageToolTip('<%=this.txtPassword.ClientID%>', '새 암호를 입력해 주세요.');
+                document.getElementById("<%=this.txtPassword.ClientID%>").focus();
+                return false;
+            }
+                        
+            var checkPwd = document.getElementById("<%=this.txtPassword.ClientID %>").value;
+
+            if (checkPwd.length < 6 || checkPwd.length > 15) {
+                alert("암호는 영어, 숫자, 특수문자를 조합해서 6~15자리로 입력하셔야 합니다.");
+                return false;
+            }
+
+            var chk1 = false;
+            var chk2 = false;
+            for (i = 0; i < checkPwd.length; i++) {
+                if (checkPwd.charAt(i) >= '0' && checkPwd.charAt(i) <= '9')
+                    chk1 = true;
+                if (checkPwd.charAt(i) >= 'a' && checkPwd.charAt(i) <= 'z')
+                    chk2 = true;
+                if (checkPwd.charAt(i) >= 'A' && checkPwd.charAt(i) <= 'Z')
+                    chk2 = true;
+            }
+
+            var chk3 = false;
+            if (chkSpecWord(checkPwd)) {
+                chk3 = true;
+            }
+
+            if (chk1 && chk2 && chk3) {
+
+            } else {
+                alert("암호는 영어, 숫자, 특수문자를 조합해서 6~15자리로 입력하셔야 합니다.");
+                return false;
+            }
+
+            if (document.getElementById("<%=this.txtPasswordConfirm.ClientID%>").value == "") {
+                showMessageToolTip('<%=this.txtPasswordConfirm.ClientID%>', '새 암호를 다시 입력해 주세요.');
+                document.getElementById("<%=this.txtPasswordConfirm.ClientID%>").focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        function CheckNewPassWord() {
+            if (document.getElementById("<%=this.txtNewPassword.ClientID%>").value == "") {
+                showMessageToolTip('<%=this.txtNewPassword.ClientID%>', '새 암호를 입력해 주세요.');
+                document.getElementById("<%=this.txtNewPassword.ClientID%>").focus();
+                return false;
+            }
+
+            if (document.getElementById("<%=this.txtNewPasswordConfirm.ClientID%>").value == "") {
+                showMessageToolTip('<%=this.txtNewPasswordConfirm.ClientID%>', '새 암호를 다시 입력해 주세요.');
+                document.getElementById("<%=this.txtNewPasswordConfirm.ClientID%>").focus();
+                return false;
+            }
+
+            return true;
+        }
+
+    //]]>
+    </script>
+
+</asp:Content>

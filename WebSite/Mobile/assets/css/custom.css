@@ -1,0 +1,141 @@
+﻿/* 채팅관련 */
+
+.write_msg {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-color: rgb(169, 169, 169) !important;
+    text-shadow: none !important;
+    color: #333 !important;
+    margin-top: 5px;
+}
+
+.sent_msg p {
+    background: #5c6b86 none repeat scroll 0 0;
+}
+
+.daeriTop {
+    background: #5c6b86 none repeat scroll 0 0;
+    text-shadow: none;
+}
+
+.msg_send_btn {
+    background: #5c6b86 none repeat scroll 0 0;
+}
+
+.ui-disabled, .ui-state-disabled, button[disabled], .ui-select .ui-btn.ui-state-disabled {
+    opacity: 1;
+    background-color: #e6e6e6 !important;
+}
+
+input:disabled {
+    background-color: #e6e6e6 !important;
+    font-weight: 600;
+}
+
+.type_msg {
+    position: fixed;
+    width: 94%;
+    bottom:0px;
+}
+
+.inbox_msg {
+    border: 0px;
+}
+
+.chatOverColor {
+    background-color: #ff5959;
+    border-color: #ff0000;
+}
+
+.chatOverColorTd {
+    background-color: #fdc9c9;
+    background-image: none;
+}
+
+.tdMoney
+{
+    text-align: right;
+    padding-right: 5px;
+}
+
+ .text-center {
+     text-align: center;
+ }
+
+ .responsive-img {
+    width: 100%;
+    border-width: 0px;
+    position: relative !important;
+    max-height: inherit !important;
+    max-width: inherit !important;
+ }
+
+/* scroll table */
+.table-scroll {
+	position:relative;
+	max-width:600px;
+	margin:auto;
+	overflow:hidden;
+	/* border:1px solid #000; */
+	background: #fff;
+	border: 1px solid #b4b4b4;
+}
+.table-wrap {
+	width:100%;
+	overflow:auto;
+}
+.table-scroll table {
+	width:100%;
+	margin:auto;
+	/* border-collapse:separate; */
+	border-spacing:0;
+	/* background: #fff; */
+	border: 1px solid #b4b4b4;
+}
+.table-scroll th, .table-scroll td {
+	padding:5px 10px;
+	/* border: 1px solid #b4b4b4; */
+	background:#fff;
+	white-space:nowrap;
+	vertical-align:middle;
+	border: 1px solid #b4b4b4;
+}
+.table-scroll th {
+	background:#eee;
+}
+.table-scroll thead, .table-scroll tfoot {
+	background:#f9f9f9;
+}
+.clone {
+	position:absolute;
+	top:0;
+	left:0;
+	pointer-events:none;
+}
+.clone th, .clone td {
+	visibility:hidden
+}
+.clone td, .clone th {
+	border-color:transparent
+}
+.clone tbody th {
+	visibility:visible;
+	color:#666;
+}
+.clone .fixed-side {
+	border:1px solid #b4b4b4;
+	visibility:visible;
+}
+.clone thead {
+    background: transparent;
+}
+
+.tooltip.show {
+  max-width: 40rem;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  text-align: center;
+  background-color: #000;
+  border-radius: 0.35rem;
+}

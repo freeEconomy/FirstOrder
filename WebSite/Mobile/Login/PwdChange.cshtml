@@ -1,0 +1,131 @@
+﻿@using System.Collections;
+@using System.Configuration;
+@using System.Data;
+@using System.Text;
+@using System.Xml;
+@{
+    var headerTitle = "암호 변경";
+
+    Page.Title = headerTitle;
+    PageData["title"] = headerTitle;
+
+    Layout = "~/Mobile/LayOut/_Main.cshtml";
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //저장 버튼 클릭
+        $(document).on('click', '#btnSave', function () {
+            if ($('#txtOldPassword').val() == '') {
+                alert('이전 암호를 입력해 주세요.');
+                $('#txtOldPassword').focus();
+                return false;
+            }
+
+            if ($('#txtPassword').val() == '') {
+                alert('새 암호를 입력해 주세요.');
+                $('#txtPassword').focus();
+                return false;
+            }
+
+            var checkPwd = $('#txtPassword').val();
+
+            if (checkPwd.length < 6 || checkPwd.length > 15) {
+                alert("암호는 영어, 숫자, 특수문자를 조합해서 6~15자리로 입력하셔야 합니다.");
+                return false;
+            }
+
+            var chk1 = false;
+            var chk2 = false;
+            for (i = 0; i < checkPwd.length; i++) {
+                if (checkPwd.charAt(i) >= '0' && checkPwd.charAt(i) <= '9')
+                    chk1 = true;
+                if (checkPwd.charAt(i) >= 'a' && checkPwd.charAt(i) <= 'z')
+                    chk2 = true;
+                if (checkPwd.charAt(i) >= 'A' && checkPwd.charAt(i) <= 'Z')
+                    chk2 = true;
+            }
+
+            var chk3 = false;
+            if (chkSpecWord(checkPwd)) {
+                chk3 = true;
+            }
+
+            if (chk1 && chk2 && chk3) {
+
+            } else {
+                alert("암호는 영어, 숫자, 특수문자를 조합해서 6~15자리로 입력하셔야 합니다.");
+                return false;
+            }
+
+            if ($('#txtPasswordConfirm').val() == '') {
+                alert('새 암호를 다시 입력해 주세요.');
+                $('#txtPasswordConfirm').focus();
+                return false;
+            }
+
+            $('#frmWrite').attr('action', 'PwdChangeExecute.cshtml').submit();
+        });
+    });
+
+    function chkSpecWord(thisword) { // 특수문자체크 특수 문자가 있을시 true 리턴
+        var flag = false;
+        var specialChars = "~`!#$%^&*-=+\|[](){};:'<.,>/?_@@";
+        wordadded = thisword;
+        for (i = 0; i < wordadded.length; i++) {
+            for (j = 0; j < specialChars.length; j++) {
+                if (wordadded.charAt(i) == specialChars.charAt(j)) {
+                    flag = true;
+                    true;
+                }
+            }
+        }
+        return flag;
+    }
+
+</script>
+
+<div id="pageWrite" data-role="page" data-theme="c">
+    <!-- Panel -->
+    <div data-role="header" data-position="fixed" data-theme="b">
+        @RenderPage("~/Mobile/Include/HeadNav.cshtml")
+    </div>
+    <div data-role="content">
+
+        <section id="main" class="wrapper style2">
+
+            <form name="frmWrite" id="frmWrite" action="#" method="post">
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="fieldcontain">
+                        <label for="txtDayW">이전암호</label>
+                        <input type="text" id="txtOldPassword" name="txtOldPassword" data-mini="true" data-clear-btn="true" value="" />
+                    </li>
+                    <li data-role="fieldcontain">
+                        <label for="txtCont">새암호입력</label>
+                        <input type="text" id="txtPassword" name="txtPassword" data-mini="true" data-clear-btn="true" value="" />
+                    </li>
+                    <li data-role="fieldcontain">
+                        <label for="txtCont">새암호확인</label>
+                        <input type="text" id="txtPasswordConfirm" name="txtPasswordConfirm" data-mini="true" data-clear-btn="true" value="" />
+                    </li>
+                    <li>
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a"><a href="#" id="btnCancel" name="btnCancel" data-role="button" data-rel="back">취소</a></div>
+                            <div class="ui-block-b">
+                                <input type="button" id="btnSave" name="btnSave" data-role="button" value="저장" />
+                            </div>
+                        </fieldset>
+                    </li>
+                </ul>
+            </form>
+
+        </section>
+
+    </div>
+
+    <div data-role="footer" data-position="fixed" data-theme="b">
+        @RenderPage("~/Mobile/Include/FootNav.cshtml")
+    </div>
+</div>

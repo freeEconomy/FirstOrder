@@ -1,0 +1,418 @@
+﻿@using System.Collections;
+@using System.Configuration;
+@using System.Data;
+@using System.Text;
+@using System.Xml;
+@{
+    var headerTitle = "공지사항";
+
+    Page.Title = headerTitle;
+    PageData["title"] = headerTitle;
+
+    Layout = "~/Mobile/LayOut/_Main.cshtml";
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var picker = $("input[data-role='datebox']", this);
+
+        picker.mobipick();
+
+        picker.on("change", function () {
+            var date = $(this).val();
+
+            // formatted date
+            var dateObject = $(this).mobipick("option", "date");
+        });
+
+        //추가 검색결과 클릭
+        $(document).on('click', '#listMore', function () {
+            var nextPage = eval($(this).attr('data-parm-page')) + 1;
+            BindSearchDefault(nextPage);
+        });
+
+        //스크롤시 추가 검색결과 가져오기
+        $(document).scroll(function () {
+            if ($.mobile.activePage == undefined)
+                location.replace('Notice.cshtml');
+
+            if ($.mobile.activePage.attr("id") == "pageResult") {
+                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                    var nextPage = eval($('#hidNowPage').val()) + 1;
+                    var totalPage = eval($('#hidTotalPage').val());
+
+                    if (nextPage <= totalPage) {
+                        BindSearchDefault(nextPage);
+                    }
+                }
+            }
+
+        });
+
+        $(document).on('click', '#file-tag', function () {
+            $.mobile.changePage('#pageImg', { transition: "none" }, false, true);
+        });
+
+        //파일다운로드 링크
+        $(document).on('click', '#fileDownLink', function (e) {
+            e.preventDefault();  //stop the browser from following
+            var parm = $(this).attr("data-parm");
+            window.location.replace(parm);
+        });
+
+        //검색결과 상세버튼 클릭
+        $(document).on('click', '.viewDetail', function () {
+            var parm = $(this).attr("data-parm");
+            BindViewDataJson(parm);
+            $('#hidIdx').val(parm);
+        });
+
+        //검색 버튼 클릭
+        $("#btnSearch").click(function () {
+            BindSearchDefault('1');
+        });
+
+        //상단 검색버튼 클릭
+        $("#btnMainSearchTop").click(function () {
+            BindSearchDefault('1');
+        });
+
+        //등록 버튼 클릭
+        $("#btnAdd").click(function () {
+            $('#mode').val('ins');
+            SetWriteDefault();
+            $.mobile.changePage('#pageWrite', { transition: "none" }, false, true);
+        });
+
+        //일정 수정 버튼 클릭
+        $("#btnModifyPre").click(function () {
+            $('#mode').val('mod');
+            //$('#btnSave').val('수정');
+            BindModifyDataJson($('#hidIdx').val());
+            $.mobile.changePage('#pageWrite', { transition: "none" }, false, true);
+        });
+
+        //저장 버튼 클릭
+        $(document).on('click', '#btnSave', function () {
+            if ($('#txtDayW').val() == '') {
+                alert('날짜를 입력해야 합니다.');
+                return false;
+            }
+
+            if ($('#txtCont').val() == '') {
+                alert('내용을 입력해야 합니다.');
+                return false;
+            }
+
+            $('#frmNoticeWrite').attr('action', 'NoticeExecute.cshtml').submit();
+        });
+
+        $('#txtDateS').val('@DateTime.Today.AddMonths(-6).ToString("yyyy-MM-dd")');
+        $('#txtDateE').val('@DateTime.Now.ToShortDateString()');
+
+
+        BindSearchDefault('1');
+    });
+
+    function BindSearchDefault(page) {
+        var paramDateS = $('#txtDateS').val();
+        var paramDateE = $('#txtDateE').val();
+        var paramContent = $('#txtContent').val();
+
+        var paramPage = page;
+        var paramPageSize = '20';
+
+        if (paramPage == "") {
+            paramPage = '1';
+        }
+
+        if (eval(paramPage) == 1) {
+            $('#lvResult').html('');
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Handler/WebService_common.asmx/GetNoticeList",
+            data: "{'paramDateS':'" + paramDateS + "','paramDateE':'" + paramDateE + "','paramContent':'" + paramContent + "','paramPage':'" + paramPage + "','paramPageSize':'" + paramPageSize + "'}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            beforeSend: function () {
+                $.mobile.loading('show');
+            },
+            error: function () {
+                $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+            },
+            success: function (msg) {
+                var items = [];
+                var html = '';
+                var dataStat = $.parseJSON(msg.d);
+                var totCnt = dataStat.totalcount;
+                var totPage = dataStat.totalpage;
+                var data = dataStat.NoticeInfo;
+                var nowCnt = data.length;
+
+                $('#hidNowPage').val(paramPage);
+                $('#hidTotalPage').val(totPage);
+                $('#hidTotalCount').val(totCnt);
+
+                if (eval(paramPage) == 1) {
+                    items.push('<li data-role="list-divider">검색결과 <span class="ui-li-count" id="recordcnt">' + totCnt + '</span></li>');
+                }
+
+                if (totCnt > 0) {
+                    $.each(data, function (key, val) {
+                        items.push('<li>');
+                        items.push('<a style="white-space: pre-line;" href="#pageView" data-parm="' + val.idx + '" data-transition="none" class="viewDetail">');
+                        items.push(strip_tags(val.memo, ''));
+                        items.push('</a>');
+                        items.push('</li>');
+                    });
+                } else {
+                    items.push('<li style="text-align:center;">등록된 자료가 존재하지 않습니다.</li>');
+                }
+
+                $('#listMore').remove();
+
+                if (eval(paramPage) < eval(totPage)) {
+                    items.push('<li style="text-align:center;" id="listMore" data-parm-page="' + paramPage + '" data-inset="false" >결과더보기</li>');
+                }
+
+                html = items.join('');
+                $('#lvResult').append($(html));
+                $('#lvResult').trigger('create');
+                $('#lvResult').listview('refresh');
+                $("#collarSearch").trigger("collapse");
+                $.mobile.loading("hide");
+            }
+        });
+    }
+
+    //상세 바인딩 처리
+    function BindViewDataJson(idx) {
+        var paramIdx = idx;
+
+        $('#lvDetail').html('');
+
+        $.ajax({
+            type: "POST",
+            url: "/Handler/WebService_common.asmx/GetNoticeDetailData",
+            data: "{'paramIdx':'" + paramIdx + "'}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                var items = [];
+                var html = '';
+                var data = $.parseJSON(msg.d);
+                var totCnt = data.length;
+
+                if (totCnt > 0) {
+                    $.each(data, function (key, val) {
+                        items.push('<li data-role="fieldcontain"><label for="detailName">일자 : </label><span id="detailName" class="contentNormal">' + val.memoday + '</span></li>');
+                        if (val.filename != '') {
+                            items.push('<li data-role="fieldcontain"><label for="detailName">파일 : </label><span id="detailName" class="contentNormal">');
+
+                            // 이미지 파일 체크
+                            var ext = val.filename.slice(val.filename.lastIndexOf(".") + 1).toLowerCase();
+
+                            if (!(ext == "gif" || ext == "jpg" || ext == "png")) {
+                                items.push('<a style="white-space: pre-line;" href="/@ConfigurationManager.AppSettings["BoardFilePath"]/' + val.filename + '" target="_blank">' + val.filename + '</a></span></li>');
+                            }
+                            else {
+                                // 아이폰 유저는 뒤로가기 버튼이 하드웨어에 없어 페이지 추가함
+                                var link = '/@ConfigurationManager.AppSettings["BoardFilePath"]/' + val.filename;
+
+                                items.push('<a id="file-tag" style="white-space: pre-line; cursor: pointer;">' + val.filename + '</a></span></li>');
+                                $('#imgWrapper').html('<div><a href="#pageSearch" id="btnListW" name="btnListW" data-role="button">목록</a></div><p></p><div><img class="imgData" src="' + link + '" /></div>');
+                            }
+                        }
+                        items.push('<li data-role="fieldcontain"><span id="detailName" style="white-space: pre-line;" class="contentNormal">' + val.memo + '</span></li>');
+
+                        @{
+						    <text>$('#btnModifyPre').removeClass('ui-disabled');</text>
+						    <text>//$('#btnModifyPre').addClass('ui-disabled');</text>
+						}
+                    });
+                } else {
+                    items.push('<li style="text-align:center;">등록된 자료가 존재하지 않습니다.</li>');
+                }
+                html = items.join('');
+                $('#lvDetail').append($(html));
+                $('#lvDetail').trigger('create');
+                $('#lvDetail').listview('refresh');
+
+            }
+        });
+    }
+
+    //바인딩 처리
+    function BindModifyDataJson(idx) {
+        SetWriteDefault();
+
+        var paramIdx = idx;
+
+        $.ajax({
+            type: "POST",
+            url: "/Handler/WebService_common.asmx/GetNoticeDetailData",
+            data: "{'paramIdx':'" + paramIdx + "'}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                var items = [];
+                var html = '';
+                var data = $.parseJSON(msg.d);
+                var totCnt = data.length;
+
+                if (totCnt > 0) {
+                    $.each(data, function (key, val) {
+                        $('#txtDayW').val(val.memoday);
+                        $('#txtCont').val(val.memo);
+                        $('#hidOrgFileName').val(val.filename);
+                    });
+                }
+            }
+        });
+    }
+
+    function SetWriteDefault() {
+        var setOpt = $('#mode').val();
+
+        if (setOpt == 'ins') {
+            $('#txtDayW').val('@DateTime.Now.ToShortDateString()');
+            $('#txtCont').val('');
+
+        } else if (setOpt == 'mod') {
+            $('#txtDayW').val('');
+            $('#txtCont').val('');
+        }
+    }
+
+</script>
+
+<div id="pageSearch" data-role="page" data-theme="c" class="mobile-main">
+    
+    <div data-role="header" data-position="fixed" data-theme="b">
+        @RenderPage("~/Mobile/Include/HeadNav.cshtml")
+    </div>
+    <div data-role="content">
+
+        <section id="main" class="wrapper style2">
+
+        <div id="collarSearch" data-collapsed="true" data-role="collapsible" data-collapsed-icon="search" data-expanded-icon="search">
+            <h4>공지사항 검색</h4>
+            <ul data-role="listview">
+                <li data-role="fieldcontain">
+                    <label for="txtDateS">시작일</label>
+                    <input type="text" data-role="datebox" data-clear-btn="true" id="txtDateS" name="txtDateS" data-mini="true" />
+                </li>
+                <li data-role="fieldcontain">
+                    <label for="txtDateE">종료일</label>
+                    <input type="text" data-role="datebox" data-clear-btn="true" id="txtDateE" name="txtDateE" data-mini="true" />
+                </li>
+                <li data-role="fieldcontain">
+                    <label for="txtContent">내용</label>
+                    @*<input type="text" name="txtContent" id="txtContent" value="" data-mini="true"  />*@
+                    <textarea name="txtContent" id="txtContent" value="" data-mini="true"></textarea>
+                </li>
+                <li>
+                    <!--<fieldset class="ui-grid-a">
+                        <div class="ui-block-a"><input type="button" id="btnAdd" value="추가" data-role="button" data-theme="b" /></div>
+                        <div class="ui-block-b"><input type="button" id="btnSearch" value="검색" data-role="button" /></div>
+                    </fieldset>-->
+                    <input type="button" id="btnSearch" value="검색" data-role="button" />
+                </li>
+            </ul>
+        </div>
+
+        <div id="divResult">
+            <ul id="lvResult" data-role="listview" data-inset="true"></ul>
+        </div>
+        
+        </section>
+
+    </div>
+    <div data-role="footer" data-theme="b">
+        @RenderPage("~/Mobile/Include/FootNav.cshtml")
+    </div>
+</div>
+
+
+<div id="pageView" data-role="page" data-theme="c">
+    <!-- Panel -->
+    <!-- Panel -->
+    <div data-role="header" data-position="fixed" data-theme="b">
+        @RenderPage("~/Mobile/Include/HeadNav.cshtml")
+    </div>
+    <div data-role="content">
+
+        <section id="main" class="wrapper style2">
+
+            <form action="#" method="post">
+                <div>
+                    <ul id="lvDetail" data-role="listview" data-inset="true"></ul>
+                </div>
+                <!--<div class="ui-grid-a">
+                    <div class="ui-block-a">
+                        <a href="#pageSearch" data-role="button">취소</a>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#" id="btnModifyPre" name="btnModifyPre" data-role="button">수정</a>
+                    </div>
+                </div>-->
+                <div>
+                    <a href="#pageSearch" data-role="button">리스트</a>
+                </div>
+            </form>
+
+        </section>
+
+</div>
+
+    <div data-role="footer" data-theme="b">
+        @RenderPage("~/Mobile/Include/FootNav.cshtml")
+    </div>
+</div>
+
+<div id="pageWrite" data-role="page" data-theme="c">
+    <!-- Panel -->
+    <!-- Panel -->
+    <div data-role="header" data-position="fixed" data-theme="b">
+        @RenderPage("~/Mobile/Include/HeadNav.cshtml")
+    </div>
+    <div data-role="content">
+
+        <section id="main" class="wrapper style2">
+
+            <form name="frmNoticeWrite" id="frmNoticeWrite" action="#" method="post">
+                <input type="hidden" id="hidIdx" name="hidIdx" />
+                <input type="hidden" id="mode" name="mode" />
+                <input type="hidden" id="hidOrgFileName" name="hidOrgFileName" />
+
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="fieldcontain">
+                        <label for="txtDayW">일자</label>
+                        <input type="text" data-role="datebox" data-clear-btn="true" id="txtDayW" name="txtDayW" data-mini="true" />
+                    </li>
+                    <li data-role="fieldcontain">
+                        <label for="txtCont">내용</label>
+                        <textarea id="txtCont" name="txtCont" rows="5"></textarea>
+                    </li>
+                    <li>
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a"><a href="#pageSearch" id="btnListW" name="btnListW" data-role="button">취소</a></div>
+                            <div class="ui-block-b">
+                                <input type="button" id="btnSave" name="btnSave" data-role="button" value="저장" />
+                            </div>
+                        </fieldset>
+                    </li>
+                </ul>
+            </form>
+
+        </section>
+
+    </div>
+
+    <div data-role="footer" data-theme="b">
+        @RenderPage("~/Mobile/Include/FootNav.cshtml")
+    </div>
+</div>

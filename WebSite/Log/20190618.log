@@ -1,0 +1,63 @@
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 18일 화요일 오전 12:16:09 
+
+System.NullReferenceException: 개체 참조가 개체의 인스턴스로 설정되지 않았습니다.
+   위치: Page_JegoUpload_tbl.lvMain_ItemDataBound(Object sender, ListViewItemEventArgs e) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 51
+   위치: System.Web.UI.WebControls.ListView.OnItemDataBound(ListViewItemEventArgs e)
+   위치: System.Web.UI.WebControls.ListView.CreateItemsWithoutGroups(ListViewPagedDataSource dataSource, Boolean dataBinding, InsertItemPosition insertPosition, ArrayList keyArray)
+   위치: System.Web.UI.WebControls.ListView.CreateChildControls(IEnumerable dataSource, Boolean dataBinding)
+   위치: System.Web.UI.WebControls.ListView.PerformDataBinding(IEnumerable data)
+   위치: System.Web.UI.WebControls.DataBoundControl.OnDataSourceViewSelectCallback(IEnumerable data)
+   위치: System.Web.UI.WebControls.ListView.PerformSelect()
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 216
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 18일 화요일 오전 12:49:58 
+
+System.Web.HttpException (0x80004005): 데이터 바인딩: 'System.Data.DataRowView'에 이름이 'StyleNox'인 속성이 없습니다.
+   위치: System.Web.UI.DataBinder.GetPropertyValue(Object container, String propName)
+   위치: System.Web.UI.DataBinder.Eval(Object container, String[] expressionParts)
+   위치: ASP.page_jegoupload_tbl_aspx.__DataBind__control53(Object sender, EventArgs e) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx:줄 147
+   위치: System.Web.UI.Control.OnDataBinding(EventArgs e)
+   위치: System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   위치: System.Web.UI.Control.DataBindChildren()
+   위치: System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   위치: System.Web.UI.WebControls.ListView.CreateItemsWithoutGroups(ListViewPagedDataSource dataSource, Boolean dataBinding, InsertItemPosition insertPosition, ArrayList keyArray)
+   위치: System.Web.UI.WebControls.ListView.CreateChildControls(IEnumerable dataSource, Boolean dataBinding)
+   위치: System.Web.UI.WebControls.ListView.PerformDataBinding(IEnumerable data)
+   위치: System.Web.UI.WebControls.DataBoundControl.OnDataSourceViewSelectCallback(IEnumerable data)
+   위치: System.Web.UI.WebControls.ListView.PerformSelect()
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 284
+---------------------------------------------------------
+
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 18일 화요일 오후 1:26:42 
+
+System.Data.SqlClient.SqlException (0x80131904): 개체 이름 'ablJEGOEXCEL_V'이(가) 잘못되었습니다.
+   위치: System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   위치: System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   위치: System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   위치: System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async, Int32 timeout, Boolean asyncWrite)
+   위치: System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   위치: System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   위치: Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteNonQuery(DbCommand command)
+   위치: Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteNonQuery(DbCommand command)
+   위치: FirstOrder.Util.StDataCommon.GetExecuteNonQry(String _qry) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\App_Code\Util\StDataCommon.cs:줄 66
+   위치: Page_JegoUpload_abl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_abl.aspx.cs:줄 213
+ClientConnectionId:6976152c-60ce-47b4-8d23-c2a3cfab0468
+Error Number:208,State:1,Class:16
+---------------------------------------------------------
+

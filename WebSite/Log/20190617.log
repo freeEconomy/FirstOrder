@@ -1,0 +1,23 @@
+Log Entry : 
+
+KureCode :: ZX-999 
+KureName :: 마크어패럴(주) 
+
+2019년 6월 17일 월요일 오후 6:10:29 
+
+System.Data.SqlClient.SqlException (0x80131904): 열 이름 'Jego_CreateDate'이(가) 잘못되었습니다.
+열 이름 'Jego_CreateSawon'이(가) 잘못되었습니다.
+   위치: System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   위치: System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   위치: System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   위치: System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async, Int32 timeout, Boolean asyncWrite)
+   위치: System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   위치: System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   위치: Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteNonQuery(DbCommand command)
+   위치: Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteNonQuery(DbCommand command)
+   위치: FirstOrder.Util.StDataCommon.GetExecuteNonQry(String _qry) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\App_Code\Util\StDataCommon.cs:줄 66
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\알바\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 153
+ClientConnectionId:f4bc421c-3550-4582-8d7a-d44c0f83c7dd
+Error Number:207,State:1,Class:16
+---------------------------------------------------------
+

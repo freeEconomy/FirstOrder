@@ -1,0 +1,182 @@
+﻿@page{
+    size: A4;
+    margin: 5mm;
+}
+
+
+td{
+	font-family: "굴림", "맑은 고딕", Seoul, "한강체";
+	color: #444444;
+	font-size: 11px;
+	line-height: 150%;
+	text-decoration: none;
+    height: 16px;
+}
+
+table td {
+    border:1px solid #8eb7d5;
+}
+
+.noBorderRight {
+    border-right:none;
+}
+
+.noBorderTop {
+    border-top:none;
+}
+
+/*
+.tablePrint
+{
+    border: solid 1px #8eb7d5;
+}
+
+.tableSubPrint
+{
+    background-color: #8eb7d5;
+    border-collapse: separate;
+}*/
+
+.aligncenter {
+    text-align:center;
+}
+
+.alignleft {
+    text-align:left;
+}
+
+.alignright {
+    text-align:right;
+}
+
+.alignmiddle {
+    vertical-align:middle;
+}
+
+.aligntop {
+    vertical-align:top;
+}
+
+.alignbottom {
+    vertical-align:bottom;
+}
+
+.bold {
+    font-weight:bold;
+}
+
+.tablePrint,.tableSubPrint td
+{
+    background-color :#FFFFFF;
+}
+
+.font12 {
+    font-size: 12px;
+}
+
+.font14 {
+    font-size: 14px;
+}
+
+.font18 {
+    font-size: 18px;
+}
+
+.font35 {
+    font-size: 35px;
+}
+
+.fontColor1 {
+    color:#5487c9;
+}
+
+.button,
+.button:hover {
+    border-radius: 0 !important;
+    border: 0;
+    box-shadow: none;
+    filter: none;
+    padding: 9px 17px;
+    margin: 1px;
+    height: auto !important;
+    text-shadow: none;
+    font-weight: 400;
+    width: auto !important;
+    cursor:pointer;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.button.white,
+.button.white:hover {
+    background: #fff;
+    border: 1px solid #999;
+    color: #333 !important;
+}
+
+.button.gray,
+.button.gray:hover {
+    background: #6e6e6e;
+    border: 1px solid #6e6e6e;
+    color: #fff !important;
+}
+
+.button.black,
+.button.black:hover {
+    background: #333;
+    border: 1px solid #333;
+    color: #fff !important;
+}
+
+.button.orange,
+.button.orange:hover {
+    background: #f78d1d;
+    border: 1px solid #f78d1d;
+    color: #fff;
+}
+
+.button.blue,
+.button.blue:hover {
+    background: #337ab7;
+    border: 1px solid #337ab7;
+    color: #fff !important;
+}
+
+.button.blue2,
+.button.blue2:hover {
+    background: #00adee;
+    border: 1px solid #00adee;
+    color: #fff !important;
+}
+
+.button.green,
+.button.green:hover {
+    background: #65BB65;
+    border: 1px solid #65BB65;
+    color: #fff !important;
+}
+
+.button.rosy {
+    background: #E83D51;
+    border: 1px solid #E83D51;
+    color: #fff;
+}
+
+.large {
+	font-size: 16px;
+    padding: 0.7em 2em 0.7em 2em !important;
+    vertical-align: bottom;
+    margin: 2px auto !important;
+}
+
+.medium {
+	font-size: 12px;
+	padding: .4em 1.3em .42em;
+}
+
+.small {
+	font-size: 11px;
+	padding: .2em 0.8em .275em;
+}

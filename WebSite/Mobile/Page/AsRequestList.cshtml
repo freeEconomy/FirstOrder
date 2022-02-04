@@ -1,0 +1,233 @@
+﻿@using System.Collections;
+@using System.Configuration;
+@using System.Data;
+@using System.Text;
+@using System.Xml;
+@using FirstOrder.Data;
+@{
+    var headerTitle = "As접수현황";
+
+    Page.Title = headerTitle;
+    PageData["title"] = headerTitle;
+
+    Layout = "~/Mobile/LayOut/_Main.cshtml";
+
+    string preVal = "";
+
+    try
+    {
+        preVal = HttpContext.Current.Session["PreVal"].ToString();
+    }
+    catch
+    {
+        preVal = "tbl";
+    }
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var picker = $("input[data-role='datebox']", this);
+
+        picker.mobipick();
+
+        picker.on("change", function () {
+            var date = $(this).val();
+
+            // formatted date
+            var dateObject = $(this).mobipick("option", "date");
+        });
+
+        //추가 검색결과 클릭
+        $(document).on('click', '#listMore', function () {
+            var nextPage = eval($(this).attr('data-parm-page')) + 1;
+            BindSearchDefault(nextPage);
+        });
+
+        //스크롤시 추가 검색결과 가져오기
+        $(document).scroll(function () {
+            if ($.mobile.activePage == undefined)
+                location.replace('Notice.cshtml');
+
+            if ($.mobile.activePage.attr("id") == "pageResult") {
+                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                    var nextPage = eval($('#hidNowPage').val()) + 1;
+                    var totalPage = eval($('#hidTotalPage').val());
+
+                    if (nextPage <= totalPage) {
+                        BindSearchDefault(nextPage);
+                    }
+                }
+            }
+
+        });
+
+        //검색결과 상세버튼 클릭
+        $(document).on('click', '.viewDetail', function () {
+            //var param = $(this).attr("data-param");
+            // 같음 : var param = $(this).data('param');
+
+            var date = $(this).data('date');
+            var times = $(this).data('times');
+            var mainbuyer = $(this).data('mainbuyer');
+            var sample = $(this).data('sample');
+
+            location.href = 'AsRequestDetail.cshtml?mode=view&date=' + encodeURI(date) + '&times=' + encodeURI(times) + '&mainbuyer=' + encodeURI(mainbuyer) + '&sample=' + sample;
+        });
+
+        //검색 버튼 클릭
+        $("#btnSearch").click(function () {
+            BindSearchDefault('1');
+        });
+
+        $("#btnAdd").click(function () {
+            $('#frmAction').attr('action', 'OrderDetail.cshtml?mode=add').submit();
+        });
+
+        $('#txtDateS').val('@DateTime.Today.AddMonths(-1).ToString("yyyy-MM-dd")');
+        $('#txtDateE').val('@DateTime.Now.ToShortDateString()');
+        
+        BindSearchDefault('1');
+    });
+
+    function BindSearchDefault(page) {
+        var paramDateS = $('#txtDateS').val();
+        var paramDateE = $('#txtDateE').val();
+
+        var paramPage = page;
+        var paramPageSize = '20';
+
+        if (paramPage == "") {
+            paramPage = '1';
+        }
+
+        if (eval(paramPage) == 1) {
+            $('#tbResult').html('');
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Handler/WebService_common.asmx/GetAsList",
+            data: "{'paramDateS':'" + paramDateS + "','paramDateE':'" + paramDateE + "','paramPage':'" + paramPage + "','paramPageSize':'" + paramPageSize + "'}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            beforeSend: function () {
+                $.mobile.loading('show');
+            },
+            error: function () {
+                $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+            },
+            success: function (msg) {
+                var items = [];
+                var html = '';
+                var dataStat = $.parseJSON(msg.d);
+                var totCnt = dataStat.totalcount;
+                var totPage = dataStat.totalpage;
+                var data = dataStat.OrderInfo;
+                var nowCnt = data.length;
+
+                $('#hidNowPage').val(paramPage);
+                $('#hidTotalPage').val(totPage);
+                $('#hidTotalCount').val(totCnt);
+
+                if (eval(paramPage) == 1) {
+                    items.push('<tr>');
+                    items.push('<th bgcolor="#E7E7E7" class="reportTh">접수일자</th>');
+                    items.push('<th bgcolor="#E7E7E7" class="reportTh">Style</th>');
+                    items.push('<th bgcolor="#E7E7E7" class="reportTh">진행상태</th>');
+                    items.push('<th bgcolor="#E7E7E7" class="reportTh">조회</th>');
+                    items.push('</tr>');
+                }
+
+                if (totCnt > 0) {
+                    $.each(data, function (key, val) {
+
+                        var cssChat = "";
+                        if (val.daeRiReadOk > 0) {
+                            cssChat = "chatOverColorTd";
+                        }
+
+                        items.push('<tr>');
+
+                        items.push('<td class="reportTd ' + cssChat + '">' + val.date + '</td>');
+                        items.push('<td class="reportTd ' + cssChat + '">' + val.styleNox + '</td>');
+                        items.push('<td class="reportTd ' + cssChat + '">' + val.bonsaCheck + '</td>');
+                        items.push('<td class="reportTd ' + cssChat + '">');
+
+                        items.push('<a data-role="button" data-mini="true" data-theme="b" style="margin:0;" href="#" data-date="' + val.date + '" data-times="' + val.times + '" data-mainbuyer="' + val.mainbuyer + '" data-sample="' + val.sample + '" data-transition="none" class="viewDetail">');
+                        items.push('    보기');
+                        items.push('</a>');
+
+                        items.push('</td>');
+                        items.push('</tr>');
+                    });
+                }
+
+                $('#listMore').remove();
+
+                if (eval(paramPage) < eval(totPage)) {
+                    items.push('<tr><td colspan="4" style="text-align:center;" id="listMore" data-parm-page="' + paramPage + '" data-inset="false" >결과더보기</td></tr>');
+                }
+
+                html = items.join('');
+                $('#tbResult').append($(html));
+                $('#tbResult').trigger('create');
+                //$('#tbResult').listview('refresh');
+                $("#collarSearch").trigger("collapse");
+                $.mobile.loading("hide");
+            }
+        });
+    }
+
+</script>
+
+<div id="pageSearch" data-role="page" data-theme="c" class="mobile-main">
+    
+    <div data-role="header" data-position="fixed" data-theme="b">
+        @RenderPage("~/Mobile/Include/HeadNav.cshtml")
+    </div>
+    <div data-role="content">
+
+        <section id="main" class="wrapper style2">
+
+            <div id="collarSearch" data-collapsed="true" data-role="collapsible" data-collapsed-icon="search" data-expanded-icon="search">
+                <h4>AS접수일자 검색</h4>
+                <ul data-role="listview">
+                    <li data-role="fieldcontain">
+                        <label for="txtDateS">시작일</label>
+                        <input type="text" data-role="datebox" data-clear-btn="true" id="txtDateS" name="txtDateS" data-mini="true" />
+                    </li>
+                    <li data-role="fieldcontain">
+                        <label for="txtDateE">종료일</label>
+                        <input type="text" data-role="datebox" data-clear-btn="true" id="txtDateE" name="txtDateE" data-mini="true" />
+                    </li>
+                    <li>
+                        <input type="button" id="btnSearch" value="검색" data-role="button" />
+                    </li>
+                </ul>
+            </div>        
+            
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+
+                </div>
+                <div class="ui-block-b">
+                    <!--<input type="button" id="btnAdd" value="AS접수" data-role="button" data-icon="plus" data-mini="true" />-->
+                </div>
+            </div>
+
+            <div id="divResult">
+
+                <table id="tbResult" class="reportTable" cellspacing="0" cellpadding="0"></table>
+
+            </div>
+
+    </section>
+
+    </div>
+    <div data-role="footer" data-theme="b">
+        @RenderPage("~/Mobile/Include/FootNav.cshtml")
+    </div>
+</div>
+
+<form id="frmAction" name="frmAction" method="post" data-ajax="false"></form>

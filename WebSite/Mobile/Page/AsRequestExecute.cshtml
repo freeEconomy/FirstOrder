@@ -1,0 +1,165 @@
+﻿@using FirstOrder.Util;
+@using FirstOrder.Data;
+
+@{
+    Layout = "~/Mobile/LayOut/_Popup.cshtml";
+
+    string preVal = "";
+
+    try
+    {
+        preVal = HttpContext.Current.Session["PreVal"].ToString();
+    }
+    catch
+    {
+        preVal = "tbl";
+    }
+
+    if (IsPost)
+    {
+        var asDate = StCommon.ReplaceSQ(Request.Form["hidAsDate"]);
+        var asTimes = StCommon.ReplaceSQ(Request.Form["hidAsTimes"]);
+        var asMainBuyer = StCommon.ReplaceSQ(Request.Form["hidAsMainBuyer"]);
+        var asSample = StCommon.ReplaceSQ(Request.Form["hidAsSample"]);
+
+        var bljuDate = StCommon.ReplaceSQ(Request.Form["hidBljuDate"]);
+        var bljuTimes = StCommon.ReplaceSQ(Request.Form["hidBljuTimes"]);
+        var bljuMainBuyer = StCommon.ReplaceSQ(Request.Form["hidBljuMainBuyer"]);
+        var bljuSample = StCommon.ReplaceSQ(Request.Form["hidBljuSample"]);
+
+        var bljuStyle = StCommon.ReplaceSQ(Request.Form["txtProduct"]);
+
+        var style = bljuStyle;
+        style = style.ToUpper();
+
+        var bonsaCheck = StCommon.ReplaceSQ(Request.Form["hidBonsaCheck"]);
+
+        var tbucmarktop = "";
+
+        var cboTBuc = StCommon.ReplaceSQ(Request.Form["cboTBuc"]);
+        if (cboTBuc != "")
+        {
+            tbucmarktop = "T";
+        }
+        else if (preVal == "tbl")
+        {
+            tbucmarktop = "M";
+        }
+        else if (preVal == "abl")
+        {
+            tbucmarktop = "A";
+        }
+
+        var etc = StCommon.ReplaceSQ(Request.Form["txtEtc"]);
+
+        // 헤더 저장
+        AsRequestData asr = new AsRequestData();
+
+        asr.Date = asDate;
+        asr.Times = asTimes;
+        asr.Mainbuyer = asMainBuyer;
+        asr.Sample = asSample;
+        asr.tbucmarktop = tbucmarktop;
+        asr.bjhd_date = bljuDate;
+        asr.bjhd_times = bljuTimes;
+        asr.bjhd_mainbuyer = bljuMainBuyer;
+        asr.bjhd_sample = bljuSample;
+        asr.bonsa_check = bonsaCheck;
+        asr.remark = etc;
+        asr.Mdate = DateTime.Now;
+        asr.Msawon = MemberData.GetLoginSID("LoginID");
+
+        asr.UpdateHead();
+
+        char[] delimeter = { ',' };
+        string[] arrIDX = Request.Form["rowNum"].Split(delimeter);
+
+        asr.DeleteData();
+
+        for (int i = 0; i < arrIDX.Length; i++)
+        {
+            string BnpmD_BnpmCode = StCommon.ReplaceSQ(Request.Form["BnpmD_BnpmCode_" + arrIDX[i]]);
+            string BnpmD_Qty01 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty01_" + arrIDX[i]]);
+            string BnpmD_Qty02 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty02_" + arrIDX[i]]);
+            string BnpmD_Qty03 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty03_" + arrIDX[i]]);
+            string BnpmD_Qty04 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty04_" + arrIDX[i]]);
+            string BnpmD_Qty05 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty05_" + arrIDX[i]]);
+            string BnpmD_Qty06 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty06_" + arrIDX[i]]);
+            string BnpmD_Qty07 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty07_" + arrIDX[i]]);
+            string BnpmD_Qty08 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty08_" + arrIDX[i]]);
+            string BnpmD_Qty09 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty09_" + arrIDX[i]]);
+            string BnpmD_Qty10 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty10_" + arrIDX[i]]);
+            string BnpmD_Qty11 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty11_" + arrIDX[i]]);
+            string BnpmD_Qty12 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty12_" + arrIDX[i]]);
+            string BnpmD_Qty13 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty13_" + arrIDX[i]]);
+            string BnpmD_Qty14 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty14_" + arrIDX[i]]);
+            string BnpmD_Qty15 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty15_" + arrIDX[i]]);
+            string BnpmD_Qty16 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty16_" + arrIDX[i]]);
+            string BnpmD_Qty17 = StCommon.ReplaceSQ(Request.Form["BnpmD_Qty17_" + arrIDX[i]]);
+            string BnpmD_QtyTotal = StCommon.ReplaceSQ(Request.Form["BnpmD_QtyTotal_" + arrIDX[i]]);
+            string BnpmD_UsedRemark = StCommon.ReplaceSQ(Request.Form["BnpmD_UsedRemark_" + arrIDX[i]]);
+            string BnpmD_ReasonRemark = StCommon.ReplaceSQ(Request.Form["BnpmD_ReasonRemark_" + arrIDX[i]]);
+
+            double Qty01 = StCommon.ToDouble(BnpmD_Qty01, 0);
+            double Qty02 = StCommon.ToDouble(BnpmD_Qty02, 0);
+            double Qty03 = StCommon.ToDouble(BnpmD_Qty03, 0);
+            double Qty04 = StCommon.ToDouble(BnpmD_Qty04, 0);
+            double Qty05 = StCommon.ToDouble(BnpmD_Qty05, 0);
+            double Qty06 = StCommon.ToDouble(BnpmD_Qty06, 0);
+            double Qty07 = StCommon.ToDouble(BnpmD_Qty07, 0);
+            double Qty08 = StCommon.ToDouble(BnpmD_Qty08, 0);
+            double Qty09 = StCommon.ToDouble(BnpmD_Qty09, 0);
+            double Qty10 = StCommon.ToDouble(BnpmD_Qty10, 0);
+            double Qty11 = StCommon.ToDouble(BnpmD_Qty11, 0);
+            double Qty12 = StCommon.ToDouble(BnpmD_Qty12, 0);
+            double Qty13 = StCommon.ToDouble(BnpmD_Qty13, 0);
+            double Qty14 = StCommon.ToDouble(BnpmD_Qty14, 0);
+            double Qty15 = StCommon.ToDouble(BnpmD_Qty15, 0);
+            double Qty16 = StCommon.ToDouble(BnpmD_Qty16, 0);
+            double Qty17 = StCommon.ToDouble(BnpmD_Qty17, 0);
+            double QtyTotal = Qty01 + Qty02 + Qty03 + Qty04 + Qty05 + Qty06 + Qty07 + Qty08 + Qty09 + Qty10 + Qty11 + Qty12 + Qty13 + Qty14 + Qty15 + Qty16 + Qty17;
+
+            asr = new AsRequestData();
+
+            asr.Date = asDate;
+            asr.Times = asTimes;
+            asr.Mainbuyer = asMainBuyer;
+            asr.Sample = asSample;
+            asr.Stylenox = style;
+            asr.Bnpmcode = BnpmD_BnpmCode;
+            asr.Qty01 = Qty01;
+            asr.Qty02 = Qty02;
+            asr.Qty03 = Qty03;
+            asr.Qty04 = Qty04;
+            asr.Qty05 = Qty05;
+            asr.Qty06 = Qty06;
+            asr.Qty07 = Qty07;
+            asr.Qty08 = Qty08;
+            asr.Qty09 = Qty09;
+            asr.Qty10 = Qty10;
+            asr.Qty11 = Qty11;
+            asr.Qty12 = Qty12;
+            asr.Qty13 = Qty13;
+            asr.Qty14 = Qty14;
+            asr.Qty15 = Qty15;
+            asr.Qty16 = Qty16;
+            asr.Qty17 = Qty17;
+            asr.QtyTotal = QtyTotal;
+            asr.JustPrice = "0";
+            asr.JustAmount = "0";
+            asr.Usedremark = BnpmD_UsedRemark;
+            asr.Reasonremark = BnpmD_ReasonRemark;
+
+            asr.InsertData();
+        }
+    }
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        alert("접수되었습니다.");
+        $('#frmAction').attr('action', 'AsRequestList.cshtml').submit();
+    });
+</script>
+
+<form id="frmAction" name="frmAction" method="post" data-ajax="false"></form>

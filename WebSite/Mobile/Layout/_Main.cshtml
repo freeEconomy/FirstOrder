@@ -1,0 +1,82 @@
+﻿@using FirstOrder.Data;
+@{
+    /*
+    if (MemberData.IsLogin())
+    {
+    }
+    else
+    {
+        Response.Redirect("~/Mobile/Login/Login.cshtml", true);
+    }
+    */
+
+    string preVal = "";
+
+    try
+    {
+        preVal = HttpContext.Current.Session["PreVal"].ToString();
+    }
+    catch
+    {
+        preVal = "tbl";
+    }
+}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>@Page.Title</title>
+    @RenderPage("~/Mobile/Include/HeaderMeta.cshtml")
+
+    @RenderSection("head", required: false)
+
+    <style>
+        #page-navigation {
+            position: absolute;
+            top: 75px;
+            right: 0;
+            z-index: 1000;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#btnLink1").click(function () {
+                $('#frmAction').attr('action', '/Mobile/SetPreVal.cshtml?PreVal=abl').submit();
+            });
+
+            $("#btnLink2").click(function () {
+                $('#frmAction').attr('action', '/Mobile/SetPreVal.cshtml?PreVal=tbl').submit();
+            });
+            
+        });
+
+    </script>
+    
+</head>
+<body class="homepage is-preload">
+
+    <div id="page-notice">
+        @RenderPage("~/Mobile/Include/Notice.cshtml")
+    </div>
+
+    <div id="page-navigation">
+        @if (preVal == "tbl")
+        {
+            <input type="button" id="btnLink1" name="btnLink1" data-role="button" class="btn-mobile btn-blue2" value="안전화" style="height: 40px;" />
+        }
+        else
+        {
+            <input type="button" id="btnLink2" name="btnLink2" data-role="button" class="btn-mobile btn-red" value="의류" style="height: 40px;" />
+        }
+    </div>
+
+    <div id="page-wrapper">
+        @RenderBody()
+    </div>
+</body>
+</html>
+
+<form id="frmAction" name="frmAction" method="post" data-ajax="false"></form>

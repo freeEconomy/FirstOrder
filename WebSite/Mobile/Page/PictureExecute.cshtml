@@ -1,0 +1,50 @@
+﻿@using FirstOrder.Util;
+@using FirstOrder.Data;
+
+@{
+    Layout = "~/Mobile/LayOut/_Popup.cshtml";
+
+    string pageUrl = "";
+    string product = "";
+    string preVal = "";
+
+    try
+    {
+        preVal = HttpContext.Current.Session["PreVal"].ToString();
+    }
+    catch
+    {
+        preVal = "tbl";
+    }
+
+    if (IsPost)
+    {
+        pageUrl = StCommon.ReplaceSQ(Request.Form["hidPageUrl"]);
+        product = StCommon.ReplaceSQ(Request.Form["hidPicId"]);
+
+        var filePic = Request.Files["filePic"];
+
+        if (FileFactory.CheckImageFile(filePic.FileName))
+        {
+            byte[] imgData;
+
+            using (var reader = new BinaryReader(filePic.InputStream))
+            {
+                imgData = reader.ReadBytes(filePic.ContentLength);
+            }
+
+            OrderData_common order = new OrderData_common();
+
+            order.UploadPicture(imgData, preVal, product);
+        }
+    }
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        alert("사진이 수정되었습니다. 해당스타일을 다시 검색해주세요!");
+        $('#frmAction').attr('action', '@pageUrl').submit();
+    });
+</script>
+
+<form id="frmAction" name="frmAction" method="post" data-ajax="false"></form>

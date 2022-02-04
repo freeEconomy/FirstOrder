@@ -1,0 +1,30 @@
+Log Entry : 
+
+LoginID :: ZQ 
+KureCode :: ZQ 
+KureName :: 개발자테스트 
+
+2020년 2월 5일 수요일 오후 12:42:49 
+
+System.Threading.ThreadAbortException: 스레드가 중단되었습니다.
+   위치: System.Threading.Thread.AbortInternal()
+   위치: System.Threading.Thread.Abort(Object stateInfo)
+   위치: System.Web.HttpResponse.AbortCurrentThread()
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\AlbaWork\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 246
+---------------------------------------------------------
+
+Log Entry : 
+
+LoginID :: ZQ 
+KureCode :: ZQ 
+KureName :: 개발자테스트 
+
+2020년 2월 5일 수요일 오후 12:47:03 
+
+System.Threading.ThreadAbortException: 스레드가 중단되었습니다.
+   위치: System.Threading.Thread.AbortInternal()
+   위치: System.Threading.Thread.Abort(Object stateInfo)
+   위치: System.Web.HttpResponse.AbortCurrentThread()
+   위치: Page_JegoUpload_tbl.BindExcelData(String fullPathFile, String extFileName) 파일 d:\개인폴더\AlbaWork\source\FirstOrder\WebSite\Page\JegoUpload_tbl.aspx.cs:줄 246
+---------------------------------------------------------
+

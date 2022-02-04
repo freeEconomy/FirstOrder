@@ -1,0 +1,350 @@
+﻿@using System.Collections;
+@using System.Configuration;
+@using System.Data;
+@using System.Text;
+@using System.Xml;
+@using FirstOrder.Data;
+@{
+    var headerTitle = "스타일 선택";
+
+    Page.Title = headerTitle;
+    PageData["title"] = headerTitle;
+
+    Layout = "~/Mobile/LayOut/_Popup.cshtml";
+
+    var loginID = MemberData.GetLoginSID("LoginID");
+
+    var date = "";
+    var times = "";
+    var mainbuyer = "";
+    var sample = "";
+    var product = "";
+
+    try
+    {
+        date = Request["date"].ToString().Trim();
+        times = Request["times"].ToString().Trim();
+        mainbuyer = Request["mainbuyer"].ToString().Trim();
+        sample = Request["sample"].ToString().Trim();
+        product = Request["product"].ToString().Trim();
+    }
+    catch { }
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#btnSearch").click(function () {
+            BindStyleList('1');
+        });
+
+        $("#txtStyleNox").keydown(function(key) {
+            if (key.keyCode == 13) {
+                BindStyleList('1');
+            }
+        });
+
+        $("#txtStyleNox").val('@product');
+
+        BindStyleList('1');
+
+        $("#txtStyleNox").focus();
+    });
+
+    //추가 검색결과 클릭
+    $(document).on('click', '#listMore', function () {
+        var nextPage = eval($(this).attr('data-parm-page')) + 1;
+        BindStyleList(nextPage);
+    });
+
+    //스크롤시 추가 검색결과 가져오기
+    $(document).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            var nextPage = eval($('#hidNowPage').val()) + 1;
+            var totalPage = eval($('#hidTotalPage').val());
+
+            if (nextPage <= totalPage) {
+                BindStyleList(nextPage);
+            }
+        }
+    });
+
+    function BindStyleList(page) {
+
+        var paramDate = '@date';
+        var paramTimes = '@times';
+        var paramKure = '@mainbuyer';
+        var paramSample = '@sample';
+
+        var paramStyleNox = $('#txtStyleNox').val();
+
+        var paramPage = page;
+        var paramPageSize = '20';
+
+        if (eval(paramPage) == 1) {
+            $('#tbResult').html('');
+        }
+
+        $.ajax({ //검색결과 바인딩
+            type: "POST",
+            url: "/Handler/WebService_common.asmx/GetStyleList",
+            data: "{'paramDate':'" + paramDate + "','paramTimes':'" + paramTimes + "','paramKure':'" + paramKure + "','paramSample':'" + paramSample + "','paramStyleNox':'" + paramStyleNox + "','paramPage':'" + paramPage + "','paramPageSize':'" + paramPageSize + "'}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            beforeSend: function () {
+                $.mobile.loading('show');
+            },
+            error: function () {
+                $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+            },
+            success: function (msg) {
+                var items = [];
+                var html = '';
+                var dataStat = $.parseJSON(msg.d);
+                var totCnt = dataStat.totalcount;
+                var totPage = dataStat.totalpage;
+                var data = dataStat.StyleInfo;
+
+                $('#hidNowPage').val(paramPage);
+                $('#hidTotalPage').val(totPage);
+                $('#hidTotalCount').val(totCnt);
+
+                if (totCnt > 0) {
+                    $.each(data, function (key, val) {
+                        items.push('<tr>');
+                        items.push('<td>');
+                        items.push('<table class="reportTable">');
+                        items.push('<tr>');
+                        items.push('<th bgcolor="#E7E7E7" class="reportTh">스타일번호</th>');
+                        items.push('<th class="reportTd">');
+                        items.push('' + val.StyleNox + '');
+                        items.push('<a href="#" class="selectButton btn-mobile btn-info" data-role="button" data-mini="true" onclick="SetProduct(\'' + val.StyleNox + '\',\'' + val.MainName + '\',\'' + val.SubName + '\',\'' + val.SpecColor + '\',\'' + val.JegoQty01 + '\',\'' + val.JegoQty02 + '\',\'' + val.JegoQty03 + '\',\'' + val.JegoQty04 + '\',\'' + val.JegoQty05 + '\',\'' + val.JegoQty06 + '\',\'' + val.JegoQty07 + '\',\'' + val.JegoQty08 + '\',\'' + val.JegoQty09 + '\',\'' + val.JegoQty10 + '\',\'' + val.JegoQty11 + '\',\'' + val.JegoQty12 + '\',\'' + val.JegoQty13 + '\',\'' + val.JegoQty14 + '\',\'' + val.JegoQty15 + '\',\'' + val.JegoQty16 + '\',\'' + val.JegoQty17 + '\',\'' + val.JegoQtyTotal + '\',\'' + val.IsDuple + '\',\'' + val.Msg + '\',\'' + val.JustPrice + '\',\'' + val.Width + '\',\'' + val.Height + '\',\'' + val.sizeName1 + '\',\'' + val.sizeName2 + '\',\'' + val.sizeName3 + '\',\'' + val.sizeName4 + '\',\'' + val.sizeName5 + '\',\'' + val.sizeName6 + '\',\'' + val.sizeName7 + '\',\'' + val.sizeName8 + '\',\'' + val.sizeName9 + '\',\'' + val.sizeName10 + '\',\'' + val.sizeName11 + '\',\'' + val.sizeName12 + '\',\'' + val.sizeName13 + '\',\'' + val.sizeName14 + '\',\'' + val.sizeName15 + '\',\'' + val.sizeName16 + '\',\'' + val.sizeName17 + '\',\'' + val.Kind + '\');">선택</a>');
+                        items.push('</th>');
+                        items.push('</tr>');
+                        items.push('<tr><td class="reportTd">분류명</td><td class="reportTd">' + val.MainName + '</td></tr>');
+                        items.push('<tr><td class="reportTd">제품명</td><td class="reportTd">' + val.SubName + '</td></tr>');
+                        items.push('<tr><td class="reportTd">규격(칼라)</td><td class="reportTd">' + val.SpecColor + '</td></tr>');
+                        items.push('<tr><td class="reportTd">낱장단가</td><td class="reportTd">' + val.JustPrice + '</td></tr>');
+                        items.push('<tr><td class="reportTd">박스단가</td><td class="reportTd">' + val.LowPrice + '</td></tr>');
+                        items.push('<tr><td class="reportTd">BigSize 추가금</td><td class="reportTd">' + val.BigSizePrice + '</td></tr>');
+                        items.push('<tr><td class="reportTd">Size별 박스단가 수량</td><td class="reportTd">' + val.SizeBoxQty + '</td></tr>');
+                        items.push('<tr><td class="reportTd">총수량 박스단가 수량</td><td class="reportTd">' + val.BoxQty + '</td></tr>');
+                        //items.push('<tr><td class="reportTd" colspan="2"><a href="#" class="selectButton btn-mobile btn-blue" data-role="button" data-mini="true" onclick="SetProduct(\'' + val.StyleNox + '\',\'' + val.MainName + '\',\'' + val.SubName + '\',\'' + val.SpecColor + '\',\'' + val.JegoQty01 + '\',\'' + val.JegoQty02 + '\',\'' + val.JegoQty03 + '\',\'' + val.JegoQty04 + '\',\'' + val.JegoQty05 + '\',\'' + val.JegoQty06 + '\',\'' + val.JegoQty07 + '\',\'' + val.JegoQty08 + '\',\'' + val.JegoQty09 + '\',\'' + val.JegoQty10 + '\',\'' + val.JegoQty11 + '\',\'' + val.JegoQty12 + '\',\'' + val.JegoQty13 + '\',\'' + val.JegoQty14 + '\',\'' + val.JegoQty15 + '\',\'' + val.JegoQty16 + '\',\'' + val.JegoQty17 + '\',\'' + val.JegoQtyTotal + '\',\'' + val.IsDuple + '\',\'' + val.Msg + '\',\'' + val.JustPrice + '\',\'' + val.Width + '\',\'' + val.Height + '\',\'' + val.sizeName1 + '\',\'' + val.sizeName2 + '\',\'' + val.sizeName3 + '\',\'' + val.sizeName4 + '\',\'' + val.sizeName5 + '\',\'' + val.sizeName6 + '\',\'' + val.sizeName7 + '\',\'' + val.sizeName8 + '\',\'' + val.sizeName9 + '\',\'' + val.sizeName10 + '\',\'' + val.sizeName11 + '\',\'' + val.sizeName12 + '\',\'' + val.sizeName13 + '\',\'' + val.sizeName14 + '\',\'' + val.sizeName15 + '\',\'' + val.sizeName16 + '\',\'' + val.sizeName17 + '\',\'' + val.Kind + '\');">사진수정</a></td></tr>');
+                        items.push('<tr><td class="reportTd" colspan="2"><img src="/Handler/DisplayImage.ashx?code=' + val.StyleNox + '" style="width:100%;border-width:0px;"></td></tr>');
+                        items.push('</table>');
+                        items.push('</td>');
+                        items.push('</tr>');
+                    });
+                } else {
+                    items.push('<tr>');
+                    items.push('<td>');
+                    items.push('<table class="reportTable">');
+                    items.push('<tr><td style="text-align:center;" colspan="2" class="reportTd">등록된 자료가 존재하지 않습니다.</td></tr>');
+                    items.push('</table>');
+                    items.push('</td>');
+                    items.push('</tr>');
+                }
+
+                $('#listMore').remove();
+
+                if (eval(paramPage) < eval(totPage)) {
+                    items.push('<tr><td style="text-align:center;" id="listMore" data-parm-page="' + paramPage + '" data-inset="false" >결과더보기</td></tr>');
+                }
+
+                html = items.join('');
+                $('#tbResult').append($(html));
+                $('#tbResult').trigger('create');
+                $("#collarSearch").trigger("collapse");
+
+                $.mobile.loading("hide");
+            }
+        });
+    }
+
+    // 스타일 정보 넘기기
+    function SetProduct(StyleNox, MainName, SubName, SpecColor, JegoQty01, JegoQty02, JegoQty03, JegoQty04, JegoQty05, JegoQty06, JegoQty07, JegoQty08, JegoQty09, JegoQty10, JegoQty11, JegoQty12, JegoQty13, JegoQty14, JegoQty15, JegoQty16, JegoQty17, JegoTotal, IsDuple, Msg, JustPrice, imgWidth, imgHeight, sizeName1, sizeName2, sizeName3, sizeName4, sizeName5, sizeName6, sizeName7, sizeName8, sizeName9, sizeName10, sizeName11, sizeName12, sizeName13, sizeName14, sizeName15, sizeName16, sizeName17, Kind) {
+
+        $('.StylePic', opener.document).html('');
+        $('.btnPicEdit', opener.document).hide();
+
+        if (IsDuple != "") {
+            alert(IsDuple + "번 라인에 해당스타일이 이미 등록되어 있습니다!");
+        }
+        else {
+            //opener 로 변경
+            $('#txtJego1', opener.document).val(JegoQty01);
+            $('#txtJego2', opener.document).val(JegoQty02);
+            $('#txtJego3', opener.document).val(JegoQty03);
+            $('#txtJego4', opener.document).val(JegoQty04);
+            $('#txtJego5', opener.document).val(JegoQty05);
+            $('#txtJego6', opener.document).val(JegoQty06);
+            $('#txtJego7', opener.document).val(JegoQty07);
+            $('#txtJego8', opener.document).val(JegoQty08);
+            $('#txtJego9', opener.document).val(JegoQty09);
+            $('#txtJego10', opener.document).val(JegoQty10);
+            $('#txtJego11', opener.document).val(JegoQty11);
+            $('#txtJego12', opener.document).val(JegoQty12);
+            $('#txtJego13', opener.document).val(JegoQty13);
+            $('#txtJego14', opener.document).val(JegoQty14);
+            $('#txtJego15', opener.document).val(JegoQty15);
+            $('#txtJego16', opener.document).val(JegoQty16);
+            $('#txtJego17', opener.document).val(JegoQty17);
+            $('#txtJegoTotal', opener.document).val(JegoTotal);
+
+            $('#txtOrder1', opener.document).val('');
+            $('#txtOrder2', opener.document).val('');
+            $('#txtOrder3', opener.document).val('');
+            $('#txtOrder4', opener.document).val('');
+            $('#txtOrder5', opener.document).val('');
+            $('#txtOrder6', opener.document).val('');
+            $('#txtOrder7', opener.document).val('');
+            $('#txtOrder8', opener.document).val('');
+            $('#txtOrder9', opener.document).val('');
+            $('#txtOrder10', opener.document).val('');
+            $('#txtOrder11', opener.document).val('');
+            $('#txtOrder12', opener.document).val('');
+            $('#txtOrder13', opener.document).val('');
+            $('#txtOrder14', opener.document).val('');
+            $('#txtOrder15', opener.document).val('');
+            $('#txtOrder16', opener.document).val('');
+            $('#txtOrder17', opener.document).val('');
+            $('#txtOrderTotal', opener.document).val('');
+
+            $('#txtOrder1', opener.document).attr('disabled', true);
+            $('#txtOrder2', opener.document).attr('disabled', true);
+            $('#txtOrder3', opener.document).attr('disabled', true);
+            $('#txtOrder4', opener.document).attr('disabled', true);
+            $('#txtOrder5', opener.document).attr('disabled', true);
+            $('#txtOrder6', opener.document).attr('disabled', true);
+            $('#txtOrder7', opener.document).attr('disabled', true);
+            $('#txtOrder8', opener.document).attr('disabled', true);
+            $('#txtOrder9', opener.document).attr('disabled', true);
+            $('#txtOrder10', opener.document).attr('disabled', true);
+            $('#txtOrder11', opener.document).attr('disabled', true);
+            $('#txtOrder12', opener.document).attr('disabled', true);
+            $('#txtOrder13', opener.document).attr('disabled', true);
+            $('#txtOrder14', opener.document).attr('disabled', true);
+            $('#txtOrder15', opener.document).attr('disabled', true);
+            $('#txtOrder16', opener.document).attr('disabled', true);
+            $('#txtOrder17', opener.document).attr('disabled', true);
+
+            if (setCommaHis_Del(JegoQty01) > 0)
+                $('#txtOrder1', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty02) > 0)
+                $('#txtOrder2', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty03) > 0)
+                $('#txtOrder3', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty04) > 0)
+                $('#txtOrder4', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty05) > 0)
+                $('#txtOrder5', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty06) > 0)
+                $('#txtOrder6', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty07) > 0)
+                $('#txtOrder7', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty08) > 0)
+                $('#txtOrder8', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty09) > 0)
+                $('#txtOrder9', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty10) > 0)
+                $('#txtOrder10', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty11) > 0)
+                $('#txtOrder11', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty12) > 0)
+                $('#txtOrder12', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty13) > 0)
+                $('#txtOrder13', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty14) > 0)
+                $('#txtOrder14', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty15) > 0)
+                $('#txtOrder15', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty16) > 0)
+                $('#txtOrder16', opener.document).attr('disabled', false);
+            if (setCommaHis_Del(JegoQty17) > 0)
+                $('#txtOrder17', opener.document).attr('disabled', false);
+
+            $('#txtProduct', opener.document).val(StyleNox);
+            $('#txtProductDetail', opener.document).val(MainName + ", " + SubName + ", " + SpecColor);
+
+            $('#txtMsg', opener.document).val(Msg);
+
+            $('#txtJustPrice', opener.document).val(JustPrice);
+
+            $('.sizeName1', opener.document).html(sizeName1);
+            $('.sizeName2', opener.document).html(sizeName2);
+            $('.sizeName3', opener.document).html(sizeName3);
+            $('.sizeName4', opener.document).html(sizeName4);
+            $('.sizeName5', opener.document).html(sizeName5);
+            $('.sizeName6', opener.document).html(sizeName6);
+            $('.sizeName7', opener.document).html(sizeName7);
+            $('.sizeName8', opener.document).html(sizeName8);
+            $('.sizeName9', opener.document).html(sizeName9);
+            $('.sizeName10', opener.document).html(sizeName10);
+            $('.sizeName11', opener.document).html(sizeName11);
+            $('.sizeName12', opener.document).html(sizeName12);
+            $('.sizeName13', opener.document).html(sizeName13);
+            $('.sizeName14', opener.document).html(sizeName14);
+            $('.sizeName15', opener.document).html(sizeName15);
+            $('.sizeName16', opener.document).html(sizeName16);
+            $('.sizeName17', opener.document).html(sizeName17);
+
+            $('.StylePic', opener.document).html('<img src="/Handler/DisplayImage.ashx?code=' + StyleNox + '" width="100%" />');
+
+            var loginID = '@loginID';
+            if (loginID == "ZX-999") {
+                $('.btnPicEdit', opener.document).show();
+            }
+
+
+
+            //$('.btnPicEdit', opener.document).hide();
+
+
+            self.close();
+        }
+    }
+
+</script>
+
+<div id="pageSearch" data-role="page" data-theme="c" class="mobile-main">
+    
+    <input type="hidden" id="hidNowPage" name="hidNowPage" />
+    <input type="hidden" id="hidTotalPage" name="hidTotalPage" />
+    <input type="hidden" id="hidTotalCount" name="hidTotalCount" />
+
+    <div data-role="content">
+
+        <section id="main" style="padding:5px">
+            
+            <div style="float:right;">
+                <input type="button" id="btnClose" value="창 닫기" data-role="button" onclick="self.close();" />
+            </div>
+            <div style="clear:both;"></div>
+
+            <div id="collarSearch" data-collapsed="false" data-role="collapsible" data-collapsed-icon="search" data-expanded-icon="search">
+                <h4>스타일 이름</h4>
+                <ul data-role="listview">
+                    <li data-role="fieldcontain">
+                        <div>
+                            <input type="text" id="txtStyleNox" name="txtStyleNox" data-mini="true" data-clear-btn="true" placeholder="스타일번호 혹은 제품명을 입력" class="inputProduct" />
+                        </div>
+                    </li>
+                    <li>
+                        <input type="button" id="btnSearch" value="검색" data-role="button" />
+                    </li>
+                </ul>
+            </div>
+
+            <div id="divResult">                
+                <div id="lvResult">
+                </div>
+
+                <table id="tbResult" border="0" cellspacing="0" cellpadding="0"></table>
+
+            </div>
+
+        </section>
+
+    </div>
+    
+</div>

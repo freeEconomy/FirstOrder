@@ -1,0 +1,27 @@
+﻿@using FirstOrder.Data;
+@{
+    /*
+    if (MemberData.IsLogin())
+    {
+    }
+    else
+    {
+        Response.Redirect("~/Mobile/Login/Login.cshtml", true);
+    }
+    */
+}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>@Page.Title</title>
+    @RenderPage("~/Mobile/Include/HeaderMeta.cshtml")
+
+    @RenderSection("head", required: false)
+</head>
+<body class="homepage is-preload">    
+    <div id="page-wrapper">
+        @RenderBody()
+    </div>
+</body>
+</html>

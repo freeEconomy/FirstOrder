@@ -1,0 +1,823 @@
+﻿@using System.Collections;
+@using System.Configuration;
+@using System.Data;
+@using System.Text;
+@using System.Xml;
+@using FirstOrder.Util;
+@using FirstOrder.Data;
+@{
+    var headerTitle = "발주상세조회";
+
+    Page.Title = headerTitle;
+    PageData["title"] = headerTitle;
+
+    Layout = "~/Mobile/LayOut/_Main.cshtml";
+
+    StDataCommon stData = new StDataCommon();
+
+    string preVal = "";
+
+    try
+    {
+        preVal = HttpContext.Current.Session["PreVal"].ToString();
+    }
+    catch
+    {
+        preVal = "tbl";
+    }
+
+    var sizeNum = MemberData.GetLoginSID("tblSizeNum");
+
+    StCommon st = new StCommon(preVal);
+    st.Kind = "1";
+    st.GetSizeInfo(preVal);
+
+    string[] SizeArray = { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+    SizeArray[1] = String.Concat(st.SizeName1, "(", st.SizeNum1, ")");
+    SizeArray[2] = String.Concat(st.SizeName2, "(", st.SizeNum2, ")");
+    SizeArray[3] = String.Concat(st.SizeName3, "(", st.SizeNum3, ")");
+    SizeArray[4] = String.Concat(st.SizeName4, "(", st.SizeNum4, ")");
+    SizeArray[5] = String.Concat(st.SizeName5, "(", st.SizeNum5, ")");
+    SizeArray[6] = String.Concat(st.SizeName6, "(", st.SizeNum6, ")");
+    SizeArray[7] = String.Concat(st.SizeName7, "(", st.SizeNum7, ")");
+    SizeArray[8] = String.Concat(st.SizeName8, "(", st.SizeNum8, ")");
+    SizeArray[9] = String.Concat(st.SizeName9, "(", st.SizeNum9, ")");
+    SizeArray[10] = String.Concat(st.SizeName10, "(", st.SizeNum10, ")");
+    SizeArray[11] = String.Concat(st.SizeName11, "(", st.SizeNum11, ")");
+    SizeArray[12] = String.Concat(st.SizeName12, "(", st.SizeNum12, ")");
+    SizeArray[13] = st.SizeName13;
+    SizeArray[14] = st.SizeName14;
+    SizeArray[15] = st.SizeName15;
+    SizeArray[16] = st.SizeName16;
+    SizeArray[17] = st.SizeName17;
+
+    var date = "";
+    var times = "";
+    var mainbuyer = "";
+    var sample = "";
+    var mode = "";
+    try
+    {
+        date = Request["date"].ToString().Trim();
+    }
+    catch { }
+    try
+    {
+        times = Request["times"].ToString().Trim();
+        mainbuyer = Request["mainbuyer"].ToString().Trim();
+        sample = Request["sample"].ToString().Trim();
+    }
+    catch { }
+    try
+    {
+        mode = Request["mode"].ToString().Trim();
+    }
+    catch { }
+
+    var addView = "";
+    var modifyView = "";
+    var deleteView = "";
+    var chatView = "";
+    var completeView = "";
+
+    string kurename = MemberData.GetLoginSID("KureName");
+    string kurecode = MemberData.GetLoginSID("KureCode");
+    mainbuyer = (mainbuyer == "") ? kurecode : mainbuyer;
+    sample = (sample == "") ? "0" : sample;
+
+    string bljudate = DateTime.Now.ToShortDateString();
+    string postbljudate = DateTime.Now.AddDays(-1).ToShortDateString();
+    var openConfirm = "";
+
+    string stopMsg = "";
+    string stopMsg2 = "";
+
+    stopMsg2 = OrderData_common.GetStopCheck(preVal).Replace("'", "`");
+
+    if (mode == "add")
+    {
+        stopMsg = OrderData_common.GetStopCheck(preVal).Replace("'", "`");
+
+        headerTitle = "발주의뢰";
+
+        if (date == "")
+        {
+            // 어제 날짜로 발주의뢰중인 발주내역 체크
+            string qryD = " select * from " + preVal + "BJHD where Bjhd_Bonsa_Check in('0') and Bjhd_Date = '" + postbljudate + "' and Bjhd_MainBuyer = '" + kurecode + "' and Bjhd_CreateSawon = '" + MemberData.GetLoginSID("LoginID") + "' order by Bjhd_Times desc ";
+            DataSet dsD = stData.GetDataSet(qryD);
+            if (dsD.Tables[0].Rows.Count > 0)
+            {
+                openConfirm = "1";
+            }
+        }
+        else
+        {
+            bljudate = date;
+        }
+    }
+
+    string qry = "";
+    DataSet ds = null;
+    string whereQry = "";
+
+    string isNew = "";
+
+    whereQry = StCommon.MakeSearchQry("bjhd_date", date, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("bjhd_times", times, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("bjhd_mainBuyer", mainbuyer, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("bjhd_sample", sample, "S", whereQry);
+
+    qry = " select * from " + preVal + "BJHD where bjhd_date='" + date + "' and bjhd_times='" + times + "' and bjhd_mainBuyer='" + mainbuyer + "' and bjhd_sample='" + sample + "' ";
+    ds = stData.GetDataSet(qry);
+
+    if (ds.Tables[0].Rows.Count == 0) // 조회한 발주내역이 존재하지 않을때
+    {
+        // 당일 거래처의 발주내역이 있으면 가져올것(단, 본사처리가 안된 상태인 tblBJHD테이블 Bjhd_Bonsa_Check 필드가 '0'인 것만)
+
+        whereQry = StCommon.MakeSearchQry("Bjhd_Times", times, "S", whereQry);
+
+        qry = " select * from " + preVal + "BJHD where Bjhd_Bonsa_Check in('0') and Bjhd_Date = '" + bljudate + "' and Bjhd_MainBuyer = '" + kurecode + "' " + whereQry + " and Bjhd_CreateSawon = '" + MemberData.GetLoginSID("LoginID") + "' order by Bjhd_Times desc ";
+
+        ds = stData.GetDataSet(qry);
+        if (ds.Tables[0].Rows.Count > 0)
+        {
+            if (ds.Tables[0].Rows[0]["Bjhd_Bonsa_Check"].ToString() == "0")
+            {
+                qry = " select * from " + preVal + "BLJU where Blju_Date = '" + bljudate + "' and Blju_Times = '" + times + "' and Blju_MainBuyer = '" + kurecode + "' ";
+                DataSet dsC = stData.GetDataSet(qry);
+
+                if (dsC.Tables[0].Rows.Count > 0)
+                {
+                    completeView = "1";
+                }
+            }
+
+            date = ds.Tables[0].Rows[0]["Bjhd_Date"].ToString();
+            times = ds.Tables[0].Rows[0]["Bjhd_Times"].ToString();
+        }
+        else
+        {
+            date = DateTime.Now.ToShortDateString();
+            times = String.Format("{0:HH:mm:ss:fff}", DateTime.Now);
+
+            if (openConfirm == "" && mode == "add")
+            {
+                isNew = "1";
+            }
+        }
+    }
+
+    whereQry = "";
+    whereQry = StCommon.MakeSearchQry("bjhd_date", date, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("bjhd_times", times, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("bjhd_mainBuyer", mainbuyer, "S", whereQry);
+    whereQry = StCommon.MakeSearchQry("bjhd_sample", sample, "S", whereQry);
+
+    string qryMsg = " LEFT OUTER JOIN ( SELECT Mesg_Date,Mesg_Times,Mesg_MainBuyer,Mesg_Sample,SUM(case when Mesg_BonSa_Daeri = '1' then Mesg_BonSaReadOk else 0 end) AS SQL_BonSaReadOk,SUM(case when Mesg_BonSa_Daeri = '0' then Mesg_DaeRiReadOk else 0 end) AS SQL_DaeRiReadOk FROM " + preVal + "MESG GROUP BY Mesg_Date,Mesg_Times,Mesg_MainBuyer,Mesg_Sample ) t1 ON t1.Mesg_Date = a.Bjhd_Date AND t1.Mesg_Times = a.Bjhd_Times AND t1.Mesg_MainBuyer = a.Bjhd_MainBuyer AND t1.Mesg_Sample = a.Bjhd_Sample ";
+    qry = " select (select kure_sangho from gblKURE where kure_code = a.Bjhd_MainBuyer) as Bjhd_MainBuyerNm,(select Bjhd2_SongJangNox from " + preVal + "BJHD2 where isnull(Bjhd2_Date,'') = isnull(a.Bjhd_Date,'') and isnull(Bjhd2_Times,'') = isnull(a.Bjhd_Times,'') and isnull(Bjhd2_MainBuyer,'') = isnull(a.Bjhd_MainBuyer,'') and isnull(Bjhd2_Sample,'') = isnull(a.Bjhd_Sample,'')) as Bjhd2_SongJangNox,ISNULL(SQL_DaeRiReadOk,0) as DaeRiReadOk,* from " + preVal + "BJHD a " + qryMsg + " where u>0 " + whereQry + " ";
+
+    ds = stData.GetDataSet(qry);
+
+    var bjhd_Bonsa_Check = "";
+
+    var daeRiReadOk = "";
+
+    var bjhd_date = date;
+    var bjhd_times = times;
+    var bjhd_mainBuyer = "";
+    var bjhd_sample = "";
+    var baesong = "";
+    var baesongName = "";
+    var bjhd_MainBuyerNm = kurename;
+    var bjhd_CreateDate = "";
+    var bjhd_ModifyDate = "";
+
+    var songJangNox = "";
+    var etc = "";
+
+    var bjhd_NetAmount = "";
+    var bjhd_VatAmount = "";
+    var bjhd_HapAmount = "";
+
+    var baesongOpt = "";
+
+    if (ds.Tables[0].Rows.Count > 0)
+    {
+        DataRow dr = ds.Tables[0].Rows[0];
+
+        chatView = "1";
+
+
+        bjhd_date = dr["bjhd_date"].ToString().Trim();
+        bjhd_times = dr["bjhd_times"].ToString().Trim();
+        bjhd_mainBuyer = dr["bjhd_mainBuyer"].ToString().Trim();
+        bjhd_sample = dr["bjhd_sample"].ToString().Trim();
+
+        bjhd_Bonsa_Check = dr["Bjhd_Bonsa_Check"].ToString();
+
+        daeRiReadOk = dr["DaeRiReadOk"].ToString();
+
+        if (bjhd_Bonsa_Check == "0")
+        {
+            if (dr["Bjhd_CreateSawon"].ToString() == MemberData.GetLoginSID("LoginID")) // 로그인한 사용자가 발주한 내역만 수정/삭제 가능
+            {
+                addView = "1";
+                modifyView = "1";
+                deleteView = "1";
+            }
+
+            qry = " select * from " + preVal + "BLJU where Blju_Date = '" + bjhd_date + "' and Blju_Times = '" + bjhd_times + "' and Blju_MainBuyer = '" + bjhd_mainBuyer + "' and Blju_Sample = '" + bjhd_sample + "' ";
+            DataSet dsC = stData.GetDataSet(qry);
+
+            if (dsC.Tables[0].Rows.Count > 0)
+            {
+                completeView = "1";
+            }
+        }
+
+        baesong = dr["Bjhd_BaeSong"].ToString();
+        baesongName = dr["Bjhd_BaeSongName"].ToString();
+        bjhd_MainBuyerNm = dr["Bjhd_MainBuyerNm"].ToString();
+        bjhd_CreateDate = dr["Bjhd_CreateDate"].ToString();
+        bjhd_ModifyDate = dr["Bjhd_ModifyDate"].ToString();
+
+        songJangNox = dr["Bjhd2_SongJangNox"].ToString();
+        etc = dr["Bjhd_Remark"].ToString();
+
+        bjhd_NetAmount = dr["Bjhd_NetAmount"].ToString();
+        bjhd_VatAmount = dr["Bjhd_VatAmount"].ToString();
+        bjhd_HapAmount = dr["Bjhd_HapAmount"].ToString();
+
+        if (baesongName == "")
+        {
+            baesong = "";
+        }
+
+        baesongOpt = "";
+        if (baesong == "0")
+        {
+            baesongOpt = "화물 발송";
+        }
+        else if (baesong == "1")
+        {
+            baesongOpt = "CJ 택배";
+        }
+        else if (baesong == "2")
+        {
+            baesongOpt = "화물 택배";
+        }
+        else if (baesong == "3")
+        {
+            baesongOpt = "기타 발송";
+        }
+    }
+    else
+    {
+        addView = "1";
+    }
+
+    var bljuMin = StCommon.ToDouble(MemberData.GetLoginSID("" + preVal + "BljuMin"), 0).ToString();
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var stopMsg = "@stopMsg";
+
+        if (stopMsg != "")
+        {
+            alert(stopMsg);
+            location.href = "OrderList.cshtml";
+        }
+
+        var openConfirm = '@openConfirm';
+
+        if (openConfirm == "1")
+        {
+            OpenConfirmPage();
+        }
+
+        $(document).on('click', '.addButton', function () {
+
+            var date = '@date';
+            var times = '@times';
+            var mainbuyer = '@mainbuyer';
+            var sample = '@sample';
+
+            location.href = 'OrderApply.cshtml?date=' + encodeURI(date) + '&times=' + encodeURI(times) + '&mainbuyer=' + encodeURI(mainbuyer) + '&sample=' + sample;
+        });
+
+        var isNew = '@isNew';
+
+        if (stopMsg != "")
+        {
+            isNew = "";
+        }
+
+        if (isNew == "1")
+        {
+            var date = '@date';
+            var times = '@times';
+            var mainbuyer = '@mainbuyer';
+            var sample = '@sample';
+
+            location.href = 'OrderApply.cshtml?date=' + encodeURI(date) + '&times=' + encodeURI(times) + '&mainbuyer=' + encodeURI(mainbuyer) + '&sample=' + sample;
+        }
+
+        $(document).on('click', '.modifyButton', function () {
+
+            var date = '@date';
+            var times = '@times';
+            var mainbuyer = '@mainbuyer';
+            var sample = '@sample';
+
+            var line = $(this).data('line');
+
+            location.href = 'OrderApply.cshtml?mode=mod&date=' + encodeURI(date) + '&times=' + encodeURI(times) + '&mainbuyer=' + encodeURI(mainbuyer) + '&sample=' + sample + '&line=' + line;
+        });
+
+        $(document).on('click', '.deleteButton', function () {
+
+            var date = '@date';
+            var times = '@times';
+            var mainbuyer = '@mainbuyer';
+            var sample = '@sample';
+
+            var line = $(this).data('line');
+            var count = $(this).data('count');
+
+            var paramOption = "";
+
+            if (count == 1) {
+                if (confirm("해당 라인의 스타일을 '삭제'하시겠습니까?\n아울러, 발주 의뢰한 자료가 1건으로 '발주의뢰서' 자체도 삭제됩니다.")) {
+                    paramOption = "all";
+                }
+            }
+            else {
+                if (confirm("해당 라인의 스타일을 '삭제'하시겠습니까?")) {
+                    paramOption = "1";
+                }
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Handler/WebService_common.asmx/OrderDelete",
+                data: "{'paramOption':'" + paramOption + "','paramDate':'" + date + "','paramTimes':'" + times + "','paramKure':'" + mainbuyer + "','paramSample':'" + sample + "','paramLine':'" + line + "'}",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                beforeSend: function () {
+                    //$.mobile.loading('show');
+                },
+                error: function () {
+                    $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+                },
+                success: function (msg) {
+                    var dataStat = $.parseJSON(msg.d);
+                    var totCnt = dataStat.totalcount;
+                    var message = dataStat.msg;
+                    if (message != "") {
+                        alert(message);
+                    } else {
+                        if (paramOption == "all") {
+                            $('#frmAction').attr('action', 'OrderList.cshtml').submit();
+                        }
+                        else if (paramOption == "1") {
+                            $('#frmAction').attr('action', 'OrderDetail.cshtml?date=' + date + '&times=' + times + '&mainbuyer=' + mainbuyer + '&sample=' + sample).submit();
+                        }
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.deleteAllButton', function () {
+            if (confirm("발주의뢰서를 삭제합니다. 해당 발주 의뢰한 자료가 모두 삭제됩니다.\n정말로 삭제하시겠습니까?")) {
+
+                var date = '@date';
+                var times = '@times';
+                var mainbuyer = '@mainbuyer';
+                var sample = '@sample';
+                var line = "";
+                var paramOption = "all";
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Handler/WebService_common.asmx/OrderDelete",
+                    data: "{'paramOption':'" + paramOption + "','paramDate':'" + date + "','paramTimes':'" + times + "','paramKure':'" + mainbuyer + "','paramSample':'" + sample + "','paramLine':'" + line + "'}",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    beforeSend: function () {
+                        //$.mobile.loading('show');
+                    },
+                    error: function () {
+                        $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+                    },
+                    success: function (msg) {
+                        var dataStat = $.parseJSON(msg.d);
+                        var totCnt = dataStat.totalcount;
+                        var message = dataStat.msg;
+                        if (message != "") {
+                            alert(message);
+                        } else {
+                            $('#frmAction').attr('action', 'OrderList.cshtml').submit();
+                        }
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '.modifyConfirmButton', function () {
+            if (confirm('[발주의뢰 중]으로 변경이 됩니다. 진행 하시겠습니까?')) {
+
+                var date = '@date';
+                var times = '@times';
+                var mainbuyer = '@mainbuyer';
+                var sample = '@sample';
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Handler/WebService_common.asmx/OrderStateEdit",
+                    data: "{'paramDate':'" + date + "','paramTimes':'" + times + "','paramKure':'" + mainbuyer + "','paramSample':'" + sample + "'}",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    beforeSend: function () {
+                        //$.mobile.loading('show');
+                    },
+                    error: function () {
+                        $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+                    },
+                    success: function (msg) {
+                        var dataStat = $.parseJSON(msg.d);
+                        var totCnt = dataStat.totalcount;
+                        var message = dataStat.msg;
+                        if (message != "") {
+                            alert(message);
+                        } else {
+                            $('#frmAction').attr('action', 'OrderDetail.cshtml?mode=mod&date=' + date + '&times=' + times + '&mainbuyer=' + mainbuyer + '&sample=' + sample).submit();
+                        }
+                    }
+                });
+
+            } else {
+                return false;
+            }
+        });
+
+        $(document).on('click', '.completeButton', function () {
+            if ($('#hidBaeSong').val() == "" || $('#txtBaeSongName').val() == "") {
+                alert('배송지를 선택해 주세요.');
+                return false;
+            }
+
+            bljumin = eval($('#hidBljuMin').val());
+            bljutotal = eval($('#hidBljuTotal').val());
+            if (GetEmptyNumber(bljumin) > GetEmptyNumber(bljutotal)) {
+                alert("최소주문량이 " + eval($('#hidBljuMin').val()) + "개 이상이어야 합니다.");
+                return false;
+            }
+
+            if (confirm('[주문완료]가 되어야 본사에서 배송준비를 합니다. 완료하시겠습니까?')) {
+
+                var date = '@date';
+                var times = '@times';
+                var mainbuyer = '@mainbuyer';
+                var sample = '@sample';
+                var paramBaesong = $('#hidBaeSong').val();
+                var paramBaeSongName = $('#txtBaeSongName').val();
+                var paramEtc = $('#txtEtc').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Handler/WebService_common.asmx/OrderComplete",
+                    data: "{'paramDate':'" + date + "','paramTimes':'" + times + "','paramKure':'" + mainbuyer + "','paramSample':'" + sample + "','paramBaesong':'" + paramBaesong + "','paramBaeSongName':'" + paramBaeSongName + "','paramEtc':'" + paramEtc + "'}",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    beforeSend: function () {
+                        //$.mobile.loading('show');
+                    },
+                    error: function () {
+                        $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+                    },
+                    success: function (msg) {
+                        var dataStat = $.parseJSON(msg.d);
+                        var totCnt = dataStat.totalcount;
+                        var message = dataStat.msg;
+                        if (message != "") {
+                            alert(message);
+                        } else {
+                            $('#frmAction').attr('action', 'OrderList.cshtml').submit();
+                        }
+                    }
+                });
+
+            } else {
+                return false;
+            }
+        });
+    });
+
+    function OpenBaeSong(baeSongOptID, baeSongID, baeSongNameID, blju_date, blju_times, blju_mainbuyer, blju_sample)
+    {
+        window.open("/Mobile/Common/BaeSong.aspx?baeSongOptID=" + baeSongOptID + "&baeSongID=" + baeSongID + "&baeSongNameID=" + baeSongNameID + "&blju_date=" + blju_date + "&blju_times=" + blju_times + "&blju_mainbuyer=" + blju_mainbuyer + "&blju_sample=" + blju_sample, "BaeSong", "width=640,height=700,scrollbars=yes,resizable=yes");
+    }
+
+    function OpenChat(blju_date, blju_times, blju_mainbuyer, blju_sample) {
+        window.open("/Mobile/Common/Chat.aspx?blju_date=" + blju_date + "&blju_times=" + blju_times + "&blju_mainbuyer=" + blju_mainbuyer + "&blju_sample=" + blju_sample, "Chat", "width=640,height=700,scrollbars=yes,resizable=yes");
+    }
+
+    function OpenConfirmPage() {
+        var today = new Date();
+        var yesterday = new Date(today.valueOf() - (24 * 60 * 60 * 1000));
+        var yyyy = yesterday.getFullYear().toString();
+        var mm = (yesterday.getMonth() + 1).toString();
+        var dd = yesterday.getDate().toString();
+
+        var resultDate = yyyy + '-' + (mm[1] ? mm : "0" + mm[0]) + '-' + (dd[1] ? dd : "0" + dd[0]);
+
+        if (confirm("전(前) 일자로 '발주 중'인 것이 있습니다.\n계속하시겠습니까? 확인(계속), 취소(아니오)")) {
+
+            location.href = "OrderDetail.cshtml?mode=add&date=" + resultDate;
+        }
+        else {
+            //location.href = "OrderDetail.cshtml?date=" + resultDate;
+            //location.href = "OrderDetail.cshtml";
+
+            var date = '@date';
+            var times = '@times';
+            var mainbuyer = '@mainbuyer';
+            var sample = '@sample';
+
+            location.href = 'OrderApply.cshtml?date=' + encodeURI(date) + '&times=' + encodeURI(times) + '&mainbuyer=' + encodeURI(mainbuyer) + '&sample=' + sample;
+        }
+    }
+
+</script>
+
+<div id="pageView" data-role="page" data-theme="c" class="mobile-main">
+    
+    <div data-role="header" data-position="fixed" data-theme="b">
+        @RenderPage("~/Mobile/Include/HeadNav.cshtml")
+    </div>
+    <div data-role="content">
+
+        <input type="hidden" id="hidBljuMin" name="hidBljuMin" value="@bljuMin">
+        
+        <section id="main" class="wrapper style2">
+            
+            @if (deleteView == "1")
+            {
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                        <a href="OrderList.cshtml" data-ajax="false" class="listButton" data-role="button" data-icon="bars" data-theme="b">리스트</a>
+                    </div>
+                    <div class="ui-block-b">
+                        @if (stopMsg2 == "")
+                        {
+                            <a href="#" class="deleteAllButton" data-role="button" data-icon="delete" data-theme="b">삭제</a>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <a href="OrderList.cshtml" data-ajax="false" class="listButton" data-role="button" data-icon="bars" data-theme="b">리스트</a>
+                </div>
+            }
+            
+            @if (chatView == "" && completeView == "")
+            {
+            }
+            else
+            {
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    @if (chatView == "1")
+                    {
+                        if (StCommon.ToInt(daeRiReadOk, 0) > 0)
+                        {
+                            <a href="#" class="chatOverColor" data-role="button" data-icon="user" data-theme="b" onclick="OpenChat('@date','@times','@mainbuyer','@sample');">대화방</a>
+                        }
+                        else
+                        {
+                            <a href="#" class="chatButton" data-role="button" data-icon="user" data-theme="b" onclick="OpenChat('@date','@times','@mainbuyer','@sample');">대화방</a>
+                        }
+                    }
+                </div>
+                <div class="ui-block-b">
+                    @if (stopMsg2 == "")
+                    {
+                        if (completeView == "1")
+                        {
+                            <a href="#" class="completeButton" data-role="button" data-icon="check" data-theme="b">주문완료</a>
+                        }
+                        if (bjhd_Bonsa_Check == "1")
+                        {
+                            <a href="#" class="modifyConfirmButton" data-role="button" data-icon="edit" data-theme="b">수정</a>
+                        }
+                    }
+                </div>
+            </div>
+            }
+
+            <table class="reportTable">
+                <tr>
+                    <th class="reportTh" style="min-width: 60px;">발주의뢰일자</th>
+                    <td class="reportTd">@bjhd_date @bjhd_times</td>
+                </tr>
+                <tr>
+                    <th class="reportTh">발주업체</th>
+                    <td class="reportTd">@bjhd_MainBuyerNm</td>
+                </tr>
+                <tr>
+                    <th class="reportTh">최초등록일자</th>
+                    <td class="reportTd">@bjhd_CreateDate</td>
+                </tr>
+                <tr>
+                    <th class="reportTh">최종수정일자</th>
+                    <td class="reportTd">@bjhd_ModifyDate</td>
+                </tr>
+                <tr>
+                    <th class="reportTh">
+                        @if (bjhd_Bonsa_Check == "0")
+                        {
+                            <input type="button" id="btnBaeSong" name="btnBaeSong" data-role="button" data-mini="true" class="btn-mobile btn-blue" value="배송지선택" onclick="OpenBaeSong('txtBaeSongOpt','hidBaeSong','txtBaeSongName','@bjhd_date','@bjhd_times','@bjhd_mainBuyer','@bjhd_sample');" />
+                        }
+                        else
+                        {
+                            <text>배송지</text>
+                        }
+                    </th>
+                    <td class="reportTd">
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a" style="padding: 0px 4px 0px 4px;">
+                                @if (bjhd_Bonsa_Check == "0")
+                                {
+                                    <input type="text" id="txtBaeSongOpt" name="txtBaeSongOpt" class="inputMoney" style="width:120px; background: transparent; border: none;" readonly="readonly" value="@baesongOpt">
+                                    <input type="hidden" id="hidBaeSong" name="hidBaeSong" value="@baesong">
+                                }
+                                else
+                                {
+                                    @baesongOpt
+                                }
+                            </div>
+                            <div class="ui-block-b" style="padding: 0px 4px 0px 4px;">
+                                @if (bjhd_Bonsa_Check == "0")
+                                {
+                                    <input type="text" id="txtBaeSongName" name="txtBaeSongName" class="inputMoney" style="width:120px; background: transparent; border: none;" readonly="readonly" value="@baesongName">
+                                }
+                                else
+                                {
+                                    @baesongName
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="reportTh">운송장번호</th>
+                    <td class="reportTd" style="text-align:right; padding-right:10px;">@songJangNox</td>
+                </tr>
+                <tr>
+                    <th class="reportTh">기타사항</th>
+                    <td class="reportTd" style="text-align:right; padding-right:10px;">
+                        @if (bjhd_Bonsa_Check == "0")
+                        {
+                            <input type="text" id="txtEtc" name="txtEtc" data-mini="true" value="@etc" />
+                        }
+                        else
+                        {
+                            @etc
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th class="reportTh">공급가액</th>
+                    <td class="reportTd" style="text-align:right; padding-right:10px;">@StCommon.NumberFormat(StCommon.ToDouble(bjhd_NetAmount, 0))</td>
+                </tr>
+                <tr>
+                    <th class="reportTh">부가세</th>
+                    <td class="reportTd" style="text-align:right; padding-right:10px;">@StCommon.NumberFormat(StCommon.ToDouble(bjhd_VatAmount, 0))</td>
+                </tr>
+                <tr>
+                    <th class="reportTh">합계금액</th>
+                    <td class="reportTd" style="text-align:right; padding-right:10px;">@StCommon.NumberFormat(StCommon.ToDouble(bjhd_HapAmount, 0))</td>
+                </tr>
+            </table>
+            @if (addView == "1")
+            {
+                if (stopMsg2 == "")
+                {
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                    
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#" class="addButton btn-mobile btn-blue" data-role="button" data-icon="plus" data-mini="true" data-theme="a">스타일 추가</a>
+                    </div>
+                </div>
+                }
+            }
+            @{
+                string whereQry2 = "";
+                whereQry2 = StCommon.MakeSearchQry("blju_date", date, "S", whereQry2);
+                whereQry2 = StCommon.MakeSearchQry("blju_times", times, "S", whereQry2);
+                whereQry2 = StCommon.MakeSearchQry("blju_mainBuyer", mainbuyer, "S", whereQry2);
+                whereQry2 = StCommon.MakeSearchQry("blju_sample", sample, "S", whereQry2);
+
+                qry = " SELECT isnull((select isnull(Dnga_SubName,'') + ', ' + isnull(Dnga_SpecColor,'') from " + preVal + "DNGA where Dnga_StyleNox=a.Blju_StyleNox),'') as Blju_StyleName,* FROM " + preVal + "BLJU a where 1=1 " + whereQry2 + " ORDER BY Blju_Line asc ";
+                DataSet dsList = stData.GetDataSet(qry);
+
+                int bljuCount = dsList.Tables[0].Rows.Count;
+                double bljuTotal = 0;
+                for (int i = 0; i < dsList.Tables[0].Rows.Count; i++)
+                {
+                    DataRow dr2 = dsList.Tables[0].Rows[i];
+
+                    string[] JegoArray = StCommon.JegoSet(preVal, date, times, mainbuyer, dr2["Blju_Line"].ToString(), dr2["Blju_StyleNox"].ToString(), ""); // 보기에서는 mode 빈값
+
+                    <table class="reportTable nomargin" style="margin-top:10px">
+                        <tr>
+                            <th class="reportTh" style="min-width: 60px;">스타일</th>
+                            <td class="reportTd">@dr2["Blju_StyleNox"]</td>
+                            @if (dr2["Blju_Line"].ToString() != "999")
+                            {
+                                if (modifyView == "" && deleteView == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    if (stopMsg2 == "")
+                                    {
+                                        <td class="reportTd">
+                                            <div class="ui-grid-a">
+                                                <div class="ui-block-a">
+                                                    @if (modifyView == "1")
+                                                    {
+                                                        <a href="#" class="modifyButton btn-mobile btn-blue" data-line="@dr2["Blju_Line"]" data-role="button" data-mini="true" data-theme="a">수정</a>
+                                                    }
+                                                </div>
+                                                <div class="ui-block-b">
+                                                    @if (deleteView == "1")
+                                                    {
+                                                        <a href="#" class="deleteButton btn-mobile btn-blue" data-line="@dr2["Blju_Line"]" data-count="@bljuCount" data-role="button" data-mini="true" data-theme="a">삭제</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </td>
+                                    }
+                                }
+                            }
+                        </tr>
+                    </table>
+
+                    int maxSize = 17;
+                    if (preVal == "tbl")
+                    {
+                        if (sizeNum == "10")
+                        {
+                            maxSize = 10;
+                        }
+                        else
+                        {
+                            maxSize = 12;
+                        }
+                    }
+
+                    <table class="reportTable nomargin">
+                        <tr>
+                            <th class="reportTh">사이즈명</th>
+                            <th class="reportTh">본사재고</th>
+                            <th class="reportTh">주문량</th>
+                        </tr>
+                        @for (int k = 1; k <= (maxSize + 1); k++)
+                        {
+                            var sizeName = (k == (maxSize + 1)) ? "Total" : SizeArray[k];
+                            var num = (k == (maxSize + 1)) ? "Total" : k.ToString();
+                            num = (num.Length == 1) ? "0" + num : num;
+
+                            if (num == "Total")
+                            {
+                                bljuTotal += StCommon.ToDouble(dr2["Blju_Qty" + num].ToString(), 0);
+                            }
+                        <tr>
+                            <td class="reportTd">@sizeName</td>
+                            <td class="reportTd">@JegoArray[k]</td>
+                            <td class="reportTd">@StCommon.GetAmountFormat(dr2["Blju_Qty" + num])</td>
+                        </tr>
+                        }
+                    </table>
+                }
+
+                <input type="hidden" id="hidBljuTotal" name="hidBljuTotal" value="@bljuTotal">
+            }
+        </section>
+
+    </div>
+    <div data-role="footer" data-theme="b">
+        @RenderPage("~/Mobile/Include/FootNav.cshtml")
+    </div>
+</div>
+
+<form id="frmAction" name="frmAction" method="post" data-ajax="false"></form>

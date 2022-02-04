@@ -1,0 +1,217 @@
+﻿@using System.Collections;
+@using System.Configuration;
+@using System.Data;
+@using System.Text;
+@using System.Xml;
+@using FirstOrder.Data;
+@{
+    var headerTitle = "본사 재고 조회";
+
+    Page.Title = headerTitle;
+    PageData["title"] = headerTitle;
+
+    Layout = "~/Mobile/LayOut/_Main.cshtml";
+
+    string preVal = "";
+
+    try
+    {
+        preVal = HttpContext.Current.Session["PreVal"].ToString();
+    }
+    catch
+    {
+        preVal = "tbl";
+    }
+
+    var sizeNum = MemberData.GetLoginSID("tblSizeNum");
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //BindStyleNoxJson('#ddlStyleNox', '');
+
+        //$("#ddlStyleNox").change(function () {
+            //BindJegoList();
+        //});
+
+        $("#txtStyleNox").keydown(function (key) {
+            if (key.keyCode == 13) {
+                BindJegoList();
+            }
+        });
+
+        $("#btnStyleSearch").click(function () {
+            BindJegoList();
+        });
+    });
+
+    // 스타일 바인딩
+    function BindStyleNoxJson(styleNoxObj, dValue) {
+        $(styleNoxObj).html('');
+
+        var whereQry = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/Handler/WebService_common.asmx/GetStyleNox",
+            data: "{'dValue':'" + dValue + "','whereQry':'" + whereQry + "'}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                var data = $.parseJSON(msg.d);
+                $.each(data, function (i, val) {
+                    $(styleNoxObj).append('<option value="' + val.optValue + '">' + val.optText + '</option>');
+                });
+
+                $(styleNoxObj).val(dValue);
+                try {
+                    $(styleNoxObj).selectmenu('refresh');
+                } catch (e) { }
+            }
+        });
+    }
+
+    function BindJegoList() {
+
+        var preVal = '@preVal';
+        var sizeNum = '@sizeNum';
+
+        //var paramStyleNox = $('#ddlStyleNox option:selected').val();
+        //if (paramStyleNox == undefined) {
+        //    paramStyleNox = '';
+        //}
+        var paramStyleNox = $("#txtStyleNox").val();
+
+        $('#lvResult').html('');
+
+        $.ajax({ //검색결과 바인딩
+            type: "POST",
+            url: "/Handler/WebService_common.asmx/GetMarkJeogoList",
+            data: "{'paramStyleNox':'" + paramStyleNox + "'}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            beforeSend: function () {
+                $.mobile.loading('show');
+            },
+            error: function () {
+                $.mobile.loading('show', { text: 'Loading e ...', textVisible: true });
+            },
+            success: function (msg) {
+                var items = [];
+                var html = '';
+                var data = $.parseJSON(msg.d);
+                var totCnt = data.length;
+
+                items.push('<table border="0" cellspacing="0" cellpadding="0">');
+                
+                if (totCnt > 0) {
+                    $.each(data, function (key, val) {
+
+                        items.push('<tr>');
+                        items.push('<td>');
+
+                        items.push('<table class="reportTable">');
+
+                        items.push('<tr>');
+                        items.push('<th bgcolor="#E7E7E7" class="reportTh">스타일명</th>');
+                        items.push('<td class="reportTd">' + val.styleNo + '</th>');
+                        items.push('</tr>');
+                        items.push('<tr>');
+                        items.push('<th bgcolor="#E7E7E7" class="reportTh">사이즈명</th>');
+                        items.push('<th bgcolor="#E7E7E7" class="reportTh">재고</th>');
+                        items.push('</tr>');
+
+                        items.push('<tr><td class="reportTd">' + val.size01 + '</td><td class="reportTd">' + val.jego01 + '</td></tr>');
+                        items.push('<tr><td class="reportTd">' + val.size02 + '</td><td class="reportTd">' + val.jego02 + '</td></tr>');
+                        items.push('<tr><td class="reportTd">' + val.size03 + '</td><td class="reportTd">' + val.jego03 + '</td></tr>');
+                        items.push('<tr><td class="reportTd">' + val.size04 + '</td><td class="reportTd">' + val.jego04 + '</td></tr>');
+                        items.push('<tr><td class="reportTd">' + val.size05 + '</td><td class="reportTd">' + val.jego05 + '</td></tr>');
+                        items.push('<tr><td class="reportTd">' + val.size06 + '</td><td class="reportTd">' + val.jego06 + '</td></tr>');
+                        items.push('<tr><td class="reportTd">' + val.size07 + '</td><td class="reportTd">' + val.jego07 + '</td></tr>');
+                        items.push('<tr><td class="reportTd">' + val.size08 + '</td><td class="reportTd">' + val.jego08 + '</td></tr>');
+                        items.push('<tr><td class="reportTd">' + val.size09 + '</td><td class="reportTd">' + val.jego09 + '</td></tr>');
+                        items.push('<tr><td class="reportTd">' + val.size10 + '</td><td class="reportTd">' + val.jego10 + '</td></tr>');
+                        
+                        if (preVal == "abl") {
+                            items.push('<tr><td class="reportTd">' + val.size11 + '</td><td class="reportTd">' + val.jego11 + '</td></tr>');
+                            items.push('<tr><td class="reportTd">' + val.size12 + '</td><td class="reportTd">' + val.jego12 + '</td></tr>');
+                            items.push('<tr><td class="reportTd">' + val.size13 + '</td><td class="reportTd">' + val.jego13 + '</td></tr>');
+                            items.push('<tr><td class="reportTd">' + val.size14 + '</td><td class="reportTd">' + val.jego14 + '</td></tr>');
+                            items.push('<tr><td class="reportTd">' + val.size15 + '</td><td class="reportTd">' + val.jego15 + '</td></tr>');
+                        }
+                        else {
+                            if (sizeNum != "10") {
+                                items.push('<tr><td class="reportTd">' + val.size11 + '</td><td class="reportTd">' + val.jego11 + '</td></tr>');
+                                items.push('<tr><td class="reportTd">' + val.size12 + '</td><td class="reportTd">' + val.jego12 + '</td></tr>');
+                            }
+                        }
+                        items.push('<tr><td class="reportTd">Total</td><td class="reportTd">' + val.jegototal + '</td></tr>');
+
+                        items.push('</table>');
+
+                        items.push('</td>');
+                        items.push('</tr>');
+                    });
+                } else {
+                    items.push('<tr>');
+                    items.push('<td>');
+                    items.push('<table class="reportTable">');
+                    items.push('<tr><td style="text-align:center;" colspan="2" class="reportTd">등록된 자료가 존재하지 않습니다.</td></tr>');
+                    items.push('</table>');
+                    items.push('</td>');
+                    items.push('</tr>');
+                }
+
+                items.push('</table>');
+
+                html = items.join('');
+                $('#lvResult').append($(html));
+                $('#lvResult').trigger('create');
+                $("#collarSearch").trigger("collapse");
+
+                $.mobile.loading("hide");
+            }
+        });
+    }
+
+</script>
+
+<div id="pageSearch" data-role="page" data-theme="c" class="mobile-main">
+    
+    <div data-role="header" data-position="fixed" data-theme="b">
+        @RenderPage("~/Mobile/Include/HeadNav.cshtml")
+    </div>
+    <div data-role="content">
+
+        <section id="main" class="wrapper style2">
+            
+            <div id="collarSearch" data-collapsed="false" data-role="collapsible" data-collapsed-icon="search" data-expanded-icon="search">
+                <h4>스타일 선택</h4>
+                <ul data-role="listview">
+                    <li data-role="fieldcontain" style="padding: 3px;">
+                        <div style="display:none">
+                            <select id="ddlStyleNox" name="ddlStyleNox" data-mini="true"></select>
+                        </div>
+                        <div style="float:left; width:85%;">
+                            <input type="text" id="txtStyleNox" name="txtStyleNox" data-mini="true" data-clear-btn="true" placeholder="쉼표 ',' 로 여러 스타일 검색 가능" class="inputProduct" />
+                        </div>
+                        <div style="float:left; width:15%;">
+                            <input type="button" id="btnStyleSearch" name="btnStyleSearch" data-role="button" data-mini="true" class="btn-mobile btn-info" value="검색" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="divResult">                
+                <div id="lvResult">
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+    <div data-role="footer" data-theme="b">
+        @RenderPage("~/Mobile/Include/FootNav.cshtml")
+    </div>
+</div>
