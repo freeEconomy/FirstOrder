@@ -1487,47 +1487,11 @@ public class WebService_common : System.Web.Services.WebService
             {
                 failMsg = "주문량을 입력해주세요.";
                 result = 0;
-                
-                oad.jego01 = JegoSet[1];
-                oad.jego02 = JegoSet[2];
-                oad.jego03 = JegoSet[31];
-                oad.jego04 = JegoSet[4];
-                oad.jego05 = JegoSet[5];
-                oad.jego06 = JegoSet[6];
-                oad.jego07 = JegoSet[7];
-                oad.jego08 = JegoSet[8];
-                oad.jego09 = JegoSet[9];
-                oad.jego10 = JegoSet[10];
-                oad.jego11 = JegoSet[11];
-                oad.jego12 = JegoSet[12];
-                oad.jego13 = JegoSet[13];
-                oad.jego14 = JegoSet[14];
-                oad.jego15 = JegoSet[15];
-                oad.jego16 = JegoSet[16];
-                oad.jego17 = JegoSet[17];
             }
             else if (jegoOverChk == "minimum")
             {
                 failMsg = "해당 스타일은 `최소 주문량(" + miniQty + ")`이상을 주문해야 합니다. !!!";
                 result = 0;
-
-                oad.jego01 = JegoSet[1];
-                oad.jego02 = JegoSet[2];
-                oad.jego03 = JegoSet[31];
-                oad.jego04 = JegoSet[4];
-                oad.jego05 = JegoSet[5];
-                oad.jego06 = JegoSet[6];
-                oad.jego07 = JegoSet[7];
-                oad.jego08 = JegoSet[8];
-                oad.jego09 = JegoSet[9];
-                oad.jego10 = JegoSet[10];
-                oad.jego11 = JegoSet[11];
-                oad.jego12 = JegoSet[12];
-                oad.jego13 = JegoSet[13];
-                oad.jego14 = JegoSet[14];
-                oad.jego15 = JegoSet[15];
-                oad.jego16 = JegoSet[16];
-                oad.jego17 = JegoSet[17];
             }
         }
 
