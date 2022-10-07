@@ -848,7 +848,7 @@ public partial class Page_Order_tbl : System.Web.UI.Page
 
         string allBoxDnga = "";
         string allZeroDnga = "";
-        
+
         qry = " SELECT * from gblKURE where kure_code = '" + blju_buyer + "' ";
         DataSet dsK = stData.GetDataSet(qry);
 
@@ -982,6 +982,22 @@ public partial class Page_Order_tbl : System.Web.UI.Page
                 price11 = StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_LowPrice"].ToString(), 0);
                 price12 = StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_LowPrice"].ToString(), 0);
             }
+
+            #region ## 의류 부분만 별도 적용(2022-10-03부터)
+            OrderData_tbl order = new OrderData_tbl();
+            price1 = order.GetTblPrice(price1, 1, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            price2 = order.GetTblPrice(price2, 2, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            price3 = order.GetTblPrice(price3, 3, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            price4 = order.GetTblPrice(price4, 4, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            price5 = order.GetTblPrice(price5, 5, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            price6 = order.GetTblPrice(price6, 6, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            price7 = order.GetTblPrice(price7, 7, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            price8 = order.GetTblPrice(price8, 8, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            price9 = order.GetTblPrice(price9, 9, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            price10 = order.GetTblPrice(price10, 10, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            price11 = order.GetTblPrice(price11, 11, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            price12 = order.GetTblPrice(price12, 12, StCommon.ToDouble(dsD.Tables[0].Rows[0]["Dnga_JustPrice"].ToString(), 0), orderTotal, allBoxDnga);
+            #endregion
 
             if (allZeroDnga == "Y")
             {

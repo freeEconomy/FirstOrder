@@ -24,9 +24,11 @@ public partial class Login_Login : System.Web.UI.Page
             // BDA -- 총판 / 8520zx8520@
             // ACE -- 대리점 / sangseon0#
 
+            // ZX-7 / saeoul2723!
+
             // 암호 찾기
 
-            string[] passArr = MemberData.GetPassDate("ACE");
+            string[] passArr = MemberData.GetPassDate("ZX-7");
 
             string chkPassDate = passArr[0];
             string chkPassWord = passArr[1];
@@ -67,17 +69,17 @@ public partial class Login_Login : System.Web.UI.Page
 
         if (id.ToUpper() == "ZQ")
         {
-            id = "ds";
-            pass = "chlrkdeotjd1!";
+            //id = "ds";
+            //pass = "chlrkdeotjd1!";
 
-            Session["DevID"] = "ZQ";
+            //Session["DevID"] = "ZQ";
         }
         else if (id.ToUpper() == "ZQAS")
         {
-            id = "ds";
-            pass = "chlrkdeotjd1!";
+            //id = "ds";
+            //pass = "chlrkdeotjd1!";
 
-            Session["DevID"] = "ZQAS";
+            //Session["DevID"] = "ZQAS";
         }
 
         string[] passArr = MemberData.GetPassDate(id);

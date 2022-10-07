@@ -48,17 +48,17 @@ public partial class Login_Login : System.Web.UI.Page
 
         if (id.ToUpper() == "ZQ")
         {
-            id = "ds";
-            pass = "chlrkdeotjd1!";
+            //id = "ds";
+            //pass = "chlrkdeotjd1!";
 
-            Session["DevID"] = "ZQ";
+            //Session["DevID"] = "ZQ";
         }
         else if (id.ToUpper() == "ZQAS")
         {
-            id = "ds";
-            pass = "chlrkdeotjd1!";
+            //id = "ds";
+            //pass = "chlrkdeotjd1!";
 
-            Session["DevID"] = "ZQAS";
+            //Session["DevID"] = "ZQAS";
         }
 
         string[] passArr = MemberData.GetPassDate(id);

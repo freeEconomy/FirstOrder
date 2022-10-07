@@ -533,5 +533,56 @@ namespace FirstOrder.Data
 
             return result;
         }
+
+        #region ## 의류 부분만 별도 적용(2022-10-03부터)
+        public double GetTblPrice(double price, int num, double justPrice, double total, string allBoxDnga)
+        {
+            // 1. 박스단가(Dnga_LowPrice)적용은 없고, 무조건 낱장가(Dnga_JustPrice)만 적용
+            price = justPrice;
+
+            // 2. 직원구매(Kure_All_BoxDnga = 'Y')는 낱장가의 무조건 10% 할인
+            if (allBoxDnga == "Y")
+            {
+                price = price * 0.9;
+            }
+            else // 직원구매가 아니면...
+            {
+                /*
+                 3. 빅사이즈는 낱장가에 추가 업
+                    5XL -> 15%
+                    6XL -> 20%
+                    7XL -> 25% 
+                 */
+                if (num == 10)
+                    price = price * 1.15;
+                if (num == 11)
+                    price = price * 1.2;
+                if (num == 12)
+                    price = price * 1.25;
+
+                /*
+                 4. 한 스타일의 발주 총수량이 150장이 넘으면 낱장가 구간별 할인 적용
+                    ₩20,000 이하면 7% 할인
+                    ₩20,000 초과면 5% 할인
+                    ₩50,000 초과면 3% 할인
+                    단, SSS ~ 4XL까지만 해당됨
+                 */
+                if (total >= 150)
+                {
+                    if (num <= 9)
+                    {
+                        if (price <= 20000)
+                            price = price * 0.93;
+                        else if (price > 20000 && price <= 50000)
+                            price = price * 0.95;
+                        else if (price > 50000)
+                            price = price * 0.97;
+                    }
+                }
+            }
+
+            return price;
+        }
+        #endregion
     }
 }
