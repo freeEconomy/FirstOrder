@@ -1620,5 +1620,38 @@ namespace FirstOrder.Util
 
             return resultValue;
         }
+
+        /*
+        스타일별 최소 수량 가져오기
+        */
+        public static double GetMinimumQty(string styleNox)
+        {
+            StDataCommon stData = new StDataCommon();
+
+            string preVal = "";
+
+            try
+            {
+                preVal = HttpContext.Current.Session["PreVal"].ToString();
+            }
+            catch
+            {
+                preVal = "tbl";
+            }
+
+            double result = 0;
+
+            string qry = " select Dnga_MinimumQty from " + preVal + "DNGA with(nolock) where Dnga_StyleNox = '" + styleNox + "' ";
+
+            DataSet dsC = stData.GetDataSet(qry);
+
+            if (dsC.Tables[0].Rows.Count > 0)
+            {
+                result = StCommon.ToDouble(dsC.Tables[0].Rows[0][0].ToString(), 0);
+            }
+
+            return result;
+        }
+
     }
 }

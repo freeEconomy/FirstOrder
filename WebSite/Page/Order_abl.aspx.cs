@@ -1290,30 +1290,40 @@ public partial class Page_Order_abl : System.Web.UI.Page
         }
         else
         {
-            string jegoOverChk = JegoOverCheck("");
+            double order1 = StCommon.ToDouble(this.txtOrder1.Text, 0);
+            double order2 = StCommon.ToDouble(this.txtOrder2.Text, 0);
+            double order3 = StCommon.ToDouble(this.txtOrder3.Text, 0);
+            double order4 = StCommon.ToDouble(this.txtOrder4.Text, 0);
+            double order5 = StCommon.ToDouble(this.txtOrder5.Text, 0);
+            double order6 = StCommon.ToDouble(this.txtOrder6.Text, 0);
+            double order7 = StCommon.ToDouble(this.txtOrder7.Text, 0);
+            double order8 = StCommon.ToDouble(this.txtOrder8.Text, 0);
+            double order9 = StCommon.ToDouble(this.txtOrder9.Text, 0);
+            double order10 = StCommon.ToDouble(this.txtOrder10.Text, 0);
+            double order11 = StCommon.ToDouble(this.txtOrder11.Text, 0);
+            double order12 = StCommon.ToDouble(this.txtOrder12.Text, 0);
+            double order13 = StCommon.ToDouble(this.txtOrder13.Text, 0);
+            double order14 = StCommon.ToDouble(this.txtOrder14.Text, 0);
+            double order15 = StCommon.ToDouble(this.txtOrder15.Text, 0);
+            double order16 = StCommon.ToDouble(this.txtOrder16.Text, 0);
+            double order17 = StCommon.ToDouble(this.txtOrder17.Text, 0);
+            double orderTotal = order1 + order2 + order3 + order4 + order5 + order6 + order7 + order8 + order9 + order10 + order11 + order12 + order13 + order14 + order15 + order16 + order17;
+            double miniQty = StCommon.GetMinimumQty(product);
+
+            string jegoOverChk = "";
+            if (orderTotal < miniQty)
+            {
+                jegoOverChk = "minimum";
+            }
+            else
+            {
+                jegoOverChk = JegoOverCheck("");
+            }
+
             SetJustPrice(kure, product);
 
             if (jegoOverChk == "")
             {
-                double order1 = StCommon.ToDouble(this.txtOrder1.Text, 0);
-                double order2 = StCommon.ToDouble(this.txtOrder2.Text, 0);
-                double order3 = StCommon.ToDouble(this.txtOrder3.Text, 0);
-                double order4 = StCommon.ToDouble(this.txtOrder4.Text, 0);
-                double order5 = StCommon.ToDouble(this.txtOrder5.Text, 0);
-                double order6 = StCommon.ToDouble(this.txtOrder6.Text, 0);
-                double order7 = StCommon.ToDouble(this.txtOrder7.Text, 0);
-                double order8 = StCommon.ToDouble(this.txtOrder8.Text, 0);
-                double order9 = StCommon.ToDouble(this.txtOrder9.Text, 0);
-                double order10 = StCommon.ToDouble(this.txtOrder10.Text, 0);
-                double order11 = StCommon.ToDouble(this.txtOrder11.Text, 0);
-                double order12 = StCommon.ToDouble(this.txtOrder12.Text, 0);
-                double order13 = StCommon.ToDouble(this.txtOrder13.Text, 0);
-                double order14 = StCommon.ToDouble(this.txtOrder14.Text, 0);
-                double order15 = StCommon.ToDouble(this.txtOrder15.Text, 0);
-                double order16 = StCommon.ToDouble(this.txtOrder16.Text, 0);
-                double order17 = StCommon.ToDouble(this.txtOrder17.Text, 0);
-                double orderTotal = order1 + order2 + order3 + order4 + order5 + order6 + order7 + order8 + order9 + order10 + order11 + order12 + order13 + order14 + order15 + order16 + order17;
-
                 OrderData_abl order = new OrderData_abl();
 
                 order.Date = date;
@@ -1413,6 +1423,19 @@ public partial class Page_Order_abl : System.Web.UI.Page
 
                 SetProduct(product);
             }
+            else if (jegoOverChk == "minimum")
+            {
+                StJavaScript js = new StJavaScript(this.Page, false, true);
+                js.WriteJavascript("showMessageToolTip('" + this.btnWrite.ClientID + "', '해당 스타일은 `최소 주문량(" + miniQty + ")`이상을 주문해야 합니다. !!!');");
+
+                JegoSet(product, "", date, time, kure, "");
+
+                EnableButton(true);
+
+                JegoEnable();
+
+                SetProduct(product);
+            }
         }
     }
 
@@ -1460,29 +1483,40 @@ public partial class Page_Order_abl : System.Web.UI.Page
         }
         else
         {
-            string jegoOverChk = JegoOverCheck("mod");
+            double order1 = StCommon.ToDouble(this.txtOrder1.Text, 0);
+            double order2 = StCommon.ToDouble(this.txtOrder2.Text, 0);
+            double order3 = StCommon.ToDouble(this.txtOrder3.Text, 0);
+            double order4 = StCommon.ToDouble(this.txtOrder4.Text, 0);
+            double order5 = StCommon.ToDouble(this.txtOrder5.Text, 0);
+            double order6 = StCommon.ToDouble(this.txtOrder6.Text, 0);
+            double order7 = StCommon.ToDouble(this.txtOrder7.Text, 0);
+            double order8 = StCommon.ToDouble(this.txtOrder8.Text, 0);
+            double order9 = StCommon.ToDouble(this.txtOrder9.Text, 0);
+            double order10 = StCommon.ToDouble(this.txtOrder10.Text, 0);
+            double order11 = StCommon.ToDouble(this.txtOrder11.Text, 0);
+            double order12 = StCommon.ToDouble(this.txtOrder12.Text, 0);
+            double order13 = StCommon.ToDouble(this.txtOrder13.Text, 0);
+            double order14 = StCommon.ToDouble(this.txtOrder14.Text, 0);
+            double order15 = StCommon.ToDouble(this.txtOrder15.Text, 0);
+            double order16 = StCommon.ToDouble(this.txtOrder16.Text, 0);
+            double order17 = StCommon.ToDouble(this.txtOrder17.Text, 0);
+            double orderTotal = order1 + order2 + order3 + order4 + order5 + order6 + order7 + order8 + order9 + order10 + order11 + order12 + order13 + order14 + order15 + order16 + order17;
+            double miniQty = StCommon.GetMinimumQty(product);
+
+            string jegoOverChk = "";
+            if (orderTotal < miniQty)
+            {
+                jegoOverChk = "minimum";
+            }
+            else
+            {
+                jegoOverChk = JegoOverCheck("mod");
+            }
+
             SetJustPrice(kure, product);
+
             if (jegoOverChk == "")
             {
-                double order1 = StCommon.ToDouble(this.txtOrder1.Text, 0);
-                double order2 = StCommon.ToDouble(this.txtOrder2.Text, 0);
-                double order3 = StCommon.ToDouble(this.txtOrder3.Text, 0);
-                double order4 = StCommon.ToDouble(this.txtOrder4.Text, 0);
-                double order5 = StCommon.ToDouble(this.txtOrder5.Text, 0);
-                double order6 = StCommon.ToDouble(this.txtOrder6.Text, 0);
-                double order7 = StCommon.ToDouble(this.txtOrder7.Text, 0);
-                double order8 = StCommon.ToDouble(this.txtOrder8.Text, 0);
-                double order9 = StCommon.ToDouble(this.txtOrder9.Text, 0);
-                double order10 = StCommon.ToDouble(this.txtOrder10.Text, 0);
-                double order11 = StCommon.ToDouble(this.txtOrder11.Text, 0);
-                double order12 = StCommon.ToDouble(this.txtOrder12.Text, 0);
-                double order13 = StCommon.ToDouble(this.txtOrder13.Text, 0);
-                double order14 = StCommon.ToDouble(this.txtOrder14.Text, 0);
-                double order15 = StCommon.ToDouble(this.txtOrder15.Text, 0);
-                double order16 = StCommon.ToDouble(this.txtOrder16.Text, 0);
-                double order17 = StCommon.ToDouble(this.txtOrder17.Text, 0);
-                double orderTotal = order1 + order2 + order3 + order4 + order5 + order6 + order7 + order8 + order9 + order10 + order11 + order12 + order13 + order14 + order15 + order16 + order17;
-
                 OrderData_abl order = new OrderData_abl();
 
                 order.Date = date;
@@ -1573,6 +1607,19 @@ public partial class Page_Order_abl : System.Web.UI.Page
                 js.WriteJavascript("showMessageToolTip('" + this.txtOrderTotal.ClientID + "', '주문량을 입력해주세요.');");
                 
                 JegoSet(product, "mod", date, time, kure, line);
+
+                EnableButton(true);
+
+                JegoEnable();
+
+                SetProduct(product);
+            }
+            else if (jegoOverChk == "minimum")
+            {
+                StJavaScript js = new StJavaScript(this.Page, false, true);
+                js.WriteJavascript("showMessageToolTip('" + this.btnModify.ClientID + "', '해당 스타일은 `최소 주문량(" + miniQty + ")`이상을 주문해야 합니다. !!!');");
+
+                JegoSet(product, "", date, time, kure, "");
 
                 EnableButton(true);
 

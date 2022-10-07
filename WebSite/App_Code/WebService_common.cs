@@ -1341,30 +1341,41 @@ public class WebService_common : System.Web.Services.WebService
         }
         else
         {
-            string jegoOverChk = JegoOverCheck(mode, oad, OrderArray);
+            double order1 = StCommon.ToDouble(OrderArray[1], 0);
+            double order2 = StCommon.ToDouble(OrderArray[2], 0);
+            double order3 = StCommon.ToDouble(OrderArray[3], 0);
+            double order4 = StCommon.ToDouble(OrderArray[4], 0);
+            double order5 = StCommon.ToDouble(OrderArray[5], 0);
+            double order6 = StCommon.ToDouble(OrderArray[6], 0);
+            double order7 = StCommon.ToDouble(OrderArray[7], 0);
+            double order8 = StCommon.ToDouble(OrderArray[8], 0);
+            double order9 = StCommon.ToDouble(OrderArray[9], 0);
+            double order10 = StCommon.ToDouble(OrderArray[10], 0);
+            double order11 = StCommon.ToDouble(OrderArray[11], 0);
+            double order12 = StCommon.ToDouble(OrderArray[12], 0);
+            double order13 = StCommon.ToDouble(OrderArray[13], 0);
+            double order14 = StCommon.ToDouble(OrderArray[14], 0);
+            double order15 = StCommon.ToDouble(OrderArray[15], 0);
+            double order16 = StCommon.ToDouble(OrderArray[16], 0);
+            double order17 = StCommon.ToDouble(OrderArray[17], 0);
+            double orderTotal = order1 + order2 + order3 + order4 + order5 + order6 + order7 + order8 + order9 + order10 + order11 + order12 + order13 + order14 + order15 + order16 + order17;
+            double miniQty = StCommon.GetMinimumQty(product);
+
+            string jegoOverChk = "";
+
+            if (orderTotal < miniQty)
+            {
+                jegoOverChk = "minimum";
+            }
+            else
+            {
+                jegoOverChk = JegoOverCheck(mode, oad, OrderArray);
+            }
+
             SetJustPrice(kure, product, OrderArray, opd, oad);
 
             if (jegoOverChk == "")
             {
-                double order1 = StCommon.ToDouble(OrderArray[1], 0);
-                double order2 = StCommon.ToDouble(OrderArray[2], 0);
-                double order3 = StCommon.ToDouble(OrderArray[3], 0);
-                double order4 = StCommon.ToDouble(OrderArray[4], 0);
-                double order5 = StCommon.ToDouble(OrderArray[5], 0);
-                double order6 = StCommon.ToDouble(OrderArray[6], 0);
-                double order7 = StCommon.ToDouble(OrderArray[7], 0);
-                double order8 = StCommon.ToDouble(OrderArray[8], 0);
-                double order9 = StCommon.ToDouble(OrderArray[9], 0);
-                double order10 = StCommon.ToDouble(OrderArray[10], 0);
-                double order11 = StCommon.ToDouble(OrderArray[11], 0);
-                double order12 = StCommon.ToDouble(OrderArray[12], 0);
-                double order13 = StCommon.ToDouble(OrderArray[13], 0);
-                double order14 = StCommon.ToDouble(OrderArray[14], 0);
-                double order15 = StCommon.ToDouble(OrderArray[15], 0);
-                double order16 = StCommon.ToDouble(OrderArray[16], 0);
-                double order17 = StCommon.ToDouble(OrderArray[17], 0);
-                double orderTotal = order1 + order2 + order3 + order4 + order5 + order6 + order7 + order8 + order9 + order10 + order11 + order12 + order13 + order14 + order15 + order16 + order17;
-
                 OrderData_common order = new OrderData_common();
                 
                 order.Date = date;
@@ -1477,6 +1488,29 @@ public class WebService_common : System.Web.Services.WebService
                 failMsg = "주문량을 입력해주세요.";
                 result = 0;
                 
+                oad.jego01 = JegoSet[1];
+                oad.jego02 = JegoSet[2];
+                oad.jego03 = JegoSet[31];
+                oad.jego04 = JegoSet[4];
+                oad.jego05 = JegoSet[5];
+                oad.jego06 = JegoSet[6];
+                oad.jego07 = JegoSet[7];
+                oad.jego08 = JegoSet[8];
+                oad.jego09 = JegoSet[9];
+                oad.jego10 = JegoSet[10];
+                oad.jego11 = JegoSet[11];
+                oad.jego12 = JegoSet[12];
+                oad.jego13 = JegoSet[13];
+                oad.jego14 = JegoSet[14];
+                oad.jego15 = JegoSet[15];
+                oad.jego16 = JegoSet[16];
+                oad.jego17 = JegoSet[17];
+            }
+            else if (jegoOverChk == "minimum")
+            {
+                failMsg = "해당 스타일은 `최소 주문량(" + miniQty + ")`이상을 주문해야 합니다. !!!";
+                result = 0;
+
                 oad.jego01 = JegoSet[1];
                 oad.jego02 = JegoSet[2];
                 oad.jego03 = JegoSet[31];
