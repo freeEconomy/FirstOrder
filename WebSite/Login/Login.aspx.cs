@@ -23,12 +23,13 @@ public partial class Login_Login : System.Web.UI.Page
             // DS / chlrkdeotjd1!
             // BDA -- 총판 / 8520zx8520@
             // ACE -- 대리점 / sangseon0#
+            // KRAR / tbuc6033#
 
             // ZX-7 / saeoul2723!
 
             // 암호 찾기
 
-            string[] passArr = MemberData.GetPassDate("ZX-7");
+            string[] passArr = MemberData.GetPassDate("KRAR");
 
             string chkPassDate = passArr[0];
             string chkPassWord = passArr[1];

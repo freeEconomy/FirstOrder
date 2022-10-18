@@ -72,8 +72,8 @@ public partial class Page_StyleSelect : System.Web.UI.Page
 
         if (preVal == "tbl")
         {
-            if (areaGubun == "2.대리점") // 대리점은 TB- 주문못함.
-                whereQry = " and Jego_StyleNox not like 'TB-%' ";
+            //if (areaGubun == "2.대리점") // 대리점은 TB- 주문못함.
+                //whereQry = " and Jego_StyleNox not like 'TB-%' ";
         }
 
         whereQry = StCommon.MakeSearchQry("Jego_StyleNox", styleNox, "%", whereQry);
