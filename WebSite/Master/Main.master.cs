@@ -29,6 +29,8 @@ public partial class Master_Main : System.Web.UI.MasterPage
         {
             string sPageName = Path.GetFileName(Request.PhysicalPath);
 
+            PopupCheck.Visible = sPageName.ToLower().Trim() == "order_tbl.aspx" || sPageName.ToLower().Trim() == "order_abl.aspx";
+
             if (sPageName.ToLower().Trim() == "order_tbl.aspx" && Request.QueryString.ToString() == "mode=add")
             {
                 Session["PreVal"] = "tbl";

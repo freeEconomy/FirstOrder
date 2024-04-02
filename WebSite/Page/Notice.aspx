@@ -19,6 +19,27 @@
 	        }
 
             function WriteCheck() {
+                if (document.getElementById("<%=this.txtTitle.ClientID%>").value == "") {
+                    showMessageToolTip('<%=this.txtTitle.ClientID%>', '팝업 제목을 입력해 주세요.');
+                    document.getElementById("<%=this.txtTitle.ClientID%>").focus();
+                    return false;
+                }
+                if (document.getElementById("<%=this.txtLeftMargin.ClientID%>").value == "") {
+                    showMessageToolTip('<%=this.txtLeftMargin.ClientID%>', '왼쪽여백을 입력해 주세요.');
+                    document.getElementById("<%=this.txtLeftMargin.ClientID%>").focus();
+                    return false;
+                }
+                if (document.getElementById("<%=this.txtPWidth.ClientID%>").value == "") {
+                    showMessageToolTip('<%=this.txtPWidth.ClientID%>', '팝업 가로값을 입력해 주세요.');
+                    document.getElementById("<%=this.txtPWidth.ClientID%>").focus();
+                    return false;
+                }
+                if (document.getElementById("<%=this.txtPHeight.ClientID%>").value == "") {
+                    showMessageToolTip('<%=this.txtPHeight.ClientID%>', '팝업 세로값을 입력해 주세요.');
+                    document.getElementById("<%=this.txtPHeight.ClientID%>").focus();
+                    return false;
+                }
+
                 document.getElementById("<%=this.hidUpFileName.ClientID %>").value = "";
                 document.getElementById("<%=this.hidUpFileSize.ClientID %>").value = "";
 
@@ -35,6 +56,32 @@
 	        }
 
 	        function ModifyCheck() {
+                if (document.getElementById("<%=this.txtTitle.ClientID%>").value == "") {
+                    showMessageToolTip('<%=this.txtTitle.ClientID%>', '팝업 제목을 입력해 주세요.');
+                    document.getElementById("<%=this.txtTitle.ClientID%>").focus();
+                    return false;
+                }
+                if (document.getElementById("<%=this.txtTopMargin.ClientID%>").value == "") {
+                    showMessageToolTip('<%=this.txtTopMargin.ClientID%>', '상단여백을 입력해 주세요.');
+                    document.getElementById("<%=this.txtTopMargin.ClientID%>").focus();
+                    return false;
+                }
+                if (document.getElementById("<%=this.txtLeftMargin.ClientID%>").value == "") {
+                    showMessageToolTip('<%=this.txtLeftMargin.ClientID%>', '왼쪽여백을 입력해 주세요.');
+                    document.getElementById("<%=this.txtLeftMargin.ClientID%>").focus();
+                    return false;
+                }
+                if (document.getElementById("<%=this.txtPWidth.ClientID%>").value == "") {
+                    showMessageToolTip('<%=this.txtPWidth.ClientID%>', '팝업 가로값을 입력해 주세요.');
+                    document.getElementById("<%=this.txtPWidth.ClientID%>").focus();
+                    return false;
+                }
+                if (document.getElementById("<%=this.txtPHeight.ClientID%>").value == "") {
+                    showMessageToolTip('<%=this.txtPHeight.ClientID%>', '팝업 세로값을 입력해 주세요.');
+                    document.getElementById("<%=this.txtPHeight.ClientID%>").focus();
+                    return false;
+                }
+
 		        document.getElementById("<%=this.hidUpFileName.ClientID %>").value = "";
 		        document.getElementById("<%=this.hidUpFileSize.ClientID %>").value = "";
 
@@ -63,7 +110,11 @@
 	            var tDir = "BoardFilePath";
 		
 		        document.getElementById("ifrDown").src = "/Common/FileDown.aspx?tDir=" + escape(tDir) + "&tFileName=" + escape(tFileName);
-	        }
+            }
+
+            function OnlyNumbers(event) {
+                event.target.value = event.target.value.replace(/[^0-9]/g, "");
+            }
         //]]>
     </script>
 </asp:Content>
@@ -209,8 +260,14 @@
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <th>팝업 제목</th>
+                                                <td colspan="3">
+                                                    <asp:TextBox ID="txtTitle" runat="server" CssClass="form-control" Width="400" MaxLength="50"></asp:TextBox>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <th>공지기간</th>
-                                                <td>
+                                                <td colspan="3">
                                                     <cal:CalendarDate ID="ucNoticeDay" runat="server" />
                                                     ~ <cal:CalendarDate ID="ucNoticeDay2" runat="server" />
                                                     * 메인에 띄우는 공지기간입니다.(앞 날짜만 입력하시면 하루만 표시됩니다.)
@@ -218,26 +275,44 @@
                                             </tr>
                                             <tr>
                                                 <th>리스트상단표시</th>
-                                                <td>
+                                                <td colspan="3">
                                                     <asp:CheckBox runat="server" ID="cbIsNotice" Text="상단표시" />
                                                     (* 리스트에서 상단에 표시합니다.)
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>내용</th>
-                                                <td>
+                                                <td colspan="3">
                                                     <ckeditor:ckeditorcontrol id="ckContent" runat="server" height="300px" width="100%"></ckeditor:ckeditorcontrol>
                                                     <div><asp:Label ID="lblFile" runat="server"></asp:Label></div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>첨부파일</th>
-                                                <td>
+                                                <td colspan="3">
                                                     <iframe id="ifrFile" name="ifrFile" scrolling="no" frameborder="0" style="text-align: center; vertical-align: middle; border-style: none; margin: 0px; width: 100%; height: 30px" src="/Common/FileUpload.aspx?tDir=BoardFilePath"></iframe>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td align="center" colspan="2" style="height: 30px">
+                                                <th>팝업 위치</th>
+                                                <td colspan="3">
+                                                    상단여백 : 
+                                                    <asp:TextBox ID="txtTopMargin" runat="server" CssClass="form-control" Width="100" OnKeyUp="OnlyNumbers(event)"></asp:TextBox>
+                                                    왼쪽여백 : 
+                                                    <asp:TextBox ID="txtLeftMargin" runat="server" CssClass="form-control" Width="100" OnKeyUp="OnlyNumbers(event)"></asp:TextBox>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>팝업 크기</th>
+                                                <td colspan="3">
+                                                    가로 : 
+                                                    <asp:TextBox ID="txtPWidth" runat="server" CssClass="form-control" Width="100" OnKeyUp="OnlyNumbers(event)"></asp:TextBox>
+                                                    세로 : 
+                                                    <asp:TextBox ID="txtPHeight" runat="server" CssClass="form-control" Width="100" OnKeyUp="OnlyNumbers(event)"></asp:TextBox>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" colspan="4" style="height: 30px">
                                                     <asp:Button ID="btnWrite" runat="server" Text="저 장" Width="110" CssClass="btn btn-info" OnClientClick="return WriteCheck();" OnClick="btnWrite_Click" />
                                                     <asp:Button ID="btnModify" runat="server" Text="수 정" Width="110" CssClass="btn btn-info" OnClientClick="return ModifyCheck();" OnClick="btnModify_Click"/>
                                                     <asp:Button ID="btnDelete" runat="server" Text="삭 제" Width="110" CssClass="btn btn-info" OnClientClick="return DeleteCheck();" OnClick="btnDelete_Click" />

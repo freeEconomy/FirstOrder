@@ -5,6 +5,7 @@ using System.Data.Common;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
 
 using FirstOrder.Util;
+using System.Web.UI.DataVisualization.Charting;
 
 namespace FirstOrder.Data
 {
@@ -17,11 +18,16 @@ namespace FirstOrder.Data
         WorkHistory whis = new WorkHistory();
 
 		private int m_idx;
-		private string m_noticeday;
+        private string m_title;
+        private string m_noticeday;
         private string m_noticeday2;
         private string m_memo;
 		private string m_fileName;
 		private bool m_isNotice;
+        private int m_topMargin;
+        private int m_leftMargin;
+        private int m_pWidth;
+        private int m_pHeight;
 
         private string preVal;
 
@@ -38,8 +44,13 @@ namespace FirstOrder.Data
 		public int IDX
 		{
 			set { m_idx = value; }
-		}
-		public string NoticeDay
+        }
+        public string Title
+        {
+            get { return m_title; }
+            set { m_title = value; }
+        }
+        public string NoticeDay
 		{
 			get { return m_noticeday; }
 			set { m_noticeday = value; }
@@ -63,38 +74,68 @@ namespace FirstOrder.Data
         {
 			get { return m_isNotice; }
 			set { m_isNotice = value; }
-		}
+        }
+        public int TopMargin
+        {
+            get { return m_topMargin; }
+            set { m_topMargin = value; }
+        }
+        public int LeftMargin
+        {
+            get { return m_leftMargin; }
+            set { m_leftMargin = value; }
+        }
+        public int PWidth
+        {
+            get { return m_pWidth; }
+            set { m_pWidth = value; }
+        }
+        public int PHeight
+        {
+            get { return m_pHeight; }
+            set { m_pHeight = value; }
+        }
 
-		public void InsertData()
+        public void InsertData()
 		{
-            string qry = "INSERT INTO " + preVal + "NOTICE (memoday,noticeday,noticeday2,[memo],[fileName],[isNotice]) VALUES (@memoday,@noticeday,@noticeday2,@memo,@fileName,@isNotice)";
+            string qry = "INSERT INTO " + preVal + "NOTICE (title,memoday,noticeday,noticeday2,[memo],[fileName],[isNotice],topmargin,leftmargin,pwidth,pheight) VALUES (@title,@memoday,@noticeday,@noticeday2,@memo,@fileName,@isNotice,@topmargin,@leftmargin,@pwidth,@pheight)";
 
 			DbCommand cmd = db.GetSqlStringCommand(qry);
 
-			db.AddInParameter(cmd, "@memoday", DbType.String, DateTime.Now.ToShortDateString());
+            db.AddInParameter(cmd, "@title", DbType.String, m_title);
+            db.AddInParameter(cmd, "@memoday", DbType.String, DateTime.Now.ToShortDateString());
             db.AddInParameter(cmd, "@noticeday", DbType.String, m_noticeday);
             db.AddInParameter(cmd, "@noticeday2", DbType.String, m_noticeday2);
             db.AddInParameter(cmd, "@memo", DbType.String, m_memo);
 			db.AddInParameter(cmd, "@fileName", DbType.String, m_fileName);
 			db.AddInParameter(cmd, "@isNotice", DbType.Boolean, m_isNotice);
+            db.AddInParameter(cmd, "@topmargin", DbType.Int32, m_topMargin);
+            db.AddInParameter(cmd, "@leftmargin", DbType.Int32, m_leftMargin);
+            db.AddInParameter(cmd, "@pwidth", DbType.Int32, m_pWidth);
+            db.AddInParameter(cmd, "@pheight", DbType.Int32, m_pHeight);
 
-			db.ExecuteNonQuery(cmd);
+            db.ExecuteNonQuery(cmd);
 
 			whis.InsertWork("공지사항", "등록", cmd);
 		}
 
 		public void UpdateData()
 		{
-            string qry = "UPDATE " + preVal + "NOTICE SET noticeday=@noticeday,noticeday2=@noticeday2,[memo]=@memo,[fileName]=@fileName,[isNotice]=@isNotice WHERE u=@u";
+            string qry = "UPDATE " + preVal + "NOTICE SET title=@title,noticeday=@noticeday,noticeday2=@noticeday2,[memo]=@memo,[fileName]=@fileName,[isNotice]=@isNotice,topmargin=@topmargin,leftmargin= @leftmargin,pwidth=@pwidth,pheight=@pheight WHERE u=@u";
 
 			DbCommand cmd = db.GetSqlStringCommand(qry);
 
+            db.AddInParameter(cmd, "@title", DbType.String, m_title);
             db.AddInParameter(cmd, "@noticeday", DbType.String, m_noticeday);
             db.AddInParameter(cmd, "@noticeday2", DbType.String, m_noticeday2);
             db.AddInParameter(cmd, "@memo", DbType.String, m_memo);
 			db.AddInParameter(cmd, "@fileName", DbType.String, m_fileName);
 			db.AddInParameter(cmd, "@isNotice", DbType.Boolean, m_isNotice);
-			db.AddInParameter(cmd, "@u", DbType.Int32, m_idx);
+            db.AddInParameter(cmd, "@topmargin", DbType.Int32, m_topMargin);
+            db.AddInParameter(cmd, "@leftmargin", DbType.Int32, m_leftMargin);
+            db.AddInParameter(cmd, "@pwidth", DbType.Int32, m_pWidth);
+            db.AddInParameter(cmd, "@pheight", DbType.Int32, m_pHeight);
+            db.AddInParameter(cmd, "@u", DbType.Int32, m_idx);
 
 			db.ExecuteNonQuery(cmd);
 
@@ -124,13 +165,19 @@ namespace FirstOrder.Data
 			using (IDataReader dr = db.ExecuteReader(cmd))
 			{
 				if (dr.Read())
-				{
+                {
+                    m_title = dr["title"].ToString().Trim();
                     m_noticeday = dr["noticeday"].ToString().Trim();
                     m_noticeday2 = dr["noticeday2"].ToString().Trim();
                     m_memo = dr["memo"].ToString().Trim();
 					m_fileName = dr["fileName"].ToString().Trim();
                     m_isNotice = Convert.ToBoolean(dr["isNotice"]);
-				}
+                    m_topMargin = Convert.ToInt32(dr["topMargin"]);
+                    m_leftMargin = Convert.ToInt32(dr["leftMargin"]);
+                    m_pWidth = Convert.ToInt32(dr["leftMargin"]);
+                    m_pWidth = Convert.ToInt32(dr["pWidth"]);
+                    m_pHeight = Convert.ToInt32(dr["pHeight"]);
+                }
 				dr.Close();
 			}
 		}

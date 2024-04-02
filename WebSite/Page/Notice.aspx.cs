@@ -159,6 +159,11 @@ public partial class Page_Notice : System.Web.UI.Page
         ((TextBox)this.ucNoticeDay.FindControl("txtDate")).Text = DateTime.Now.ToShortDateString();
         ((TextBox)this.ucNoticeDay2.FindControl("txtDate")).Text = DateTime.Now.ToShortDateString();
         this.ckContent.Text = "";
+        txtTitle.Text = "";
+        txtTopMargin.Text = "";
+        txtLeftMargin.Text = "";
+        txtPWidth.Text = "";
+        txtPHeight.Text = "";
     }
 
     private void BindModify(int idx)
@@ -189,6 +194,12 @@ public partial class Page_Notice : System.Web.UI.Page
             this.lblFile.Visible = true;
             this.lblFile.Text = string.Format("기존파일 : {0}", no.FileName);
         }
+
+        txtTitle.Text = no.Title.ToString();
+        txtTopMargin.Text = no.TopMargin.ToString();
+        txtLeftMargin.Text = no.LeftMargin.ToString();
+        txtPWidth.Text = no.PWidth.ToString();
+        txtPHeight.Text = no.PHeight.ToString();
     }
 
     protected void btnSearch_Click(object sender, EventArgs e)
@@ -211,12 +222,17 @@ public partial class Page_Notice : System.Web.UI.Page
 
         Notice no = new Notice(preVal);
 
+        no.Title = StCommon.ReplaceSQ(this.txtTitle.Text.Trim());
         no.NoticeDay = StCommon.ReplaceSQ(((TextBox)this.ucNoticeDay.FindControl("txtDate")).Text);
         no.NoticeDay2 = StCommon.ReplaceSQ(((TextBox)this.ucNoticeDay2.FindControl("txtDate")).Text);
         no.MemoData = Server.HtmlEncode(this.ckContent.Text.Trim());
         no.FileName = fileName;
         no.IsNotice = this.cbIsNotice.Checked;
-        
+        no.TopMargin = StCommon.ToInt(txtTopMargin.Text, 0);
+        no.LeftMargin = StCommon.ToInt(txtLeftMargin.Text, 0);
+        no.PWidth = StCommon.ToInt(txtPWidth.Text, 0);
+        no.PHeight = StCommon.ToInt(txtPHeight.Text, 0);
+
         no.InsertData();
 
         this.mvMain.ActiveViewIndex = 0;
@@ -240,11 +256,16 @@ public partial class Page_Notice : System.Web.UI.Page
 
         Notice no = new Notice(preVal, StCommon.ToInt(this.hidIdx.Value, 0));
 
+        no.Title = StCommon.ReplaceSQ(this.txtTitle.Text.Trim());
         no.NoticeDay = StCommon.ReplaceSQ(((TextBox)this.ucNoticeDay.FindControl("txtDate")).Text);
         no.NoticeDay2 = StCommon.ReplaceSQ(((TextBox)this.ucNoticeDay2.FindControl("txtDate")).Text);
         no.MemoData = Server.HtmlEncode(this.ckContent.Text.Trim());        
         no.FileName = upDateFileName;
         no.IsNotice = this.cbIsNotice.Checked;
+        no.TopMargin = StCommon.ToInt(txtTopMargin.Text, 0);
+        no.LeftMargin = StCommon.ToInt(txtLeftMargin.Text, 0);
+        no.PWidth = StCommon.ToInt(txtPWidth.Text, 0);
+        no.PHeight = StCommon.ToInt(txtPHeight.Text, 0);
 
         no.UpdateData();
 

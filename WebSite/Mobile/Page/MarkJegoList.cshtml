@@ -133,18 +133,20 @@
                         items.push('<tr><td class="reportTd">' + val.size09 + '</td><td class="reportTd">' + val.jego09 + '</td></tr>');
                         items.push('<tr><td class="reportTd">' + val.size10 + '</td><td class="reportTd">' + val.jego10 + '</td></tr>');
                         
-                        if (preVal == "abl") {
+                        if (preVal == "tbl") {
+                            if (sizeNum == "12") {
+                                items.push('<tr><td class="reportTd">' + val.size11 + '</td><td class="reportTd">' + val.jego11 + '</td></tr>');
+                                items.push('<tr><td class="reportTd">' + val.size12 + '</td><td class="reportTd">' + val.jego12 + '</td></tr>');
+                            }
+                        }
+                        else {
                             items.push('<tr><td class="reportTd">' + val.size11 + '</td><td class="reportTd">' + val.jego11 + '</td></tr>');
                             items.push('<tr><td class="reportTd">' + val.size12 + '</td><td class="reportTd">' + val.jego12 + '</td></tr>');
                             items.push('<tr><td class="reportTd">' + val.size13 + '</td><td class="reportTd">' + val.jego13 + '</td></tr>');
                             items.push('<tr><td class="reportTd">' + val.size14 + '</td><td class="reportTd">' + val.jego14 + '</td></tr>');
                             items.push('<tr><td class="reportTd">' + val.size15 + '</td><td class="reportTd">' + val.jego15 + '</td></tr>');
-                        }
-                        else {
-                            if (sizeNum != "10") {
-                                items.push('<tr><td class="reportTd">' + val.size11 + '</td><td class="reportTd">' + val.jego11 + '</td></tr>');
-                                items.push('<tr><td class="reportTd">' + val.size12 + '</td><td class="reportTd">' + val.jego12 + '</td></tr>');
-                            }
+                            items.push('<tr><td class="reportTd">' + val.size16 + '</td><td class="reportTd">' + val.jego16 + '</td></tr>');
+                            items.push('<tr><td class="reportTd">' + val.size17 + '</td><td class="reportTd">' + val.jego17 + '</td></tr>');
                         }
                         items.push('<tr><td class="reportTd">Total</td><td class="reportTd">' + val.jegototal + '</td></tr>');
 

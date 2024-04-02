@@ -4,7 +4,6 @@
 <%@ Register Src="~/Control/Product.ascx" TagName="Product" TagPrefix="uc2" %>
 <%@ Register Src="~/Control/CalendarDate.ascx" TagName="CalendarDate" TagPrefix="cal" %>
 <%@ Register Src="~/Control/LayerProductList.ascx" TagName="LayerProductList" TagPrefix="lp" %>
-<%@ Register Src="~/Control/PopupNotice.ascx" TagName="PopupNotice" TagPrefix="pn" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <script type="text/javascript" language="javascript">
@@ -365,15 +364,6 @@
 
             <asp:HiddenField ID="hidBljuMin" runat="server" />
             <asp:HiddenField ID="hidBljuTotal" runat="server" />
-
-            <div style="position: absolute; top: 100px; left: 250px; z-index:1">
-                <div id="divPopupNotice" class="ui-widget-content" style="z-index: 999; display: none; height: 780px; overflow: auto; width: 1100px; padding: 0.5em;">
-                    <div style="vertical-align: top;">
-                        <!--<pn:PopupNotice ID="PopupNotice" runat="server" />-->
-                        <iframe id="popNotice" name="popNotice" src="/Page/PopupNotice.aspx" align="left" width="100%" height="760" marginheight="0" marginwidth="0" scrolling="no" frameborder="0"></iframe>
-                    </div>
-                </div>
-            </div>
 
             <div class="container-fluid">
 

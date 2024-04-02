@@ -1,6 +1,7 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Main.master.cs" Inherits="Master_Main" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register Src="~/Control/PopupCheck.ascx" TagName="PopupCheck" TagPrefix="pc" %>
 
 <!DOCTYPE html>
 
@@ -62,6 +63,8 @@
 
         <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnableScriptGlobalization="true" EnableScriptLocalization="true" />
         
+        <pc:PopupCheck ID="PopupCheck" runat="server" />
+
         <div style="display:none;">
             <asp:Button ID="btnNoEnter" runat="server" OnClientClick="return false" />
         </div>
