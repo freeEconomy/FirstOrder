@@ -6,13 +6,39 @@ function showMessageDiv(id, msg) {
 }
 
 function showMessageToolTip(id, msg) {
-    $('#' + id).tooltip('enable')
+    var element = $('#' + id);
+    var title = element.attr('title'); // 클릭된 요소의 타이틀 속성 가져오기
+    if (!title) {
+        element.attr('title', msg); // 타이틀 속성이 없으면 메시지를 타이틀 속성으로 설정
+    }
+
+    element.tooltip({
+        content: msg,
+        show: { effect: 'slideDown', delay: 100, duration: 250 }, // 3초 동안 나타남
+        // 툴팁이 열릴 때 실행되는 이벤트 핸들러
+        open: function (event, ui) {
+            // 3초 후에 툴팁을 자동으로 닫음
+            setTimeout(function () {
+                $(ui.tooltip).hide(); // 툴팁을 숨김
+            }, 3000); // 3초 후에 숨김
+        },
+        // 툴팁이 닫힐 때 실행되는 이벤트 핸들러
+        close: function (event, ui) {
+            // 툴팁을 재활성화하여 다시 열 수 있도록 설정
+            $(this).tooltip("disable").tooltip("enable");
+
+        }
+    });
+
+    element.tooltip("close").tooltip("open");
+
+    /*$('#' + id).tooltip('enable')
     .attr('data-original-title', msg)
     .tooltip('show');
     setTimeout(function () {
         $('#' + id).tooltip('hide');
         $('#' + id).tooltip('disable');
-    }, 3000);
+    }, 3000);*/
 }
 
 // 숫자만 입력받는다. "-"는 입력받는다

@@ -1,6 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="PopupCheck.ascx.cs" Inherits="Control_PopupCheck" %>
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui-1.13.2/jquery-ui.js"></script>
+
 <style type="text/css">
 	#wrapper_popup div[id ^= 'layerPop'] {width:100%;margin:10px;position:absolute; padding:20px 30px; background:#f2f0ff; z-index:100000;border-radius:5px;overflow:auto;display:none}
 	#wrapper_popup div[id ^= 'layerPop'] h2 {display:block;margin:5px 0 0;padding-bottom:15px;border-bottom:1px #d8d8d8 solid;font-size:1.1em;font-weight:bold}
