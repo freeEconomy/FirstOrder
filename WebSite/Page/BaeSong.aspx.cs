@@ -164,7 +164,7 @@ public partial class Page_BaeSong : System.Web.UI.Page
                 string kurename = MemberData.GetLoginSID("KureName");
                 string kurecode = MemberData.GetLoginSID("KureCode");
 
-                //this.txtBaeSongName1.Text = "경동화물";
+                this.txtBaeSongName1.Text = "경동화물";
                 this.txtBaeSongName1Send.Text = kurename;
             }
 
