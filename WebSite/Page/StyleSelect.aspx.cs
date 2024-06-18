@@ -197,20 +197,22 @@ public partial class Page_StyleSelect : System.Web.UI.Page
                 {
                     string common_num = dr2["Common_Code"].ToString().Trim().Substring(3, 2);
 
+                    string remark = preVal == "abl" ? "" : "<br>" + dr2["Common_Remark3"].ToString().Trim() + "<br>" + dr2["Common_Remark2"].ToString().Trim();
+
                     switch (common_num)
                     {
-                        case "01": sizeName1 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "02": sizeName2 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "03": sizeName3 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "04": sizeName4 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "05": sizeName5 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "06": sizeName6 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "07": sizeName7 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "08": sizeName8 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "09": sizeName9 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "10": sizeName10 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "11": sizeName11 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "12": sizeName12 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
+                        case "01": sizeName1 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "02": sizeName2 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "03": sizeName3 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "04": sizeName4 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "05": sizeName5 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "06": sizeName6 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "07": sizeName7 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "08": sizeName8 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "09": sizeName9 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "10": sizeName10 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "11": sizeName11 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "12": sizeName12 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
                         case "13": sizeName13 = dr2["Common_CodeName"].ToString().Trim(); break;
                         case "14": sizeName14 = dr2["Common_CodeName"].ToString().Trim(); break;
                         case "15": sizeName15 = dr2["Common_CodeName"].ToString().Trim(); break;
@@ -377,20 +379,22 @@ public partial class Page_StyleSelect : System.Web.UI.Page
                 {
                     string common_num = dr2["Common_Code"].ToString().Trim().Substring(3, 2);
 
+                    string remark = preVal == "abl" ? "" : "<br>" + dr2["Common_Remark3"].ToString().Trim() + "<br>" + dr2["Common_Remark2"].ToString().Trim();
+
                     switch (common_num)
                     {
-                        case "01": sizeName1 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "02": sizeName2 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "03": sizeName3 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "04": sizeName4 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "05": sizeName5 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "06": sizeName6 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "07": sizeName7 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "08": sizeName8 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "09": sizeName9 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "10": sizeName10 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "11": sizeName11 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
-                        case "12": sizeName12 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")"; break;
+                        case "01": sizeName1 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "02": sizeName2 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "03": sizeName3 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "04": sizeName4 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "05": sizeName5 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "06": sizeName6 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "07": sizeName7 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "08": sizeName8 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "09": sizeName9 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "10": sizeName10 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "11": sizeName11 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
+                        case "12": sizeName12 = dr2["Common_CodeName"].ToString().Trim() + "<br>(" + ((Kind == "2") ? dr2["Common_Remark2"].ToString().Trim() : dr2["Common_Remark1"].ToString().Trim()) + ")" + remark; break;
                         case "13": sizeName13 = dr2["Common_CodeName"].ToString().Trim(); break;
                         case "14": sizeName14 = dr2["Common_CodeName"].ToString().Trim(); break;
                         case "15": sizeName15 = dr2["Common_CodeName"].ToString().Trim(); break;

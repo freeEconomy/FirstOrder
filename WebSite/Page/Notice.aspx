@@ -20,22 +20,22 @@
 
             function WriteCheck() {
                 if (document.getElementById("<%=this.txtTitle.ClientID%>").value == "") {
-                    showMessageToolTip('<%=this.txtTitle.ClientID%>', '팝업 제목을 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtTitle.ClientID%>', '팝업 제목을 입력해 주세요.');
                     document.getElementById("<%=this.txtTitle.ClientID%>").focus();
                     return false;
                 }
                 if (document.getElementById("<%=this.txtLeftMargin.ClientID%>").value == "") {
-                    showMessageToolTip('<%=this.txtLeftMargin.ClientID%>', '왼쪽여백을 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtLeftMargin.ClientID%>', '왼쪽여백을 입력해 주세요.');
                     document.getElementById("<%=this.txtLeftMargin.ClientID%>").focus();
                     return false;
                 }
                 if (document.getElementById("<%=this.txtPWidth.ClientID%>").value == "") {
-                    showMessageToolTip('<%=this.txtPWidth.ClientID%>', '팝업 가로값을 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtPWidth.ClientID%>', '팝업 가로값을 입력해 주세요.');
                     document.getElementById("<%=this.txtPWidth.ClientID%>").focus();
                     return false;
                 }
                 if (document.getElementById("<%=this.txtPHeight.ClientID%>").value == "") {
-                    showMessageToolTip('<%=this.txtPHeight.ClientID%>', '팝업 세로값을 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtPHeight.ClientID%>', '팝업 세로값을 입력해 주세요.');
                     document.getElementById("<%=this.txtPHeight.ClientID%>").focus();
                     return false;
                 }
@@ -57,27 +57,27 @@
 
 	        function ModifyCheck() {
                 if (document.getElementById("<%=this.txtTitle.ClientID%>").value == "") {
-                    showMessageToolTip('<%=this.txtTitle.ClientID%>', '팝업 제목을 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtTitle.ClientID%>', '팝업 제목을 입력해 주세요.');
                     document.getElementById("<%=this.txtTitle.ClientID%>").focus();
                     return false;
                 }
                 if (document.getElementById("<%=this.txtTopMargin.ClientID%>").value == "") {
-                    showMessageToolTip('<%=this.txtTopMargin.ClientID%>', '상단여백을 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtTopMargin.ClientID%>', '상단여백을 입력해 주세요.');
                     document.getElementById("<%=this.txtTopMargin.ClientID%>").focus();
                     return false;
                 }
                 if (document.getElementById("<%=this.txtLeftMargin.ClientID%>").value == "") {
-                    showMessageToolTip('<%=this.txtLeftMargin.ClientID%>', '왼쪽여백을 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtLeftMargin.ClientID%>', '왼쪽여백을 입력해 주세요.');
                     document.getElementById("<%=this.txtLeftMargin.ClientID%>").focus();
                     return false;
                 }
                 if (document.getElementById("<%=this.txtPWidth.ClientID%>").value == "") {
-                    showMessageToolTip('<%=this.txtPWidth.ClientID%>', '팝업 가로값을 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtPWidth.ClientID%>', '팝업 가로값을 입력해 주세요.');
                     document.getElementById("<%=this.txtPWidth.ClientID%>").focus();
                     return false;
                 }
                 if (document.getElementById("<%=this.txtPHeight.ClientID%>").value == "") {
-                    showMessageToolTip('<%=this.txtPHeight.ClientID%>', '팝업 세로값을 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtPHeight.ClientID%>', '팝업 세로값을 입력해 주세요.');
                     document.getElementById("<%=this.txtPHeight.ClientID%>").focus();
                     return false;
                 }

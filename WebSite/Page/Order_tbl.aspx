@@ -192,14 +192,21 @@
 
         function CheckBlju() {
 
+            if ($('#<%=this.hidBaeSong.ClientID%>').val() == "" || $('#<%=this.txtBaeSongName.ClientID%>').val() == "") {
+                showMessageToolTip('<%=this.btnBaeSong.ClientID%>', '배송지를 선택해 주세요.');
+                return false;
+            }
+
             if (document.getElementById("<%=this.txtProduct.ClientID%>").value == "") {
                 showMessageToolTip('<%=this.txtProduct.ClientID%>', '발주스타일을 선택해 주세요.');
                 document.getElementById("<%=this.txtProduct.ClientID%>").focus();
                 return false;
             }
 
-            if (document.getElementById("<%=this.txtOrderTotal.ClientID%>").value == "") {
+            if (document.getElementById("<%=this.txtOrderTotal.ClientID%>").value == "" || document.getElementById("<%=this.txtOrderTotal.ClientID%>").value == "0") {
+                $('#<%=this.txtOrderTotal.ClientID%>').attr('disabled', false);
                 showMessageToolTip('<%=this.txtOrderTotal.ClientID%>', '주문량을 입력해 주세요.');
+                $('#<%=this.txtOrderTotal.ClientID%>').attr('disabled', true);
                 document.getElementById("<%=this.txtOrderTotal.ClientID%>").focus();
                 return false;
             }
@@ -652,7 +659,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="sizeTotalDiv">
-                                                                    <div class="totalTitle">
+                                                                    <div class="totalTitle2">
                                                                         <asp:Literal ID="ltlSizeTotal" runat="server"></asp:Literal>
                                                                     </div>
                                                                 </div>

@@ -331,13 +331,13 @@ public partial class Page_Order_abl : System.Web.UI.Page
 
         if (StCommon.ToInt(this.hidTotal.Value, 0) == 0)
         {
-            this.btnBaeSong.Enabled = false;
+            //this.btnBaeSong.Enabled = false;
             this.lnkChating.Visible = false;
             this.lnkComplete.Visible = false;
         }
         else
         {
-            this.btnBaeSong.Enabled = true;
+            //this.btnBaeSong.Enabled = true;
             this.lnkChating.Visible = true;
             this.lnkComplete.Visible = true;
         }

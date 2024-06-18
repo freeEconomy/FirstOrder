@@ -41,6 +41,16 @@ function showMessageToolTip(id, msg) {
     }, 3000);*/
 }
 
+function showMessageToolTipPop(id, msg) {
+    $('#' + id).tooltip('enable')
+    .attr('data-original-title', msg)
+    .tooltip('show');
+    setTimeout(function () {
+        $('#' + id).tooltip('hide');
+        $('#' + id).tooltip('disable');
+    }, 3000);
+}
+
 // 숫자만 입력받는다. "-"는 입력받는다
 function fnNumberCheck(obj) //
 {
@@ -141,12 +151,12 @@ function setCommaHis_Del(str) {
 }
 
 function OpenBaeSong(totalID, baeSongOptID, baeSongID, baeSongNameID, blju_date, blju_times, blju_mainbuyer, blju_sample) {
-    if ($('#' + totalID + '').val() > 0) {
+    //if ($('#' + totalID + '').val() > 0) {
         OpenModal("/Page/BaeSong.aspx?baeSongOptID=" + baeSongOptID + "&baeSongID=" + baeSongID + "&baeSongNameID=" + baeSongNameID + "&blju_date=" + blju_date + "&blju_times=" + blju_times + "&blju_mainbuyer=" + blju_mainbuyer + "&blju_sample=" + blju_sample, '배송지 선택', '', '700', '840');
-    }
-    else {
-        alert("스타일이 1건도 저장되지 않아서 '배송지'를 등록할 수 없습니다!");
-    }
+    //}
+    //else {
+        //alert("스타일이 1건도 저장되지 않아서 '배송지'를 등록할 수 없습니다!");
+    //}
 
     return false;
 }

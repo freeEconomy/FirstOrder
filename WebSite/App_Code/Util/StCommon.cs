@@ -50,6 +50,19 @@ namespace FirstOrder.Util
         private string m_sizeNum11;
         private string m_sizeNum12;
 
+        private string m_remark1;
+        private string m_remark2;
+        private string m_remark3;
+        private string m_remark4;
+        private string m_remark5;
+        private string m_remark6;
+        private string m_remark7;
+        private string m_remark8;
+        private string m_remark9;
+        private string m_remark10;
+        private string m_remark11;
+        private string m_remark12;
+
         private string m_kind;
         
         private string m_cominfo1;
@@ -190,6 +203,55 @@ namespace FirstOrder.Util
         {
             get { return m_sizeNum12; }
         }
+        
+        public string Remark1
+        {
+            get { return m_remark1; }
+        }
+        public string Remark2
+        {
+            get { return m_remark2; }
+        }
+        public string Remark3
+        {
+            get { return m_remark3; }
+        }
+        public string Remark4
+        {
+            get { return m_remark4; }
+        }
+        public string Remark5
+        {
+            get { return m_remark5; }
+        }
+        public string Remark6
+        {
+            get { return m_remark6; }
+        }
+        public string Remark7
+        {
+            get { return m_remark7; }
+        }
+        public string Remark8
+        {
+            get { return m_remark8; }
+        }
+        public string Remark9
+        {
+            get { return m_remark9; }
+        }
+        public string Remark10
+        {
+            get { return m_remark10; }
+        }
+        public string Remark11
+        {
+            get { return m_remark11; }
+        }
+        public string Remark12
+        {
+            get { return m_remark12; }
+        }
         public string Kind
         {   
             get { return m_kind; }
@@ -272,18 +334,18 @@ namespace FirstOrder.Util
 
                     switch (common_num)
                     {
-                        case "01": m_sizeName1 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum1 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
-                        case "02": m_sizeName2 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum2 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
-                        case "03": m_sizeName3 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum3 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
-                        case "04": m_sizeName4 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum4 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
-                        case "05": m_sizeName5 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum5 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
-                        case "06": m_sizeName6 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum6 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
-                        case "07": m_sizeName7 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum7 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
-                        case "08": m_sizeName8 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum8 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
-                        case "09": m_sizeName9 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum9 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
-                        case "10": m_sizeName10 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum10 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
-                        case "11": m_sizeName11 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum11 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
-                        case "12": m_sizeName12 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum12 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); break;
+                        case "01": m_sizeName1 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum1 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark1 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
+                        case "02": m_sizeName2 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum2 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark2 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
+                        case "03": m_sizeName3 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum3 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark3 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
+                        case "04": m_sizeName4 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum4 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark4 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
+                        case "05": m_sizeName5 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum5 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark5 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
+                        case "06": m_sizeName6 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum6 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark6 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
+                        case "07": m_sizeName7 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum7 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark7 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
+                        case "08": m_sizeName8 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum8 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark8 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
+                        case "09": m_sizeName9 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum9 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark9 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
+                        case "10": m_sizeName10 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum10 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark10 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
+                        case "11": m_sizeName11 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum11 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark11 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
+                        case "12": m_sizeName12 = dr["Common_CodeName"].ToString().Trim(); m_sizeNum12 = (m_kind == "2") ? dr["Common_Remark2"].ToString().Trim() : dr["Common_Remark1"].ToString().Trim(); m_remark12 = dr["Common_Remark3"].ToString().Trim() + "<br>" + dr["Common_Remark2"].ToString().Trim(); break;
                         case "13": m_sizeName13 = dr["Common_CodeName"].ToString().Trim(); break;
                         case "14": m_sizeName14 = dr["Common_CodeName"].ToString().Trim(); break;
                         case "15": m_sizeName15 = dr["Common_CodeName"].ToString().Trim(); break;

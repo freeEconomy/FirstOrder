@@ -18,18 +18,18 @@
             if (optID == "rbBaeSong1")
             {                
                 if ($('#<%=this.txtBaeSongName1.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtBaeSongName1.ClientID%>', '화물 지점명을 입력해야 합니다.');
+                    showMessageToolTipPop('<%=this.txtBaeSongName1.ClientID%>', '화물 지점명을 입력해야 합니다.');
                     return false;
                 }
 
-                if ($('#<%=this.txtBaeSongName1.ClientID%>').val().length < 5)
+                if ($('#<%=this.txtBaeSongName1.ClientID%>').val().length < 4)
                 {
-                    showMessageToolTip('<%=this.txtBaeSongName1.ClientID%>', '화물 지점명을 5자리 이상으로 입력해야 합니다.');
+                    showMessageToolTipPop('<%=this.txtBaeSongName1.ClientID%>', '화물 지점명을 4자리 이상으로 입력해야 합니다.');
                     return false;
                 }
 
                 if ($('#<%=this.txtBaeSongName1Send.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtBaeSongName1Send.ClientID%>', '대리점의 배송지명을 입력해야 합니다.');
+                    showMessageToolTipPop('<%=this.txtBaeSongName1Send.ClientID%>', '대리점의 배송지명을 입력해야 합니다.');
                     return false;
                 }
 
@@ -42,44 +42,44 @@
             else if (optID == "rbBaeSong2" || optID == "rbBaeSong3")
             {
                 if ($('#<%=this.txtBaeSongName2.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtBaeSongName2.ClientID%>', '받으실 분을 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtBaeSongName2.ClientID%>', '받으실 분을 입력해 주세요.');
                     return false;
                 }
                 if ($('#<%=this.txtZipcode.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtZipcode.ClientID%>', '받는곳 우편번호를 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtZipcode.ClientID%>', '받는곳 우편번호를 입력해 주세요.');
                     return false;
                 }
                 if ($('#<%=this.txtAddress1.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtAddress1.ClientID%>', '받는곳 주소를 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtAddress1.ClientID%>', '받는곳 주소를 입력해 주세요.');
                     return false;
                 }
                 if ($('#<%=this.txtAddress2.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtAddress2.ClientID%>', '받는곳 주소를 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtAddress2.ClientID%>', '받는곳 주소를 입력해 주세요.');
                     return false;
                 }
                 if ($('#<%=this.txtTel1.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtTel1.ClientID%>', '받는곳 연락처를 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtTel1.ClientID%>', '받는곳 연락처를 입력해 주세요.');
                     return false;
                 }
 
                 if ($('#<%=this.txtBaeSongName2Send.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtBaeSongName2Send.ClientID%>', '보내는 분을 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtBaeSongName2Send.ClientID%>', '보내는 분을 입력해 주세요.');
                     return false;
                 }
                 if ($('#<%=this.txtZipcodeSend.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtZipcodeSend.ClientID%>', '보내는곳 우편번호를 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtZipcodeSend.ClientID%>', '보내는곳 우편번호를 입력해 주세요.');
                     return false;
                 }
                 if ($('#<%=this.txtAddress1Send.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtAddress1Send.ClientID%>', '보내는곳 주소를 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtAddress1Send.ClientID%>', '보내는곳 주소를 입력해 주세요.');
                     return false;
                 }
                 if ($('#<%=this.txtAddress2Send.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtAddress2Send.ClientID%>', '보내는곳 주소를 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtAddress2Send.ClientID%>', '보내는곳 주소를 입력해 주세요.');
                     return false;
                 }
                 if ($('#<%=this.txtTel1Send.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtTel1Send.ClientID%>', '보내는곳 연락처를 입력해 주세요.');
+                    showMessageToolTipPop('<%=this.txtTel1Send.ClientID%>', '보내는곳 연락처를 입력해 주세요.');
                     return false;
                 }
 
@@ -100,7 +100,7 @@
             }
             else if (optID == "rbBaeSong4") {
                 if ($('#<%=this.txtBaeSongName4.ClientID%>').val() == "") {
-                    showMessageToolTip('<%=this.txtBaeSongName4.ClientID%>', '기타배송 내용을 입력해야 합니다.');
+                    showMessageToolTipPop('<%=this.txtBaeSongName4.ClientID%>', '기타배송 내용을 입력해야 합니다.');
                     return false;
                 }
 

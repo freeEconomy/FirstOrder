@@ -226,6 +226,11 @@
         }
 
         function CheckBlju() {
+            
+            if ($('#<%=this.hidBaeSong.ClientID%>').val() == "" || $('#<%=this.txtBaeSongName.ClientID%>').val() == "") {
+                showMessageToolTip('<%=this.btnBaeSong.ClientID%>', '배송지를 선택해 주세요.');
+                return false;
+            }
 
             if (document.getElementById("<%=this.txtProduct.ClientID%>").value == "") {
                 showMessageToolTip('<%=this.txtProduct.ClientID%>', '발주스타일을 선택해 주세요.');
@@ -234,7 +239,9 @@
             }
 
             if (document.getElementById("<%=this.txtOrderTotal.ClientID%>").value == "") {
+                $('#<%=this.txtOrderTotal.ClientID%>').attr('disabled', false);
                 showMessageToolTip('<%=this.txtOrderTotal.ClientID%>', '주문량을 입력해 주세요.');
+                $('#<%=this.txtOrderTotal.ClientID%>').attr('disabled', true);
                 document.getElementById("<%=this.txtOrderTotal.ClientID%>").focus();
                 return false;
             }

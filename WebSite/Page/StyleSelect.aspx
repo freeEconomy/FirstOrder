@@ -62,6 +62,11 @@
                 parent.$('#ctl00_cph1_btnNewWrite').attr('disabled', false);
                 parent.$('#ctl00_cph1_btnWrite').attr('disabled', false);
                 parent.$('#ctl00_cph1_btnModify').attr('disabled', false);
+
+                parent.$('#ctl00_cph1_btnRefresh').attr('onclick', 'return CheckRefresh();');
+                parent.$('#ctl00_cph1_btnWrite').attr('onclick', 'return CheckBlju();');
+                parent.$('#ctl00_cph1_btnModify').attr('onclick', 'return CheckBlju();');
+
                 if (setCommaHis_Del(JegoQty01) > 0)
                     parent.$('#ctl00_cph1_txtOrder1').attr('disabled', false);
                 if (setCommaHis_Del(JegoQty02) > 0)

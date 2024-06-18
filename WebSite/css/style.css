@@ -280,8 +280,7 @@ table tr.defaultDataTR:hover {
     padding-top: 8px;
 }
 
-.totalTitle
-{
+.totalTitle {
     width: 95%;
     border: 1px solid #d1d3e2;
     border-radius: 0.35rem;
@@ -289,6 +288,16 @@ table tr.defaultDataTR:hover {
     background-color: #ffc9c9;
     height: 40px;
     padding-top: 8px;
+}
+
+.totalTitle2 {
+    width: 95%;
+    border: 1px solid #d1d3e2;
+    border-radius: 0.35rem;
+    text-align: center;
+    background-color: #ffc9c9;
+    height: 79px;
+    padding-top: 28px;
 }
 
 /* 채팅 관련(시작) */

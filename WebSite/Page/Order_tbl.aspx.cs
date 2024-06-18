@@ -264,18 +264,18 @@ public partial class Page_Order_tbl : System.Web.UI.Page
         st.Kind = this.hidKind.Value;
         st.GetSizeInfo("tbl");
 
-        this.ltlSize1.Text = st.SizeName1 + "<br>(" + st.SizeNum1 + ")";
-        this.ltlSize2.Text = st.SizeName2 + "<br>(" + st.SizeNum2 + ")";
-        this.ltlSize3.Text = st.SizeName3 + "<br>(" + st.SizeNum3 + ")";
-        this.ltlSize4.Text = st.SizeName4 + "<br>(" + st.SizeNum4 + ")";
-        this.ltlSize5.Text = st.SizeName5 + "<br>(" + st.SizeNum5 + ")";
-        this.ltlSize6.Text = st.SizeName6 + "<br>(" + st.SizeNum6 + ")";
-        this.ltlSize7.Text = st.SizeName7 + "<br>(" + st.SizeNum7 + ")";
-        this.ltlSize8.Text = st.SizeName8 + "<br>(" + st.SizeNum8 + ")";
-        this.ltlSize9.Text = st.SizeName9 + "<br>(" + st.SizeNum9 + ")";
-        this.ltlSize10.Text = st.SizeName10 + "<br>(" + st.SizeNum10 + ")";
-        this.ltlSize11.Text = st.SizeName11 + "<br>(" + st.SizeNum11 + ")";
-        this.ltlSize12.Text = st.SizeName12 + "<br>(" + st.SizeNum12 + ")";
+        this.ltlSize1.Text = st.SizeName1 + "<br>(" + st.SizeNum1 + ")" + " <br>" + st.Remark1;
+        this.ltlSize2.Text = st.SizeName2 + "<br>(" + st.SizeNum2 + ")" + " <br>" + st.Remark2;
+        this.ltlSize3.Text = st.SizeName3 + "<br>(" + st.SizeNum3 + ")" + " <br>" + st.Remark3;
+        this.ltlSize4.Text = st.SizeName4 + "<br>(" + st.SizeNum4 + ")" + " <br>" + st.Remark4;
+        this.ltlSize5.Text = st.SizeName5 + "<br>(" + st.SizeNum5 + ")" + " <br>" + st.Remark5;
+        this.ltlSize6.Text = st.SizeName6 + "<br>(" + st.SizeNum6 + ")" + " <br>" + st.Remark6;
+        this.ltlSize7.Text = st.SizeName7 + "<br>(" + st.SizeNum7 + ")" + " <br>" + st.Remark7;
+        this.ltlSize8.Text = st.SizeName8 + "<br>(" + st.SizeNum8 + ")" + " <br>" + st.Remark8;
+        this.ltlSize9.Text = st.SizeName9 + "<br>(" + st.SizeNum9 + ")" + " <br>" + st.Remark9;
+        this.ltlSize10.Text = st.SizeName10 + "<br>(" + st.SizeNum10 + ")" + " <br>" + st.Remark10;
+        this.ltlSize11.Text = st.SizeName11 + "<br>(" + st.SizeNum11 + ")" + " <br>" + st.Remark11;
+        this.ltlSize12.Text = st.SizeName12 + "<br>(" + st.SizeNum12 + ")" + " <br>" + st.Remark12;
         this.ltlSizeTotal.Text = "TOTAL";
 
         this.txtOrder1.Attributes.Add("onkeydown", "return fnNumberOnly(event);");
@@ -321,13 +321,13 @@ public partial class Page_Order_tbl : System.Web.UI.Page
 
         if (StCommon.ToInt(this.hidTotal.Value, 0) == 0)
         {
-            this.btnBaeSong.Enabled = false;
+            //this.btnBaeSong.Enabled = false;
             this.lnkChating.Visible = false;
             this.lnkComplete.Visible = false;
         }
         else
         {
-            this.btnBaeSong.Enabled = true;
+            //this.btnBaeSong.Enabled = true;
             this.lnkChating.Visible = true;
             this.lnkComplete.Visible = true;
         }
@@ -395,18 +395,18 @@ public partial class Page_Order_tbl : System.Web.UI.Page
         st.Kind = "1";// this.hidKind.Value;
         st.GetSizeInfo("tbl");
 
-        ((Literal)this.lvMain.FindControl("ltlSize1")).Text = st.SizeName1 + " <br>(" + st.SizeNum1 + ")";
-        ((Literal)this.lvMain.FindControl("ltlSize2")).Text = st.SizeName2 + " <br>(" + st.SizeNum2 + ")";
-        ((Literal)this.lvMain.FindControl("ltlSize3")).Text = st.SizeName3 + " <br>(" + st.SizeNum3 + ")";
-        ((Literal)this.lvMain.FindControl("ltlSize4")).Text = st.SizeName4 + " <br>(" + st.SizeNum4 + ")";
-        ((Literal)this.lvMain.FindControl("ltlSize5")).Text = st.SizeName5 + " <br>(" + st.SizeNum5 + ")";
-        ((Literal)this.lvMain.FindControl("ltlSize6")).Text = st.SizeName6 + " <br>(" + st.SizeNum6 + ")";
-        ((Literal)this.lvMain.FindControl("ltlSize7")).Text = st.SizeName7 + " <br>(" + st.SizeNum7 + ")";
-        ((Literal)this.lvMain.FindControl("ltlSize8")).Text = st.SizeName8 + " <br>(" + st.SizeNum8 + ")";
-        ((Literal)this.lvMain.FindControl("ltlSize9")).Text = st.SizeName9 + " <br>(" + st.SizeNum9 + ")";
-        ((Literal)this.lvMain.FindControl("ltlSize10")).Text = st.SizeName10 + " <br>(" + st.SizeNum10 + ")";
-        ((Literal)this.lvMain.FindControl("ltlSize11")).Text = st.SizeName11 + " <br>(" + st.SizeNum11 + ")";
-        ((Literal)this.lvMain.FindControl("ltlSize12")).Text = st.SizeName12 + " <br>(" + st.SizeNum12 + ")";
+        ((Literal)this.lvMain.FindControl("ltlSize1")).Text = st.SizeName1 + " <br>(" + st.SizeNum1 + ")" + " <br>" + st.Remark1;
+        ((Literal)this.lvMain.FindControl("ltlSize2")).Text = st.SizeName2 + " <br>(" + st.SizeNum2 + ")" + " <br>" + st.Remark2;
+        ((Literal)this.lvMain.FindControl("ltlSize3")).Text = st.SizeName3 + " <br>(" + st.SizeNum3 + ")" + " <br>" + st.Remark3;
+        ((Literal)this.lvMain.FindControl("ltlSize4")).Text = st.SizeName4 + " <br>(" + st.SizeNum4 + ")" + " <br>" + st.Remark4;
+        ((Literal)this.lvMain.FindControl("ltlSize5")).Text = st.SizeName5 + " <br>(" + st.SizeNum5 + ")" + " <br>" + st.Remark5;
+        ((Literal)this.lvMain.FindControl("ltlSize6")).Text = st.SizeName6 + " <br>(" + st.SizeNum6 + ")" + " <br>" + st.Remark6;
+        ((Literal)this.lvMain.FindControl("ltlSize7")).Text = st.SizeName7 + " <br>(" + st.SizeNum7 + ")" + " <br>" + st.Remark7;
+        ((Literal)this.lvMain.FindControl("ltlSize8")).Text = st.SizeName8 + " <br>(" + st.SizeNum8 + ")" + " <br>" + st.Remark8;
+        ((Literal)this.lvMain.FindControl("ltlSize9")).Text = st.SizeName9 + " <br>(" + st.SizeNum9 + ")" + " <br>" + st.Remark9;
+        ((Literal)this.lvMain.FindControl("ltlSize10")).Text = st.SizeName10 + " <br>(" + st.SizeNum10 + ")" + " <br>" + st.Remark10;
+        ((Literal)this.lvMain.FindControl("ltlSize11")).Text = st.SizeName11 + " <br>(" + st.SizeNum11 + ")" + " <br>" + st.Remark11;
+        ((Literal)this.lvMain.FindControl("ltlSize12")).Text = st.SizeName12 + " <br>(" + st.SizeNum12 + ")" + " <br>" + st.Remark12;
     }
 
     protected void lvMain_ItemDataBound(object sender, ListViewItemEventArgs e)
@@ -1162,18 +1162,18 @@ public partial class Page_Order_tbl : System.Web.UI.Page
         st.Kind = this.hidKind.Value;
         st.GetSizeInfo("tbl");
 
-        this.ltlSize1.Text = st.SizeName1 + "<br>(" + st.SizeNum1 + ")";
-        this.ltlSize2.Text = st.SizeName2 + "<br>(" + st.SizeNum2 + ")";
-        this.ltlSize3.Text = st.SizeName3 + "<br>(" + st.SizeNum3 + ")";
-        this.ltlSize4.Text = st.SizeName4 + "<br>(" + st.SizeNum4 + ")";
-        this.ltlSize5.Text = st.SizeName5 + "<br>(" + st.SizeNum5 + ")";
-        this.ltlSize6.Text = st.SizeName6 + "<br>(" + st.SizeNum6 + ")";
-        this.ltlSize7.Text = st.SizeName7 + "<br>(" + st.SizeNum7 + ")";
-        this.ltlSize8.Text = st.SizeName8 + "<br>(" + st.SizeNum8 + ")";
-        this.ltlSize9.Text = st.SizeName9 + "<br>(" + st.SizeNum9 + ")";
-        this.ltlSize10.Text = st.SizeName10 + "<br>(" + st.SizeNum10 + ")";
-        this.ltlSize11.Text = st.SizeName11 + "<br>(" + st.SizeNum11 + ")";
-        this.ltlSize12.Text = st.SizeName12 + "<br>(" + st.SizeNum12 + ")";
+        this.ltlSize1.Text = st.SizeName1 + "<br>(" + st.SizeNum1 + ")" + " <br>" + st.Remark1;
+        this.ltlSize2.Text = st.SizeName2 + "<br>(" + st.SizeNum2 + ")" + " <br>" + st.Remark2;
+        this.ltlSize3.Text = st.SizeName3 + "<br>(" + st.SizeNum3 + ")" + " <br>" + st.Remark3;
+        this.ltlSize4.Text = st.SizeName4 + "<br>(" + st.SizeNum4 + ")" + " <br>" + st.Remark4;
+        this.ltlSize5.Text = st.SizeName5 + "<br>(" + st.SizeNum5 + ")" + " <br>" + st.Remark5;
+        this.ltlSize6.Text = st.SizeName6 + "<br>(" + st.SizeNum6 + ")" + " <br>" + st.Remark6;
+        this.ltlSize7.Text = st.SizeName7 + "<br>(" + st.SizeNum7 + ")" + " <br>" + st.Remark7;
+        this.ltlSize8.Text = st.SizeName8 + "<br>(" + st.SizeNum8 + ")" + " <br>" + st.Remark8;
+        this.ltlSize9.Text = st.SizeName9 + "<br>(" + st.SizeNum9 + ")" + " <br>" + st.Remark9;
+        this.ltlSize10.Text = st.SizeName10 + "<br>(" + st.SizeNum10 + ")" + " <br>" + st.Remark10;
+        this.ltlSize11.Text = st.SizeName11 + "<br>(" + st.SizeNum11 + ")" + " <br>" + st.Remark11;
+        this.ltlSize12.Text = st.SizeName12 + "<br>(" + st.SizeNum12 + ")" + " <br>" + st.Remark12;
         this.ltlSizeTotal.Text = "TOTAL";
     }
 
@@ -2120,18 +2120,18 @@ public partial class Page_Order_tbl : System.Web.UI.Page
         st.Kind = "1";// this.hidKind.Value;
         st.GetSizeInfo("tbl");
 
-        ((Literal)this.lvView.FindControl("ltlSize1")).Text = st.SizeName1 + " <br>(" + st.SizeNum1 + ")";
-        ((Literal)this.lvView.FindControl("ltlSize2")).Text = st.SizeName2 + " <br>(" + st.SizeNum2 + ")";
-        ((Literal)this.lvView.FindControl("ltlSize3")).Text = st.SizeName3 + " <br>(" + st.SizeNum3 + ")";
-        ((Literal)this.lvView.FindControl("ltlSize4")).Text = st.SizeName4 + " <br>(" + st.SizeNum4 + ")";
-        ((Literal)this.lvView.FindControl("ltlSize5")).Text = st.SizeName5 + " <br>(" + st.SizeNum5 + ")";
-        ((Literal)this.lvView.FindControl("ltlSize6")).Text = st.SizeName6 + " <br>(" + st.SizeNum6 + ")";
-        ((Literal)this.lvView.FindControl("ltlSize7")).Text = st.SizeName7 + " <br>(" + st.SizeNum7 + ")";
-        ((Literal)this.lvView.FindControl("ltlSize8")).Text = st.SizeName8 + " <br>(" + st.SizeNum8 + ")";
-        ((Literal)this.lvView.FindControl("ltlSize9")).Text = st.SizeName9 + " <br>(" + st.SizeNum9 + ")";
-        ((Literal)this.lvView.FindControl("ltlSize10")).Text = st.SizeName10 + " <br>(" + st.SizeNum10 + ")";
-        ((Literal)this.lvView.FindControl("ltlSize11")).Text = st.SizeName11 + " <br>(" + st.SizeNum11 + ")";
-        ((Literal)this.lvView.FindControl("ltlSize12")).Text = st.SizeName12 + " <br>(" + st.SizeNum12 + ")";        
+        ((Literal)this.lvView.FindControl("ltlSize1")).Text = st.SizeName1 + " <br>(" + st.SizeNum1 + ")" + " <br>" + st.Remark1;
+        ((Literal)this.lvView.FindControl("ltlSize2")).Text = st.SizeName2 + " <br>(" + st.SizeNum2 + ")" + " <br>" + st.Remark2;
+        ((Literal)this.lvView.FindControl("ltlSize3")).Text = st.SizeName3 + " <br>(" + st.SizeNum3 + ")" + " <br>" + st.Remark3;
+        ((Literal)this.lvView.FindControl("ltlSize4")).Text = st.SizeName4 + " <br>(" + st.SizeNum4 + ")" + " <br>" + st.Remark4;
+        ((Literal)this.lvView.FindControl("ltlSize5")).Text = st.SizeName5 + " <br>(" + st.SizeNum5 + ")" + " <br>" + st.Remark5;
+        ((Literal)this.lvView.FindControl("ltlSize6")).Text = st.SizeName6 + " <br>(" + st.SizeNum6 + ")" + " <br>" + st.Remark6;
+        ((Literal)this.lvView.FindControl("ltlSize7")).Text = st.SizeName7 + " <br>(" + st.SizeNum7 + ")" + " <br>" + st.Remark7;
+        ((Literal)this.lvView.FindControl("ltlSize8")).Text = st.SizeName8 + " <br>(" + st.SizeNum8 + ")" + " <br>" + st.Remark8;
+        ((Literal)this.lvView.FindControl("ltlSize9")).Text = st.SizeName9 + " <br>(" + st.SizeNum9 + ")" + " <br>" + st.Remark9;
+        ((Literal)this.lvView.FindControl("ltlSize10")).Text = st.SizeName10 + " <br>(" + st.SizeNum10 + ")" + " <br>" + st.Remark10;
+        ((Literal)this.lvView.FindControl("ltlSize11")).Text = st.SizeName11 + " <br>(" + st.SizeNum11 + ")" + " <br>" + st.Remark11;
+        ((Literal)this.lvView.FindControl("ltlSize12")).Text = st.SizeName12 + " <br>(" + st.SizeNum12 + ")" + " <br>" + st.Remark12;
     }
 
     private void BindView(string bljudate, string bljutime, string kurecode, string blju_sample)
