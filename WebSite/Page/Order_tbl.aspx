@@ -192,11 +192,6 @@
 
         function CheckBlju() {
 
-            if ($('#<%=this.hidBaeSong.ClientID%>').val() == "" || $('#<%=this.txtBaeSongName.ClientID%>').val() == "") {
-                showMessageToolTip('<%=this.btnBaeSong.ClientID%>', '배송지를 선택해 주세요.');
-                return false;
-            }
-
             if (document.getElementById("<%=this.txtProduct.ClientID%>").value == "") {
                 showMessageToolTip('<%=this.txtProduct.ClientID%>', '발주스타일을 선택해 주세요.');
                 document.getElementById("<%=this.txtProduct.ClientID%>").focus();
