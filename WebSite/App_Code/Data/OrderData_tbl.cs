@@ -567,7 +567,8 @@ namespace FirstOrder.Data
                     ₩50,000 초과면 3% 할인
                     단, SSS ~ 4XL까지만 해당됨
                  */
-                if (total >= 150)
+                //if (total >= 150)
+                if (total == -150)
                 {
                     if (num <= 9)
                     {
