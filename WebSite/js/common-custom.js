@@ -377,6 +377,13 @@ function OpenKureSpecPrint(blju_date, blju_times, blju_mainbuyer, blju_sample) {
     return false;
 }
 
+function OpenSongJangNox(blju_date, blju_times, blju_mainbuyer, blju_sample) {
+    var openValue = window.open("/Page/SongJangList.aspx?blju_date=" + blju_date + "&blju_times=" + blju_times + "&blju_mainbuyer=" + blju_mainbuyer + "&blju_sample=" + blju_sample, "SongJangList", "width=300,height=400,top=200,left=600,scrollbars=yes,resizable=yes,location=no");
+    openValue.focus();
+
+    return false;
+}
+
 function printPdf(url) {
     var linkAddress = "/Print/PDFPrint.aspx?url=";
     var link = encodeURIComponent(url);

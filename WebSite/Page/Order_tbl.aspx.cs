@@ -2141,7 +2141,12 @@ public partial class Page_Order_tbl : System.Web.UI.Page
         whereQry = StCommon.MakeSearchQry("Bjhd_Times", bljutime, "S", whereQry);
         whereQry = StCommon.MakeSearchQry("bjhd_sample", blju_sample, "S", whereQry);
 
-        string qry = " select (select kure_sangho from gblKURE where kure_code = a.Bjhd_MainBuyer) as Bjhd_MainBuyerNm,(select Bjhd2_SongJangNox from tblBJHD2 where isnull(Bjhd2_Date,'') = isnull(a.Bjhd_Date,'') and isnull(Bjhd2_Times,'') = isnull(a.Bjhd_Times,'') and isnull(Bjhd2_MainBuyer,'') = isnull(a.Bjhd_MainBuyer,'') and isnull(Bjhd2_Sample,'') = isnull(a.Bjhd_Sample,'')) as Bjhd2_SongJangNox,* from tblBJHD a where Bjhd_Date = '" + bljudate + "' and Bjhd_MainBuyer = '" + kurecode + "' " + whereQry + " order by Bjhd_Times desc ";
+        string qry = " select (select kure_sangho from gblKURE where kure_code = a.Bjhd_MainBuyer) as Bjhd_MainBuyerNm ";
+        qry += " ,(select Bjhd2_SongJangNox from tblBJHD2 where isnull(Bjhd2_Date,'') = isnull(a.Bjhd_Date,'') and isnull(Bjhd2_Times,'') = isnull(a.Bjhd_Times,'') and isnull(Bjhd2_MainBuyer,'') = isnull(a.Bjhd_MainBuyer,'') and isnull(Bjhd2_Sample,'') = isnull(a.Bjhd_Sample,'')) as Bjhd2_SongJangNox ";
+        //qry += " ,(select top 1 Bjhd3_SongJangNox from tblBJHD3 where isnull(Bjhd3_Date,'') = isnull(a.Bjhd_Date,'') and isnull(Bjhd3_Times,'') = isnull(a.Bjhd_Times,'') and isnull(Bjhd3_MainBuyer,'') = isnull(a.Bjhd_MainBuyer,'') and isnull(Bjhd3_Sample,'') = isnull(a.Bjhd_Sample,'') order by Bjhd3_Seqx) as Bjhd3_SongJangNox ";
+        qry += " ,* from tblBJHD a ";
+        qry += " where Bjhd_Date = '" + bljudate + "' and Bjhd_MainBuyer = '" + kurecode + "' " + whereQry + " ";
+        qry += " order by Bjhd_Times desc ";
         
         DataSet ds = stData.GetDataSet(qry);
         if (ds.Tables[0].Rows.Count > 0)
@@ -2179,6 +2184,7 @@ public partial class Page_Order_tbl : System.Web.UI.Page
             this.txtBaeSongNameV.Text = ds.Tables[0].Rows[0]["Bjhd_BaeSongName"].ToString();
 
             this.txtSongJangNoxV.Text = ds.Tables[0].Rows[0]["Bjhd2_SongJangNox"].ToString();
+            this.imgSongJangNox.OnClientClick = "return OpenSongJangNox('" + this.txtDateV.Text.ToString() + "','" + this.txtTimeV.Text.ToString() + "','" + this.hidKureCodeV.Value + "','" + bjhd_sample + "', '');";
 
             this.txtEtcV.Text = ds.Tables[0].Rows[0]["Bjhd_Remark"].ToString();
             this.txtNetAmountV.Text = GetAmountFormat(ds.Tables[0].Rows[0]["Bjhd_NetAmount"]);

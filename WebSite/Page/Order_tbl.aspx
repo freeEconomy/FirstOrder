@@ -990,7 +990,8 @@
                                                             운송장번호
                                                         </th>
                                                         <td class="no-gutters" colspan="2">
-                                                            <asp:TextBox ID="txtSongJangNoxV" runat="server" CssClass="form-control" Width="100%" Enabled="false"></asp:TextBox>
+                                                            <asp:TextBox ID="txtSongJangNoxV" runat="server" CssClass="form-control" Width="90%" Enabled="false"></asp:TextBox>
+                                                            <asp:ImageButton runat="server" ID="imgSongJangNox" Width="30" style="cursor:pointer; vertical-align: middle; border-radius: 5px;" ImageUrl="/images/송장내역_아이콘.png" />
                                                         </td>
                                                     </tr>
                                                     <tr>

@@ -34,7 +34,13 @@ public partial class Master_MainPop : System.Web.UI.MasterPage
 
                 TitleName = "Q&A 대화방";
 
-                break;                
+                break;
+
+            case "SongJangList.aspx":
+
+                TitleName = "송장번호 내역";
+
+                break;
         }
 
         if (!IsPostBack)
