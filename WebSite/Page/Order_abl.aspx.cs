@@ -2312,6 +2312,15 @@ public partial class Page_Order_abl : System.Web.UI.Page
             this.txtBaeSongNameV.Text = ds.Tables[0].Rows[0]["Bjhd_BaeSongName"].ToString();
 
             this.txtSongJangNoxV.Text = ds.Tables[0].Rows[0]["Bjhd2_SongJangNox"].ToString();
+
+            qry = " select * from ablBJHD3 " +
+                " inner join ablBJHD a on isnull(Bjhd3_Date,'') = isnull(a.Bjhd_Date,'') and isnull(Bjhd3_Times,'') = isnull(a.Bjhd_Times,'') and isnull(Bjhd3_MainBuyer,'') = isnull(a.Bjhd_MainBuyer,'') and isnull(Bjhd3_Sample,'') = isnull(a.Bjhd_Sample,'') " +
+                " where a.Bjhd_Date = '" + bljudate + "' and a.Bjhd_MainBuyer = '" + kurecode + "' " + whereQry + " ";
+            DataSet dsC = stData.GetDataSet(qry);
+            this.imgSongJangNox.Visible = dsC.Tables[0].Rows.Count >= 2 ? true : false;
+            this.txtSongJangNoxV.Width = dsC.Tables[0].Rows.Count >= 2 ? Unit.Percentage(90) : Unit.Percentage(100);
+            this.imgSongJangNox.Visible = dsC.Tables[0].Rows.Count >= 2 ? true : false;
+
             this.imgSongJangNox.OnClientClick = "return OpenSongJangNox('" + this.txtDateV.Text.ToString() + "','" + this.txtTimeV.Text.ToString() + "','" + this.hidKureCodeV.Value + "','" + bjhd_sample + "', '');";
 
             this.txtEtcV.Text = ds.Tables[0].Rows[0]["Bjhd_Remark"].ToString();
