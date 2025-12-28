@@ -73,8 +73,14 @@ public partial class Page_StyleSelect : System.Web.UI.Page
         if (preVal == "tbl")
         {
             //if (areaGubun == "2.대리점") // 대리점은 TB- 주문못함.
-                //whereQry = " and Jego_StyleNox not like 'TB-%' ";
+                //whereQry = " and Jego_StyleNox not like 'TB-%' ";            
         }
+
+        //if (areaGubun != "1.총  판")
+                //whereQry = " and (Jego_StyleNox like 'MK-%' or Jego_StyleNox like 'MT-%') ";
+
+        if (areaGubun.Substring(0, 1).Equals("2")) // 대리점이면 Dnga_JegoView = 'N' 조건 추가
+            whereQry = " and Jego_StyleNox in(select Dnga_StyleNox from " + preVal + "DNGA where isnull(Dnga_JegoView,'') <> 'N') ";
 
         whereQry = StCommon.MakeSearchQry("Jego_StyleNox", styleNox, "%", whereQry);
 

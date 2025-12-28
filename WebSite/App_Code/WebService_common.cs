@@ -886,8 +886,11 @@ public class WebService_common : System.Web.Services.WebService
         if (preVal == "tbl")
         {
             //if (areaGubun == "2.대리점") // 대리점은 TB- 주문못함.
-                //whereQry = " and Jego_StyleNox not like 'TB-%' ";
+                //whereQry = " and Jego_StyleNox not like 'TB-%' ";            
         }
+
+        if (areaGubun.Substring(0, 1).Equals("2")) // 대리점이면 Dnga_JegoView = 'N' 조건 추가
+            whereQry = " and Jego_StyleNox in(select Dnga_StyleNox from " + preVal + "DNGA where isnull(Dnga_JegoView,'') <> 'N') ";
 
         whereQry += " and (Jego_StyleNox like '%" + styleNox + "%' or Jego_StyleNox in (select Dnga_StyleNox from " + preVal + "DNGA where Dnga_SubName like '%" + styleNox + "%')) ";
 

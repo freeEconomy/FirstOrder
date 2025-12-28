@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -49,8 +47,14 @@ public partial class Page_MarkJegoList : System.Web.UI.Page
             styleNox = ((DropDownList)this.ucProduct.FindControl("ddlProduct")).SelectedValue;
         }
         catch { }
-
+        
         whereQry = StCommon.MakeSearchQry("Jego_StyleNox", styleNox, "S", whereQry);
+
+        string kureCode = MemberData.GetLoginSID("KureCode");
+        string areaGubun = StCommon.GetAreaGubun(preVal, kureCode);
+
+        if (areaGubun.Substring(0, 1).Equals("2")) // 대리점이면 Dnga_JegoView = 'N' 조건 추가
+            whereQry += " and Jego_StyleNox in(select Dnga_StyleNox from " + preVal + "DNGA where isnull(Dnga_JegoView,'') <> 'N') ";
 
         StDataCommon stData = new StDataCommon();
 
