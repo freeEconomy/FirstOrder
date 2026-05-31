@@ -2320,7 +2320,7 @@ public partial class Page_Order_abl : System.Web.UI.Page
             this.imgSongJangNox.Visible = dsC.Tables[0].Rows.Count >= 2 ? true : false;
             this.txtSongJangNoxV.Width = dsC.Tables[0].Rows.Count >= 2 ? Unit.Percentage(90) : Unit.Percentage(100);
             this.imgSongJangNox.Visible = dsC.Tables[0].Rows.Count >= 2 ? true : false;
-
+ 
             this.imgSongJangNox.OnClientClick = "return OpenSongJangNox('" + this.txtDateV.Text.ToString() + "','" + this.txtTimeV.Text.ToString() + "','" + this.hidKureCodeV.Value + "','" + bjhd_sample + "', '');";
 
             this.txtEtcV.Text = ds.Tables[0].Rows[0]["Bjhd_Remark"].ToString();
