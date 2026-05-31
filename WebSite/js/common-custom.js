@@ -163,7 +163,7 @@ function OpenBaeSong(totalID, baeSongOptID, baeSongID, baeSongNameID, blju_date,
 
 function popupAddress(paramData) {
     if (paramData == '' || paramData == undefined) {
-        new daum.Postcode({
+        new kakao.Postcode({
             oncomplete: function (data) {
                 console.log(data);
                 $('.txtZipcode').val(data.zonecode);
@@ -215,7 +215,7 @@ function popupAddress(paramData) {
 
 function popupAddressSend(paramData) {
     if (paramData == '' || paramData == undefined) {
-        new daum.Postcode({
+        new kakao.Postcode({
             oncomplete: function (data) {
                 console.log(data);
                 $('.txtZipcodeSend').val(data.zonecode);
