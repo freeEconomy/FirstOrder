@@ -160,7 +160,7 @@
 
         blju_style_name = dr2["Blju_StyleName"].ToString();
         blju_stylenox = dr2["Blju_StyleNox"].ToString();
-        blju_justprice = ds.Tables[0].Rows[0]["Blju_JustPrice"].ToString();
+        blju_justprice = dr2["Blju_JustPrice"].ToString();
         JegoArray = StCommon.JegoSet(preVal, date, times, mainbuyer, dr2["Blju_Line"].ToString(), dr2["Blju_StyleNox"].ToString(), mode); // 보기에서는 mode 빈값
 
         for (int k = 1; k <= (maxSize + 1); k++)

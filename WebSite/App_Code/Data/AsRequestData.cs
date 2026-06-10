@@ -154,9 +154,13 @@ namespace FirstOrder.Data
                 db.AddInParameter(cmd, "@BnpmH_ModifyDate", DbType.DateTime, m_mdate);
                 db.AddInParameter(cmd, "@BnpmH_ModifySaWon", DbType.String, m_msawon);
 
-                db.ExecuteNonQuery(cmd);
-
-                whis.InsertWork("AS접수", "헤더입력", cmd);
+                if (m_ssawon != "") {
+                    db.ExecuteNonQuery(cmd);
+                    whis.InsertWork("AS접수", "헤더입력", cmd);
+                }
+                else {
+                    whis.InsertWork("AS접수", "헤더입력(세션만료)", cmd);
+                }
             }
             else
             {
@@ -211,9 +215,13 @@ namespace FirstOrder.Data
             db.AddInParameter(cmd, "@BnpmH_MainBuyer", DbType.String, m_mainbuyer);
             db.AddInParameter(cmd, "@BnpmH_Sample", DbType.String, m_sample);
 
-            db.ExecuteNonQuery(cmd);
-
-            whis.InsertWork("AS접수", "헤더수정", cmd);
+            if (m_msawon != "") {
+                db.ExecuteNonQuery(cmd);
+                whis.InsertWork("AS접수", "헤더수정", cmd);
+            }
+            else {
+                whis.InsertWork("AS접수", "헤더수정(세션만료)", cmd);
+            }
         }
 
         public void InsertData()
